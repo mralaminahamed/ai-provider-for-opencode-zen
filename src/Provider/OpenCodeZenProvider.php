@@ -1,0 +1,108 @@
+<?php
+/**
+ * OpenCode Zen AI Provider.
+ *
+ * @package WordPress\OpenCodeZenAiProvider\Provider
+ */
+
+declare(strict_types=1);
+
+namespace WordPress\OpenCodeZenAiProvider\Provider;
+
+use WordPress\AiClient\AiClient;
+use WordPress\AiClient\Common\Exception\RuntimeException;
+use WordPress\AiClient\Providers\ApiBasedImplementation\AbstractApiProvider;
+use WordPress\AiClient\Providers\ApiBasedImplementation\ListModelsApiBasedProviderAvailability;
+use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;
+use WordPress\AiClient\Providers\Contracts\ProviderAvailabilityInterface;
+use WordPress\AiClient\Providers\DTO\ProviderMetadata;
+use WordPress\AiClient\Providers\Enums\ProviderTypeEnum;
+use WordPress\AiClient\Providers\Http\Enums\RequestAuthenticationMethod;
+use WordPress\AiClient\Providers\Models\Contracts\ModelInterface;
+use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
+use WordPress\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
+use WordPress\OpenCodeZenAiProvider\Models\OpenCodeZenTextGenerationModel;
+
+/**
+ * Class for the OpenCode Zen provider.
+ *
+ * @since 1.0.0
+ */
+class OpenCodeZenProvider extends AbstractApiProvider {
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since 1.0.0
+	 */
+	protected static function baseUrl(): string {
+		return 'https://opencode.ai/zen/v1';
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since 1.0.0
+	 */
+	protected static function createModel(
+		ModelMetadata $model_metadata,
+		ProviderMetadata $provider_metadata
+	): ModelInterface {
+		$capabilities = $model_metadata->getSupportedCapabilities();
+
+		foreach ( $capabilities as $capability ) {
+			if ( $capability->isTextGeneration() ) {
+				return new OpenCodeZenTextGenerationModel( $model_metadata, $provider_metadata );
+			}
+		}
+
+		throw new RuntimeException(
+			'Unsupported model capabilities: ' . implode( ', ', $capabilities )
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since 1.0.0
+	 */
+	protected static function createProviderMetadata(): ProviderMetadata {
+		$provider_metadata_args = array(
+			'opencode-zen',
+			'OpenCode Zen',
+			ProviderTypeEnum::cloud(),
+			'https://opencode.ai/zen',
+			RequestAuthenticationMethod::apiKey(),
+		);
+
+		if ( version_compare( AiClient::VERSION, '1.2.0', '>=' ) ) {
+			if ( function_exists( '__' ) ) {
+				$provider_metadata_args[] = __( 'High-performance AI models optimized for coding and general tasks.', 'ai-provider-for-opencode-zen' );
+			} else {
+				$provider_metadata_args[] = 'High-performance AI models optimized for coding and general tasks.';
+			}
+		}
+
+		return new ProviderMetadata( ...$provider_metadata_args );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since 1.0.0
+	 */
+	protected static function createProviderAvailability(): ProviderAvailabilityInterface {
+		return new ListModelsApiBasedProviderAvailability(
+			static::modelMetadataDirectory()
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since 1.0.0
+	 */
+	protected static function createModelMetadataDirectory(): ModelMetadataDirectoryInterface {
+		return new OpenCodeZenModelMetadataDirectory();
+	}
+}
