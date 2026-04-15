@@ -59,7 +59,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 
 		if ( null === $model ) {
 			throw new InvalidArgumentException(
-				esc_html( "Model metadata not found for model: {$model_id}" )
+				sprintf( 'Model metadata not found for model: %s', $model_id )
 			);
 		}
 

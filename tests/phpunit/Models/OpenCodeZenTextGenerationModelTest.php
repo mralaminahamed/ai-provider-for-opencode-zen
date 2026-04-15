@@ -29,11 +29,7 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 	 * @return void
 	 */
 	public function test_model_is_created_correctly(): void {
-		$directory      = new OpenCodeZenModelMetadataDirectory();
-		$provider_meta  = OpenCodeZenProvider::getProviderMetadata();
-		$model_metadata = $directory->getModelMetadata( 'gpt-4o' );
-
-		$model = OpenCodeZenProvider::createModel( $model_metadata, $provider_meta );
+		$model = OpenCodeZenProvider::model( 'gpt-4o' );
 
 		$this->assertInstanceOf( OpenCodeZenTextGenerationModel::class, $model );
 	}
@@ -46,13 +42,9 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 	 * @return void
 	 */
 	public function test_model_has_correct_metadata(): void {
-		$directory      = new OpenCodeZenModelMetadataDirectory();
-		$provider_meta  = OpenCodeZenProvider::getProviderMetadata();
-		$model_metadata = $directory->getModelMetadata( 'gpt-4o' );
+		$model = OpenCodeZenProvider::model( 'gpt-4o' );
 
-		$model = OpenCodeZenProvider::createModel( $model_metadata, $provider_meta );
-
-		$this->assertEquals( 'gpt-4o', $model->getModelMetadata()->getId() );
+		$this->assertEquals( 'gpt-4o', $model->metadata()->getId() );
 	}
 
 	/**
@@ -62,16 +54,9 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function test_model_has_opencode_provider_header(): void {
-		$directory      = new OpenCodeZenModelMetadataDirectory();
-		$provider_meta  = OpenCodeZenProvider::getProviderMetadata();
-		$model_metadata = $directory->getModelMetadata( 'gpt-4o' );
+	public function test_model_has_provider_metadata(): void {
+		$model = OpenCodeZenProvider::model( 'gpt-4o' );
 
-		$model = OpenCodeZenProvider::createModel( $model_metadata, $provider_meta );
-
-		$headers = $model->getDefaultHeaders();
-
-		$this->assertArrayHasKey( 'OpenCode-Provider', $headers );
-		$this->assertEquals( 'wordpress-plugin', $headers['OpenCode-Provider'] );
+		$this->assertEquals( 'OpenCode Zen', $model->providerMetadata()->getName() );
 	}
 }

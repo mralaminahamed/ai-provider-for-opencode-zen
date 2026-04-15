@@ -42,7 +42,7 @@ class OpenCodeZenProviderTest extends TestCase {
 	 * @return void
 	 */
 	public function test_provider_metadata_has_correct_id(): void {
-		$metadata = OpenCodeZenProvider::getProviderMetadata();
+		$metadata = OpenCodeZenProvider::metadata();
 
 		$this->assertEquals( 'opencode-zen', $metadata->getId() );
 	}
@@ -55,7 +55,7 @@ class OpenCodeZenProviderTest extends TestCase {
 	 * @return void
 	 */
 	public function test_provider_metadata_has_correct_name(): void {
-		$metadata = OpenCodeZenProvider::getProviderMetadata();
+		$metadata = OpenCodeZenProvider::metadata();
 
 		$this->assertEquals( 'OpenCode Zen', $metadata->getName() );
 	}
@@ -68,7 +68,7 @@ class OpenCodeZenProviderTest extends TestCase {
 	 * @return void
 	 */
 	public function test_provider_metadata_has_correct_type(): void {
-		$metadata = OpenCodeZenProvider::getProviderMetadata();
+		$metadata = OpenCodeZenProvider::metadata();
 
 		$this->assertEquals( ProviderTypeEnum::cloud(), $metadata->getType() );
 	}
@@ -81,7 +81,7 @@ class OpenCodeZenProviderTest extends TestCase {
 	 * @return void
 	 */
 	public function test_provider_metadata_has_api_key_auth(): void {
-		$metadata = OpenCodeZenProvider::getProviderMetadata();
+		$metadata = OpenCodeZenProvider::metadata();
 
 		$this->assertEquals( RequestAuthenticationMethod::apiKey(), $metadata->getAuthenticationMethod() );
 	}

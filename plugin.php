@@ -23,6 +23,8 @@ use WordPress\AiClient\AiClient;
 use AlAminAhamed\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
 use AlAminAhamed\OpenCodeZenAiProvider\Settings\OpenCodeZenSettings;
 
+define( 'OPENCODE_ZEN_PLUGIN_FILE', __FILE__ );
+
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
