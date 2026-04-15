@@ -1,5 +1,5 @@
 {
-    "name": "wordpress/ai-provider-for-opencode-zen",
+    "name": "mralaminahamed/ai-provider-for-opencode-zen",
     "description": "OpenCode Zen AI provider for the WordPress AI Client.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
