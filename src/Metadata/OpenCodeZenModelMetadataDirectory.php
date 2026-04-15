@@ -94,8 +94,8 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			return array();
 		}
 
-		$body    = wp_remote_retrieve_body( $response );
-		$data    = json_decode( $body, true );
+		$body = wp_remote_retrieve_body( $response );
+		$data = json_decode( $body, true );
 
 		if ( ! isset( $data['data'] ) || ! is_array( $data['data'] ) ) {
 			return array();
@@ -109,12 +109,12 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 
 			$models[] = new ModelMetadata(
 				$model_data['id'],
-				$model_data.get( 'name', $model_data['id'] ),
+				$model_data . get( 'name', $model_data['id'] ),
 				array(
 					new TextGenerationCapability(
 						CapabilityEnum::text_generation(),
 						array(
-							'max_tokens'       => $model_data['details']['max_tokens'] ?? 128000,
+							'max_tokens'      => $model_data['details']['max_tokens'] ?? 128000,
 							'context_window'  => $model_data['details']['context_window'] ?? 128000,
 							'supports_vision' => false,
 						)
@@ -144,7 +144,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 					new TextGenerationCapability(
 						CapabilityEnum::text_generation(),
 						array(
-							'max_tokens'       => 128000,
+							'max_tokens'      => 128000,
 							'context_window'  => 128000,
 							'supports_vision' => true,
 						)
@@ -158,7 +158,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 					new TextGenerationCapability(
 						CapabilityEnum::text_generation(),
 						array(
-							'max_tokens'       => 128000,
+							'max_tokens'      => 128000,
 							'context_window'  => 128000,
 							'supports_vision' => false,
 						)
@@ -172,7 +172,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 					new TextGenerationCapability(
 						CapabilityEnum::text_generation(),
 						array(
-							'max_tokens'       => 200000,
+							'max_tokens'      => 200000,
 							'context_window'  => 200000,
 							'supports_vision' => true,
 						)
@@ -186,7 +186,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 					new TextGenerationCapability(
 						CapabilityEnum::text_generation(),
 						array(
-							'max_tokens'       => 200000,
+							'max_tokens'      => 200000,
 							'context_window'  => 200000,
 							'supports_vision' => true,
 						)
