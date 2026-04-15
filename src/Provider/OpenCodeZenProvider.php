@@ -2,12 +2,12 @@
 /**
  * OpenCode Zen AI Provider.
  *
- * @package WordPress\OpenCodeZenAiProvider\Provider
+ * @package AlAminAhamed\OpenCodeZenAiProvider\Provider
  */
 
 declare(strict_types=1);
 
-namespace WordPress\OpenCodeZenAiProvider\Provider;
+namespace AlAminAhamed\OpenCodeZenAiProvider\Provider;
 
 use WordPress\AiClient\AiClient;
 use WordPress\AiClient\Common\Exception\RuntimeException;
@@ -20,8 +20,8 @@ use WordPress\AiClient\Providers\Enums\ProviderTypeEnum;
 use WordPress\AiClient\Providers\Http\Enums\RequestAuthenticationMethod;
 use WordPress\AiClient\Providers\Models\Contracts\ModelInterface;
 use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
-use WordPress\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
-use WordPress\OpenCodeZenAiProvider\Models\OpenCodeZenTextGenerationModel;
+use AlAminAhamed\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
+use AlAminAhamed\OpenCodeZenAiProvider\Models\OpenCodeZenTextGenerationModel;
 
 /**
  * Class for the OpenCode Zen provider.

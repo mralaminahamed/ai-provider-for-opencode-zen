@@ -2,12 +2,12 @@
 /**
  * Autoloader for the OpenCode Zen AI Provider.
  *
- * @package WordPress\OpenCodeZenAiProvider
+ * @package AlAminAhamed\OpenCodeZenAiProvider
  */
 
 declare(strict_types=1);
 
-namespace WordPress\OpenCodeZenAiProvider;
+namespace AlAminAhamed\OpenCodeZenAiProvider;
 
 if ( class_exists( __NAMESPACE__ . '\\OpenCodeZenProvider' ) ) {
 	return;

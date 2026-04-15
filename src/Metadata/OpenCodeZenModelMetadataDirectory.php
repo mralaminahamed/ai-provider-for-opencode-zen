@@ -2,12 +2,12 @@
 /**
  * OpenCode Zen Model Metadata Directory.
  *
- * @package WordPress\OpenCodeZenAiProvider\Metadata
+ * @package AlAminAhamed\OpenCodeZenAiProvider\Metadata
  */
 
 declare(strict_types=1);
 
-namespace WordPress\OpenCodeZenAiProvider\Metadata;
+namespace AlAminAhamed\OpenCodeZenAiProvider\Metadata;
 
 use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;
 use WordPress\AiClient\Providers\Models\Capabilities\TextGenerationCapability;

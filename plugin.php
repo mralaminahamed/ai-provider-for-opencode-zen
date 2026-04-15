@@ -12,15 +12,15 @@
  * License URI: https://spdx.org/licenses/GPL-2.0-or-later.html
  * Text Domain: ai-provider-for-opencode-zen
  *
- * @package WordPress\OpenCodeZenAiProvider
+ * @package AlAminAhamed\OpenCodeZenAiProvider
  */
 
 declare(strict_types=1);
 
-namespace WordPress\OpenCodeZenAiProvider;
+namespace AlAminAhamed\OpenCodeZenAiProvider;
 
 use WordPress\AiClient\AiClient;
-use WordPress\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
+use AlAminAhamed\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;

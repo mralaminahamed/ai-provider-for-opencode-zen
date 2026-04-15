@@ -2,12 +2,12 @@
 /**
  * OpenCode Zen Text Generation Model.
  *
- * @package WordPress\OpenCodeZenAiProvider\Models
+ * @package AlAminAhamed\OpenCodeZenAiProvider\Models
  */
 
 declare(strict_types=1);
 
-namespace WordPress\OpenCodeZenAiProvider\Models;
+namespace AlAminAhamed\OpenCodeZenAiProvider\Models;
 
 use WordPress\AiClient\Providers\DTO\ProviderMetadata;
 use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
