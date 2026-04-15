@@ -11,9 +11,10 @@ namespace AlAminAhamed\OpenCodeZenAiProvider\Metadata;
 
 use WordPress\AiClient\Common\Exception\InvalidArgumentException;
 use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;
-use WordPress\AiClient\Providers\Models\Capabilities\TextGenerationCapability;
 use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
+use WordPress\AiClient\Providers\Models\DTO\SupportedOption;
 use WordPress\AiClient\Providers\Models\Enums\CapabilityEnum;
+use WordPress\AiClient\Providers\Models\Enums\OptionEnum;
 
 /**
  * Model metadata directory for OpenCode Zen.
@@ -23,13 +24,11 @@ use WordPress\AiClient\Providers\Models\Enums\CapabilityEnum;
 class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 
 	/**
-	 * Get all model metadata.
+	 * {@inheritDoc}
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return ModelMetadata[]
 	 */
-	public function get_all(): array {
+	public function listModelMetadata(): array {
 		$models = $this->fetch_models_from_api();
 
 		if ( ! empty( $models ) ) {
@@ -37,35 +36,6 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 		}
 
 		return $this->get_fallback_models();
-	}
-
-	/**
-	 * Get model metadata by ID.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $model_id Model ID.
-	 * @return ModelMetadata|null
-	 */
-	public function get( string $model_id ): ?ModelMetadata {
-		$all_models = $this->get_all();
-
-		foreach ( $all_models as $model ) {
-			if ( $model->getId() === $model_id ) {
-				return $model;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @since 1.0.0
-	 */
-	public function listModelMetadata(): array {
-		return $this->get_all();
 	}
 
 	/**
@@ -94,6 +64,26 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 		}
 
 		return $model;
+	}
+
+	/**
+	 * Get model metadata by ID.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $model_id Model ID.
+	 * @return ModelMetadata|null
+	 */
+	private function get( string $model_id ): ?ModelMetadata {
+		$all_models = $this->listModelMetadata();
+
+		foreach ( $all_models as $model ) {
+			if ( $model->getId() === $model_id ) {
+				return $model;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -139,6 +129,13 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			return array();
 		}
 
+		$capabilities = array(
+			CapabilityEnum::textGeneration(),
+		);
+		$options      = array(
+			new SupportedOption( OptionEnum::maxTokens() ),
+		);
+
 		$models = array();
 		foreach ( $data['data'] as $model_data ) {
 			if ( ! isset( $model_data['id'] ) ) {
@@ -148,16 +145,8 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			$models[] = new ModelMetadata(
 				$model_data['id'],
 				$model_data['name'] ?? $model_data['id'],
-				array(
-					new TextGenerationCapability(
-						CapabilityEnum::text_generation(),
-						array(
-							'max_tokens'      => $model_data['details']['max_tokens'] ?? 128000,
-							'context_window'  => $model_data['details']['context_window'] ?? 128000,
-							'supports_vision' => false,
-						)
-					),
-				)
+				$capabilities,
+				$options
 			);
 		}
 
@@ -174,62 +163,37 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 	 * @return ModelMetadata[]
 	 */
 	private function get_fallback_models(): array {
+		$capabilities = array(
+			CapabilityEnum::textGeneration(),
+		);
+		$options      = array(
+			new SupportedOption( OptionEnum::maxTokens() ),
+		);
+
 		return array(
 			new ModelMetadata(
 				'gpt-4o',
 				'GPT-4o',
-				array(
-					new TextGenerationCapability(
-						CapabilityEnum::text_generation(),
-						array(
-							'max_tokens'      => 128000,
-							'context_window'  => 128000,
-							'supports_vision' => true,
-						)
-					),
-				)
+				$capabilities,
+				$options
 			),
 			new ModelMetadata(
 				'gpt-4o-mini',
 				'GPT-4o Mini',
-				array(
-					new TextGenerationCapability(
-						CapabilityEnum::text_generation(),
-						array(
-							'max_tokens'      => 128000,
-							'context_window'  => 128000,
-							'supports_vision' => false,
-						)
-					),
-				)
+				$capabilities,
+				$options
 			),
 			new ModelMetadata(
 				'claude-sonnet-4',
 				'Claude Sonnet 4',
-				array(
-					new TextGenerationCapability(
-						CapabilityEnum::text_generation(),
-						array(
-							'max_tokens'      => 200000,
-							'context_window'  => 200000,
-							'supports_vision' => true,
-						)
-					),
-				)
+				$capabilities,
+				$options
 			),
 			new ModelMetadata(
 				'claude-3-5-sonnet',
 				'Claude 3.5 Sonnet',
-				array(
-					new TextGenerationCapability(
-						CapabilityEnum::text_generation(),
-						array(
-							'max_tokens'      => 200000,
-							'context_window'  => 200000,
-							'supports_vision' => true,
-						)
-					),
-				)
+				$capabilities,
+				$options
 			),
 		);
 	}
