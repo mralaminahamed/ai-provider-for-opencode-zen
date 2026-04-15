@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace AlAminAhamed\OpenCodeZenAiProvider\Settings;
 
 use AlAminAhamed\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
-use AlAminAhamed\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
 
 /**
  * Class OpenCodeZenSettings

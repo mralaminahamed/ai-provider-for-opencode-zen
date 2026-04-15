@@ -119,6 +119,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 		);
 
 		if ( is_wp_error( $response ) ) {
+			set_transient( $transient_key, array(), 5 * MINUTE_IN_SECONDS );
 			return array();
 		}
 
@@ -126,6 +127,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 		$data = json_decode( $body, true );
 
 		if ( ! isset( $data['data'] ) || ! is_array( $data['data'] ) ) {
+			set_transient( $transient_key, array(), 5 * MINUTE_IN_SECONDS );
 			return array();
 		}
 
