@@ -11,6 +11,10 @@ namespace AlAminAhamed\OpenCodeZenAiProvider\Settings;
 
 use AlAminAhamed\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class OpenCodeZenSettings
  *

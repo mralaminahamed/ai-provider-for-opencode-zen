@@ -23,6 +23,10 @@ use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
 use AlAminAhamed\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
 use AlAminAhamed\OpenCodeZenAiProvider\Models\OpenCodeZenTextGenerationModel;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class for the OpenCode Zen provider.
  *
