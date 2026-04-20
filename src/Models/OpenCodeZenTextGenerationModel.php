@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace AlAminAhamed\OpenCodeZenAiProvider\Models;
 
-use WordPress\AiClient\Providers\DTO\ProviderMetadata;
 use WordPress\AiClient\Providers\Http\DTO\Request;
 use WordPress\AiClient\Providers\Http\Enums\HttpMethodEnum;
-use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
 use WordPress\AiClient\Providers\OpenAiCompatibleImplementation\AbstractOpenAiCompatibleTextGenerationModel;
 
 /**
@@ -27,8 +25,8 @@ class OpenCodeZenTextGenerationModel extends AbstractOpenAiCompatibleTextGenerat
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param HttpMethodEnum $method The HTTP method.
-	 * @param string         $path   The API endpoint path, relative to the base URI.
+	 * @param HttpMethodEnum                     $method The HTTP method.
+	 * @param string                             $path   The API endpoint path, relative to the base URI.
 	 * @param array<string, string|list<string>> $headers The request headers.
 	 * @param string|array<string, mixed>|null   $data   The request data.
 	 * @return Request The request object.
@@ -36,9 +34,11 @@ class OpenCodeZenTextGenerationModel extends AbstractOpenAiCompatibleTextGenerat
 	protected function createRequest(
 		HttpMethodEnum $method,
 		string $path,
-		array $headers = [],
+		array $headers = array(),
 		$data = null
 	): Request {
+		$headers['OpenCode-Provider'] = 'wordpress-plugin';
+
 		return new Request(
 			$method,
 			$path,
@@ -46,20 +46,5 @@ class OpenCodeZenTextGenerationModel extends AbstractOpenAiCompatibleTextGenerat
 			$data,
 			$this->getRequestOptions()
 		);
-	}
-
-	/**
-	 * Get the default headers for the model.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array<string, string>
-	 */
-	protected function getDefaultHeaders(): array {
-		$headers = parent::getDefaultHeaders();
-
-		$headers['OpenCode-Provider'] = 'wordpress-plugin';
-
-		return $headers;
 	}
 }

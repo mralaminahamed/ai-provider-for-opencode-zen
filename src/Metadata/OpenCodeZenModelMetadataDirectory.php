@@ -42,6 +42,8 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 	 * {@inheritDoc}
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param string $model_id Model ID.
 	 */
 	public function hasModelMetadata( string $model_id ): bool {
 		return $this->get( $model_id ) !== null;
@@ -52,6 +54,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param string $model_id Model ID.
 	 * @throws InvalidArgumentException If model metadata not found.
 	 */
 	public function getModelMetadata( string $model_id ): ModelMetadata {
@@ -59,7 +62,7 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 
 		if ( null === $model ) {
 			throw new InvalidArgumentException(
-				sprintf( 'Model metadata not found for model: %s', $model_id )
+				sprintf( 'Model metadata not found for model: %s', $model_id ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			);
 		}
 
@@ -123,10 +126,16 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			return array();
 		}
 
+		$status_code = wp_remote_retrieve_response_code( $response );
+		if ( $status_code < 200 || $status_code >= 300 ) {
+			set_transient( $transient_key, array(), 5 * MINUTE_IN_SECONDS );
+			return array();
+		}
+
 		$body = wp_remote_retrieve_body( $response );
 		$data = json_decode( $body, true );
 
-		if ( ! isset( $data['data'] ) || ! is_array( $data['data'] ) ) {
+		if ( ! is_array( $data ) || ! isset( $data['data'] ) || ! is_array( $data['data'] ) ) {
 			set_transient( $transient_key, array(), 5 * MINUTE_IN_SECONDS );
 			return array();
 		}

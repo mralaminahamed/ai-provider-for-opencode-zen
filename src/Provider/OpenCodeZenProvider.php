@@ -62,7 +62,7 @@ class OpenCodeZenProvider extends AbstractApiProvider {
 		}
 
 		throw new RuntimeException(
-			esc_html( 'Unsupported model capabilities: ' . implode( ', ', $capabilities ) )
+			'Unsupported model capabilities: ' . implode( ', ', $capabilities ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		);
 	}
 
@@ -80,7 +80,7 @@ class OpenCodeZenProvider extends AbstractApiProvider {
 			RequestAuthenticationMethod::apiKey(),
 		);
 
-		if ( version_compare( AiClient::VERSION, '1.2.0', '>=' ) ) {
+		if ( version_compare( AiClient::VERSION, '1.2.0', '>=' ) ) { // @phpstan-ignore-line
 			if ( function_exists( '__' ) ) {
 				$provider_metadata_args[] = __( 'High-performance AI models optimized for coding and general tasks.', 'ai-provider-for-opencode-zen' );
 			} else {

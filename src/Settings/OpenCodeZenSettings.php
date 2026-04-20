@@ -43,8 +43,8 @@ class OpenCodeZenSettings {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $links Existing action links.
-	 * @return array
+	 * @param array<int|string, string> $links Existing action links.
+	 * @return array<int|string, string>
 	 */
 	public static function add_action_links( array $links ): array {
 		$settings_link = '<a href="' . esc_url( admin_url( 'options-general.php?page=opencode-zen-settings' ) ) . '">' . esc_html__( 'Settings', 'ai-provider-for-opencode-zen' ) . '</a>';
@@ -122,10 +122,14 @@ class OpenCodeZenSettings {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $input Settings input.
-	 * @return array
+	 * @param mixed $input Settings input.
+	 * @return array<string, mixed>
 	 */
-	public static function sanitize_settings( array $input ): array {
+	public static function sanitize_settings( $input ): array {
+		if ( ! is_array( $input ) ) {
+			return array();
+		}
+
 		$sanitized = array();
 
 		$sanitized['default_model'] = sanitize_text_field( $input['default_model'] ?? '' );
@@ -166,7 +170,7 @@ class OpenCodeZenSettings {
 
 		foreach ( $models as $model ) {
 			$selected = selected( $settings['default_model'] ?? '', $model->getId(), false );
-			echo '<option value="' . esc_attr( $model->getId() ) . '" ' . $selected . '>';
+			echo '<option value="' . esc_attr( $model->getId() ) . '" ' . $selected . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo esc_html( $model->getName() );
 			echo '</option>';
 		}
@@ -244,7 +248,7 @@ class OpenCodeZenSettings {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	public static function get_settings(): array {
 		$defaults = array(

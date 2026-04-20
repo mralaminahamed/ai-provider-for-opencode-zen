@@ -11,6 +11,7 @@ namespace AlAminAhamed\OpenCodeZenAiProvider\Tests\Provider;
 
 use AlAminAhamed\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
 use PHPUnit\Framework\TestCase;
+use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;
 use WordPress\AiClient\Providers\Enums\ProviderTypeEnum;
 use WordPress\AiClient\Providers\Http\Enums\RequestAuthenticationMethod;
 
@@ -29,9 +30,7 @@ class OpenCodeZenProviderTest extends TestCase {
 	 * @return void
 	 */
 	public function test_provider_has_correct_base_url(): void {
-		$base_url = OpenCodeZenProvider::url();
-
-		$this->assertEquals( 'https://opencode.ai/zen/v1', $base_url );
+		$this->assertEquals( 'https://opencode.ai/zen/v1', OpenCodeZenProvider::url() );
 	}
 
 	/**
@@ -42,9 +41,7 @@ class OpenCodeZenProviderTest extends TestCase {
 	 * @return void
 	 */
 	public function test_provider_metadata_has_correct_id(): void {
-		$metadata = OpenCodeZenProvider::metadata();
-
-		$this->assertEquals( 'opencode-zen', $metadata->getId() );
+		$this->assertEquals( 'opencode-zen', OpenCodeZenProvider::metadata()->getId() );
 	}
 
 	/**
@@ -55,9 +52,7 @@ class OpenCodeZenProviderTest extends TestCase {
 	 * @return void
 	 */
 	public function test_provider_metadata_has_correct_name(): void {
-		$metadata = OpenCodeZenProvider::metadata();
-
-		$this->assertEquals( 'OpenCode Zen', $metadata->getName() );
+		$this->assertEquals( 'OpenCode Zen', OpenCodeZenProvider::metadata()->getName() );
 	}
 
 	/**
@@ -68,37 +63,34 @@ class OpenCodeZenProviderTest extends TestCase {
 	 * @return void
 	 */
 	public function test_provider_metadata_has_correct_type(): void {
-		$metadata = OpenCodeZenProvider::metadata();
-
-		$this->assertEquals( ProviderTypeEnum::cloud(), $metadata->getType() );
+		$this->assertEquals( ProviderTypeEnum::cloud(), OpenCodeZenProvider::metadata()->getType() );
 	}
 
 	/**
-	 * Test provider metadata has correct authentication method.
+	 * Test provider metadata has API key authentication.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
 	public function test_provider_metadata_has_api_key_auth(): void {
-		$metadata = OpenCodeZenProvider::metadata();
-
-		$this->assertEquals( RequestAuthenticationMethod::apiKey(), $metadata->getAuthenticationMethod() );
+		$this->assertEquals(
+			RequestAuthenticationMethod::apiKey(),
+			OpenCodeZenProvider::metadata()->getAuthenticationMethod()
+		);
 	}
 
 	/**
-	 * Test provider metadata directory is set.
+	 * Test provider returns a model metadata directory.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
 	public function test_provider_has_model_metadata_directory(): void {
-		$directory = OpenCodeZenProvider::modelMetadataDirectory();
-
 		$this->assertInstanceOf(
-			\WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface::class,
-			$directory
+			ModelMetadataDirectoryInterface::class,
+			OpenCodeZenProvider::modelMetadataDirectory()
 		);
 	}
 }
