@@ -2,6 +2,7 @@
     "name": "mralaminahamed/alamin-ai-provider-for-opencode-zen",
     "description": "Alamin AI Provider for OpenCode Zen — an independent OpenCode Zen integration for the WordPress AI Client.",
     "type": "wordpress-plugin",
+    "version": "1.0.0",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -10,33 +11,65 @@
             "homepage": "https://github.com/mralaminahamed"
         }
     ],
+    "minimum-stability": "stable",
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": ">=7.4",
+        "ext-json": "*",
         "wordpress/wp-ai-client": "^0.4"
     },
     "require-dev": {
         "brain/monkey": "^2.7",
-        "phpstan/phpstan": "^2.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
+        "php-stubs/wordpress-stubs": "^6.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1.8",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1.30",
         "phpunit/phpunit": "^9.6",
         "szepeviktor/phpstan-wordpress": "^2.0",
-        "wp-coding-standards/wpcs": "^3.0"
+        "wp-coding-standards/wpcs": "^3.3.0"
     },
     "autoload": {
         "psr-4": {
             "AlAminAhamed\\OpenCodeZenAiProvider\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "AlAminAhamed\\OpenCodeZenAiProvider\\Tests\\": "tests/phpunit/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test-f": "phpunit --filter",
+        "lint": "vendor/bin/phpcs -p -s",
+        "lint:fix": "vendor/bin/phpcbf -p",
+        "lint:review": "phpcs ./src ./alamin-ai-provider-for-opencode-zen.php --standard=phpcs.plugin-review.xml",
+        "lint:fix:review": "phpcbf ./src ./alamin-ai-provider-for-opencode-zen.php --standard=phpcs.plugin-review.xml",
+        "analyze": "phpstan analyse --memory-limit=2G --configuration=phpstan.neon.dist",
+        "phpcs": "@lint",
+        "phpcbf": "@lint:fix",
+        "phpstan": "@analyze",
+        "makepot": "wp i18n make-pot . languages/alamin-ai-provider-for-opencode-zen.pot --exclude=node_modules,vendor,docs,release,tests,.wordpress-org,.playwright-mcp,.claude,.remember",
+        "release": [
+            "rm -rf release vendor",
+            "@makepot",
+            "mkdir -p release",
+            "composer install --no-dev --optimize-autoloader",
+            "rsync -av --exclude-from=.distignore . release/alamin-ai-provider-for-opencode-zen/",
+            "cd release && zip -r alamin-ai-provider-for-opencode-zen.zip alamin-ai-provider-for-opencode-zen/",
+            "rm -rf release/alamin-ai-provider-for-opencode-zen/",
+            "composer install"
+        ]
+    },
     "config": {
+        "platform": {
+            "php": "7.4"
+        },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true,
             "php-http/discovery": true
         },
         "sort-packages": true
-    },
-    "scripts": {
-        "phpcs": "phpcs -ps --standard=phpcs.xml.dist",
-        "phpcbf": "phpcs -ps --standard=phpcs.xml.dist --runtime-set testVersion 7.4-",
-        "phpstan": "phpstan analyse --configuration=phpstan.neon.dist",
-        "test": "phpunit"
     }
 }
