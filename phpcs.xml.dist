@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
-	<name>AI Provider for OpenCode Zen</name>
-	<description>WordPress Coding Standards for AI Provider for OpenCode Zen plugin.</description>
+	<name>Alamin AI Provider for OpenCode Zen</name>
+	<description>WordPress Coding Standards for Alamin AI Provider for OpenCode Zen plugin.</description>
 
-	<file>./plugin.php</file>
+	<file>./alamin-ai-provider-for-opencode-zen.php</file>
 	<file>./src</file>
 
 	<exclude-pattern>*/vendor/*</exclude-pattern>
@@ -17,7 +17,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="ai-provider-for-opencode-zen"/>
+				<element value="alamin-ai-provider-for-opencode-zen"/>
 			</property>
 		</properties>
 	</rule>

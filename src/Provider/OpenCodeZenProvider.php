@@ -86,7 +86,7 @@ class OpenCodeZenProvider extends AbstractApiProvider {
 
 		if ( version_compare( AiClient::VERSION, '1.2.0', '>=' ) ) { // @phpstan-ignore-line
 			if ( function_exists( '__' ) ) {
-				$provider_metadata_args[] = __( 'High-performance AI models optimized for coding and general tasks.', 'ai-provider-for-opencode-zen' );
+				$provider_metadata_args[] = __( 'High-performance AI models optimized for coding and general tasks.', 'alamin-ai-provider-for-opencode-zen' );
 			} else {
 				$provider_metadata_args[] = 'High-performance AI models optimized for coding and general tasks.';
 			}

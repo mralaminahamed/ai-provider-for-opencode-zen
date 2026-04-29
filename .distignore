@@ -31,9 +31,13 @@ Thumbs.db
 # Claude Code / AI tools
 .claude/
 .remember/
+.playwright-mcp/
 session-ses_*.md
 CLAUDE.md
 AGENTS.md
+
+# WP.org assets (uploaded separately via SVN /assets/, not in plugin zip)
+.wordpress-org/
 
 /docs/*
 

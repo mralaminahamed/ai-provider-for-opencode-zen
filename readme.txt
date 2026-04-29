@@ -1,4 +1,4 @@
-=== AI Provider for OpenCode Zen ===
+=== Alamin AI Provider for OpenCode Zen ===
 Contributors: mralaminahamed
 Tags: ai, opencode, artificial intelligence, llm, text generation
 Requires at least: 6.7
@@ -13,6 +13,8 @@ Integrates OpenCode Zen as an AI provider for the WordPress AI Client, enabling 
 == Description ==
 
 This plugin integrates [OpenCode Zen](https://opencode.ai) as an AI provider for the WordPress AI Client. It enables access to high-performance AI models optimized for coding and general tasks through the OpenCode Zen API.
+
+This plugin is an independent, third-party integration and is not affiliated with, endorsed by, or sponsored by OpenCode Zen. "OpenCode Zen" is the name of the third-party service this plugin connects to.
 
 **Features:**
 
@@ -49,17 +51,17 @@ Set your API key in one of two ways:
 2. Go to **Plugins > Add New > Upload Plugin** in your WordPress admin
 3. Upload the zip and click **Install Now**
 4. Ensure the **WordPress AI Client** plugin is installed and activated
-5. Activate **AI Provider for OpenCode Zen**
+5. Activate **Alamin AI Provider for OpenCode Zen**
 6. Go to **Settings > OpenCode Zen** and enter your API key
 
 = Manual Installation =
 
-1. Upload the `ai-provider-for-opencode-zen` folder to `/wp-content/plugins/`
+1. Upload the `alamin-ai-provider-for-opencode-zen` folder to `/wp-content/plugins/`
 2. Follow steps 4–6 above
 
 = As a Composer Package =
 
-`composer require mralaminahamed/ai-provider-for-opencode-zen`
+`composer require mralaminahamed/alamin-ai-provider-for-opencode-zen`
 
 == Frequently Asked Questions ==
 
@@ -94,8 +96,7 @@ This plugin connects to the **OpenCode Zen API** to:
 **API endpoint:** `https://api.opencode.ai` (or as configured)
 **When data is sent:** When generating AI text responses or refreshing the model list
 **Data sent:** Your API key (via Authorization header) and the text prompt/conversation
-**Terms of Service:** [opencode.ai/terms](https://opencode.ai/terms)
-**Privacy Policy:** [opencode.ai/privacy](https://opencode.ai/privacy)
+**Provider site:** [opencode.ai](https://opencode.ai/) — refer to the OpenCode Zen website for their current Terms of Service and Privacy Policy.
 
 No data is sent to the OpenCode Zen API until you enter an API key and a WordPress feature triggers a text generation request.
 
