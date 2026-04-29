@@ -20,8 +20,8 @@ This is a **WordPress AI Provider plugin** for OpenCode Zen. It registers OpenCo
 ### Correct Structure
 
 ```
-ai-provider-for-opencode-zen/
-├── plugin.php                              # Entry point (registers provider on 'init')
+alamin-ai-provider-for-opencode-zen/
+├── alamin-ai-provider-for-opencode-zen.php # Entry point (registers provider on 'init')
 ├── src/
 │   ├── Provider/
 │   │   └── OpenCodeZenProvider.php         # Extends AbstractApiProvider
@@ -31,7 +31,7 @@ ai-provider-for-opencode-zen/
 │       └── OpenCodeZenModelMetadataDirectory.php
 ├── composer.json
 ├── readme.txt
-└── .wordpress-org/                         # Plugin assets (icon, banner)
+└── .wordpress-org/                         # Plugin assets (icon, banner) — excluded from prod zip
 ```
 
 ### Key Implementation Rules
@@ -41,7 +41,7 @@ ai-provider-for-opencode-zen/
 3. **No hardcoded model lists** - use dynamic discovery via `/v1/models` API
 4. **API endpoint**: `https://opencode.ai/zen/v1` (OpenAI-compatible)
 5. **Namespace**: `AlAminAhamed\OpenCodeZenAiProvider`
-6. **Package name**: `mralaminahamed/ai-provider-for-opencode-zen`
+6. **Package name**: `mralaminahamed/alamin-ai-provider-for-opencode-zen`
 
 ### Required AbstractApiProvider Methods
 

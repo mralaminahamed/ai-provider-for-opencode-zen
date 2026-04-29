@@ -1,6 +1,6 @@
-# AI Provider for OpenCode Zen
+# Alamin AI Provider for OpenCode Zen
 
-An OpenCode Zen provider for the [PHP AI Client](https://github.com/WordPress/php-ai-client) SDK. Works as both a Composer package and a WordPress plugin.
+An independent, third-party OpenCode Zen provider for the [PHP AI Client](https://github.com/WordPress/php-ai-client) SDK. Works as both a Composer package and a WordPress plugin. Not affiliated with, endorsed by, or sponsored by OpenCode Zen.
 
 ## Requirements
 
@@ -13,13 +13,13 @@ An OpenCode Zen provider for the [PHP AI Client](https://github.com/WordPress/ph
 ### As a Composer Package
 
 ```bash
-composer require mralaminahamed/ai-provider-for-opencode-zen
+composer require mralaminahamed/alamin-ai-provider-for-opencode-zen
 ```
 
 ### As a WordPress Plugin
 
 1. Download the plugin files
-2. Upload to `/wp-content/plugins/ai-provider-for-opencode-zen/`
+2. Upload to `/wp-content/plugins/alamin-ai-provider-for-opencode-zen/`
 3. Ensure the PHP AI Client plugin is installed and activated
 4. Activate the plugin through the WordPress admin
 

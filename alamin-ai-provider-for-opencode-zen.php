@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 /**
- * Registers the AI Provider for OpenCode Zen with the AI Client.
+ * Registers the OpenCode Zen provider with the AI Client.
  *
  * @since 1.0.0
  *
