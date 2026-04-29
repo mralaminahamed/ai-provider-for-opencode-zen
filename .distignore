@@ -1,7 +1,9 @@
-# Git
+# Git + dist tooling (hidden files not permitted in WP.org plugin zip)
 .git/
 .gitattributes
 .gitignore
+.distignore
+.editorconfig
 
 # Development config
 .phpunit.result.cache
@@ -38,6 +40,11 @@ AGENTS.md
 
 # WP.org assets (uploaded separately via SVN /assets/, not in plugin zip)
 .wordpress-org/
+
+# Build output (created by `composer release`; must not recurse into the next zip)
+release/
+build/
+*.zip
 
 /docs/*
 
