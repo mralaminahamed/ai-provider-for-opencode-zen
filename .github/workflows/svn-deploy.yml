@@ -44,28 +44,10 @@ jobs:
       - name: Derive plugin identifiers from repository name
         id: plugin_name
         run: |
-          # github.event.repository.name is empty under `act` (local CI simulation).
-          # Resolution order:
-          #   1. GitHub Actions context  (real CI)
-          #   2. Git remote URL slug     (act + git remote configured)
-          #   3. Working directory name  (act fallback)
-          PLUGIN_SLUG="${{ github.event.repository.name }}"
-
-          if [ -z "$PLUGIN_SLUG" ]; then
-            REMOTE_URL=$(git remote get-url origin 2>/dev/null || true)
-            if [ -n "$REMOTE_URL" ]; then
-              PLUGIN_SLUG=$(basename "$REMOTE_URL" .git)
-            fi
-          fi
-
-          if [ -z "$PLUGIN_SLUG" ]; then
-            PLUGIN_SLUG=$(basename "$GITHUB_WORKSPACE")
-          fi
-
-          if [ -z "$PLUGIN_SLUG" ]; then
-            echo "::error::Could not determine plugin slug from any source." >&2
-            exit 1
-          fi
+          # WP.org slug differs from the GitHub repository name
+          # (repo: ai-provider-for-opencode-zen, WP.org: alamin-ai-provider-for-opencode-zen).
+          # Hardcode the WP.org slug so SVN operations always target the correct plugin.
+          PLUGIN_SLUG="alamin-ai-provider-for-opencode-zen"
 
           PLUGIN_FILE="${PLUGIN_SLUG}.php"
           # Convert kebab-case slug → Title Case display name
