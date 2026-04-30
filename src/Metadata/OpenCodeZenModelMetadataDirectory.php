@@ -36,10 +36,10 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 		$models = $this->fetch_models_from_api();
 
 		if ( ! empty( $models ) ) {
-			return $models;
+			return array_values( $models );
 		}
 
-		return $this->get_fallback_models();
+		return array_values( $this->get_fallback_models() );
 	}
 
 	/**
@@ -110,8 +110,14 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 		$transient_key = 'opencode_zen_models_cache';
 		$cached        = get_transient( $transient_key );
 
-		if ( false !== $cached ) {
-			return $cached;
+		if ( is_array( $cached ) ) {
+			$valid = array();
+			foreach ( $cached as $item ) {
+				if ( $item instanceof ModelMetadata ) {
+					$valid[] = $item;
+				}
+			}
+			return $valid;
 		}
 
 		$response = wp_remote_get(
@@ -153,16 +159,19 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 
 		$models = array();
 		foreach ( $data['data'] as $model_data ) {
-			if ( ! isset( $model_data['id'] ) ) {
+			if ( ! is_array( $model_data ) ) {
 				continue;
 			}
 
-			$models[] = new ModelMetadata(
-				$model_data['id'],
-				$model_data['name'] ?? $model_data['id'],
-				$capabilities,
-				$options
-			);
+			$id = isset( $model_data['id'] ) && is_string( $model_data['id'] ) ? $model_data['id'] : '';
+			if ( '' === $id ) {
+				continue;
+			}
+
+			$name_raw = $model_data['name'] ?? $id;
+			$name     = is_string( $name_raw ) ? $name_raw : $id;
+
+			$models[] = new ModelMetadata( $id, $name, $capabilities, $options );
 		}
 
 		set_transient( $transient_key, $models, HOUR_IN_SECONDS );
@@ -229,7 +238,15 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 
 		if ( function_exists( 'get_option' ) ) {
 			$option = get_option( 'wp_ai_client_credentials', array() );
-			return $option['opencode-zen']['api_key'] ?? '';
+			if ( ! is_array( $option ) ) {
+				return '';
+			}
+			$credentials = $option['opencode-zen'] ?? array();
+			if ( ! is_array( $credentials ) ) {
+				return '';
+			}
+			$api_key_value = $credentials['api_key'] ?? '';
+			return is_string( $api_key_value ) ? $api_key_value : '';
 		}
 
 		return '';

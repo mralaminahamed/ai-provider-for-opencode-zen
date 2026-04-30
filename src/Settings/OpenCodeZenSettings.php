@@ -136,9 +136,14 @@ class OpenCodeZenSettings {
 
 		$sanitized = array();
 
-		$sanitized['default_model'] = sanitize_text_field( $input['default_model'] ?? '' );
-		$sanitized['temperature']   = floatval( $input['temperature'] ?? 0.7 );
-		$sanitized['max_tokens']    = absint( $input['max_tokens'] ?? 4096 );
+		$default_model              = $input['default_model'] ?? '';
+		$sanitized['default_model'] = sanitize_text_field( is_string( $default_model ) ? $default_model : '' );
+
+		$temperature_raw          = $input['temperature'] ?? 0.7;
+		$sanitized['temperature'] = is_numeric( $temperature_raw ) ? (float) $temperature_raw : 0.7;
+
+		$max_tokens_raw          = $input['max_tokens'] ?? 4096;
+		$sanitized['max_tokens'] = is_numeric( $max_tokens_raw ) ? (int) $max_tokens_raw : 4096;
 
 		$sanitized['temperature'] = max( 0, min( 2, $sanitized['temperature'] ) );
 		$sanitized['max_tokens']  = max( 1, min( 200000, $sanitized['max_tokens'] ) );
@@ -192,12 +197,13 @@ class OpenCodeZenSettings {
 	 */
 	public static function render_temperature_field(): void {
 		$settings = self::get_settings();
-		$value    = $settings['temperature'] ?? 0.7;
+		$temp_raw = $settings['temperature'] ?? 0.7;
+		$value    = is_numeric( $temp_raw ) ? (float) $temp_raw : 0.7;
 
 		echo '<input type="number" step="0.1" min="0" max="2"';
 		echo ' name="' . esc_attr( self::OPTION_KEY ) . '[temperature]"';
 		echo ' id="opencode_zen_temperature"';
-		echo ' value="' . esc_attr( $value ) . '"';
+		echo ' value="' . esc_attr( (string) $value ) . '"';
 		echo ' class="small-text" />';
 		echo '<p class="description">' . esc_html__( 'Controls randomness. Lower values make output more focused. Range: 0-2.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
 	}
@@ -210,13 +216,14 @@ class OpenCodeZenSettings {
 	 * @return void
 	 */
 	public static function render_max_tokens_field(): void {
-		$settings = self::get_settings();
-		$value    = $settings['max_tokens'] ?? 4096;
+		$settings   = self::get_settings();
+		$tokens_raw = $settings['max_tokens'] ?? 4096;
+		$value      = is_int( $tokens_raw ) ? $tokens_raw : 4096;
 
 		echo '<input type="number" step="1" min="1" max="200000"';
 		echo ' name="' . esc_attr( self::OPTION_KEY ) . '[max_tokens]"';
 		echo ' id="opencode_zen_max_tokens"';
-		echo ' value="' . esc_attr( $value ) . '"';
+		echo ' value="' . esc_attr( (string) $value ) . '"';
 		echo ' class="small-text" />';
 		echo '<p class="description">' . esc_html__( 'Maximum number of tokens to generate.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
 	}
@@ -261,7 +268,17 @@ class OpenCodeZenSettings {
 		);
 
 		$saved = get_option( self::OPTION_KEY, array() );
+		if ( ! is_array( $saved ) ) {
+			return $defaults;
+		}
 
-		return wp_parse_args( $saved, $defaults );
+		return array(
+			'temperature' => isset( $saved['temperature'] ) && is_numeric( $saved['temperature'] )
+				? (float) $saved['temperature']
+				: $defaults['temperature'],
+			'max_tokens'  => isset( $saved['max_tokens'] ) && is_int( $saved['max_tokens'] )
+				? $saved['max_tokens']
+				: $defaults['max_tokens'],
+		);
 	}
 }
