@@ -16,10 +16,7 @@ phpstan.neon.dist
 # Tests
 tests/
 
-# Composer manifests + cache (vendor/ ships with prod-only deps; release script
-# runs `composer install --no-dev --optimize-autoloader` before zipping)
-composer.json
-composer.lock
+# Composer (phar only; composer.json + composer.lock ship with the plugin)
 composer.phar
 
 # IDE
