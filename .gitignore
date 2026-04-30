@@ -26,6 +26,10 @@ composer.lock
 /wp-content/
 /wp-config.php
 
-# Claude Code
+# Claude Code / AI tools
 /.remember/
+/.playwright-mcp/
 /session-ses_*.md
+
+# Build output
+/release/
