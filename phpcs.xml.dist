@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
-	<name>Alamin AI Provider for OpenCode Zen</name>
-	<description>WordPress Coding Standards for Alamin AI Provider for OpenCode Zen plugin.</description>
+	<name>AI Provider for OpenCode Zen</name>
+	<description>WordPress Coding Standards for AI Provider for OpenCode Zen plugin.</description>
 
 	<file>./alamin-ai-provider-for-opencode-zen.php</file>
 	<file>./src</file>

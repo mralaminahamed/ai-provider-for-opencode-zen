@@ -1,4 +1,4 @@
-# Implementation Plan: Alamin AI Provider for OpenCode Zen WordPress Plugin
+# Implementation Plan: AI Provider for OpenCode Zen WordPress Plugin
 
 **Author**: [Your Name]  
 **Date**: April 2026  
@@ -7,7 +7,7 @@
 
 ## 1. Plugin Overview
 
-- **Plugin Name**: Alamin AI Provider for OpenCode Zen
+- **Plugin Name**: AI Provider for OpenCode Zen
 - **Plugin Slug**: `alamin-ai-provider-for-opencode-zen`
 - **Description**: Registers OpenCode Zen as a native AI provider using its OpenAI-compatible API endpoint. Enables chat completions and model selection through **Settings > Connectors**.
 - **Key Benefits**:
@@ -44,7 +44,7 @@ alamin-ai-provider-for-opencode-zen/
 ```json
 {
     "name": "mralaminahamed/alamin-ai-provider-for-opencode-zen",
-    "description": "Alamin AI Provider for OpenCode Zen — independent OpenCode Zen integration for the WordPress PHP AI Client",
+    "description": "AI Provider for OpenCode Zen — independent OpenCode Zen integration for the WordPress PHP AI Client",
     "type": "wordpress-plugin",
     "require": {
         "wordpress/php-ai-client": "^1.0"
@@ -62,7 +62,7 @@ Run `composer install` after placing this file.
 ```php
 <?php
 /**
- * Plugin Name:       Alamin AI Provider for OpenCode Zen
+ * Plugin Name:       AI Provider for OpenCode Zen
  * Description:       Registers OpenCode Zen (https://opencode.ai/zen) as an AI provider using its OpenAI-compatible endpoint.
  * Version:           1.1.0
  * Requires at least: 7.0

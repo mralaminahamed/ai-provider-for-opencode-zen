@@ -1,6 +1,6 @@
 # WordPress.org Plugin Directory Assets
 
-Visual assets for **Alamin AI Provider for OpenCode Zen**, designed to sit
+Visual assets for **AI Provider for OpenCode Zen**, designed to sit
 visually consistent with the official `ai-provider-for-google`,
 `ai-provider-for-openai`, and `ai-provider-for-anthropic` plugins on WP.org.
 

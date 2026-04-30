@@ -1,6 +1,6 @@
 {
     "name": "mralaminahamed/alamin-ai-provider-for-opencode-zen",
-    "description": "Alamin AI Provider for OpenCode Zen — an independent OpenCode Zen integration for the WordPress AI Client.",
+    "description": "AI Provider for OpenCode Zen — an independent OpenCode Zen integration for the WordPress AI Client.",
     "type": "wordpress-plugin",
     "version": "1.0.0",
     "license": "GPL-2.0-or-later",
