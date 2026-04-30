@@ -13,7 +13,7 @@ An independent, third-party OpenCode Zen provider for the [PHP AI Client](https:
 ### As a Composer Package
 
 ```bash
-composer require mralaminahamed/alamin-ai-provider-for-opencode-zen
+composer require mralaminahamed/ai-provider-for-opencode-zen
 ```
 
 ### As a WordPress Plugin

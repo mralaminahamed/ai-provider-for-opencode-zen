@@ -61,7 +61,7 @@ Set your API key in one of two ways:
 
 = As a Composer Package =
 
-`composer require mralaminahamed/alamin-ai-provider-for-opencode-zen`
+`composer require mralaminahamed/ai-provider-for-opencode-zen`
 
 == Frequently Asked Questions ==
 

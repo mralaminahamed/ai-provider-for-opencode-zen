@@ -41,7 +41,7 @@ alamin-ai-provider-for-opencode-zen/
 3. **No hardcoded model lists** - use dynamic discovery via `/v1/models` API
 4. **API endpoint**: `https://opencode.ai/zen/v1` (OpenAI-compatible)
 5. **Namespace**: `AlAminAhamed\OpenCodeZenAiProvider`
-6. **Package name**: `mralaminahamed/alamin-ai-provider-for-opencode-zen`
+6. **Package name**: `mralaminahamed/ai-provider-for-opencode-zen`
 
 ### Required AbstractApiProvider Methods
 

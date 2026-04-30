@@ -43,7 +43,7 @@ alamin-ai-provider-for-opencode-zen/
 
 ```json
 {
-    "name": "mralaminahamed/alamin-ai-provider-for-opencode-zen",
+    "name": "mralaminahamed/ai-provider-for-opencode-zen",
     "description": "AI Provider for OpenCode Zen — independent OpenCode Zen integration for the WordPress PHP AI Client",
     "type": "wordpress-plugin",
     "require": {
