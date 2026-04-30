@@ -1,4 +1,4 @@
-# Alamin AI Provider for OpenCode Zen
+# AI Provider for OpenCode Zen
 
 An independent, third-party OpenCode Zen provider for the [PHP AI Client](https://github.com/WordPress/php-ai-client) SDK. Works as both a Composer package and a WordPress plugin. Not affiliated with, endorsed by, or sponsored by OpenCode Zen.
 

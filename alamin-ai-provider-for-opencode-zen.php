@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Alamin AI Provider for OpenCode Zen
+ * Plugin Name: AI Provider for OpenCode Zen
  * Plugin URI: https://github.com/mralaminahamed/alamin-ai-provider-for-opencode-zen
  * Description: OpenCode Zen AI provider for the WordPress AI Client. Not affiliated with OpenCode Zen.
  * Requires at least: 6.7

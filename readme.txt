@@ -1,4 +1,4 @@
-=== Alamin AI Provider for OpenCode Zen ===
+=== AI Provider for OpenCode Zen ===
 Contributors: mralaminahamed
 Tags: ai, opencode, artificial intelligence, llm, text generation
 Requires at least: 6.7
@@ -51,7 +51,7 @@ Set your API key in one of two ways:
 2. Go to **Plugins > Add New > Upload Plugin** in your WordPress admin
 3. Upload the zip and click **Install Now**
 4. Ensure the **WordPress AI Client** plugin is installed and activated
-5. Activate **Alamin AI Provider for OpenCode Zen**
+5. Activate **AI Provider for OpenCode Zen**
 6. Go to **Settings > OpenCode Zen** and enter your API key
 
 = Manual Installation =
