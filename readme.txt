@@ -1,4 +1,5 @@
 === AI Provider for OpenCode Zen ===
+Donate link: https://alaminahamed.com/donate
 Contributors: mralaminahamed
 Tags: ai, opencode, artificial intelligence, llm, text generation
 Requires at least: 6.7
