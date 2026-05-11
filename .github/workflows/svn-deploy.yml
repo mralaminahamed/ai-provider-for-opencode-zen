@@ -217,7 +217,7 @@ jobs:
 
       - name: Deploy plugin to WordPress.org via SVN
         id: deploy
-        uses: 10up/action-wordpress-plugin-deploy@stable
+        uses: 10up/action-wordpress-plugin-deploy@v2.3.0
         with:
           generate-zip: true
         env:
@@ -227,7 +227,7 @@ jobs:
           BUILD_DIR:    ${{ github.workspace }}
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
           name: "Release ${{ needs.meta.outputs.version }}"
