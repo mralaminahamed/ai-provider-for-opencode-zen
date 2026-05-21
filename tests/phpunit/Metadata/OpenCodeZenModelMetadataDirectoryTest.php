@@ -205,4 +205,134 @@ class OpenCodeZenModelMetadataDirectoryTest extends TestCase {
 			);
 		}
 	}
+
+	/**
+	 * Test fallback model list contains exactly 41 models.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_fallback_model_count(): void {
+		$this->assertCount( 40, $this->directory->listModelMetadata() );
+	}
+
+	/**
+	 * Test all GPT 5.x model IDs are present.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_all_gpt_models_present(): void {
+		$ids = array_map( static fn( $m ) => $m->getId(), $this->directory->listModelMetadata() );
+
+		$expected = array(
+			'gpt-5.5',
+			'gpt-5.5-pro',
+			'gpt-5.4',
+			'gpt-5.4-pro',
+			'gpt-5.4-mini',
+			'gpt-5.4-nano',
+			'gpt-5.3-codex',
+			'gpt-5.3-codex-spark',
+			'gpt-5.2',
+			'gpt-5.2-codex',
+			'gpt-5.1',
+			'gpt-5.1-codex',
+			'gpt-5.1-codex-max',
+			'gpt-5.1-codex-mini',
+			'gpt-5',
+			'gpt-5-codex',
+			'gpt-5-nano',
+		);
+
+		foreach ( $expected as $model_id ) {
+			$this->assertContains( $model_id, $ids, "Missing GPT model: {$model_id}" );
+		}
+	}
+
+	/**
+	 * Test all Claude 4.x model IDs are present.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_all_claude_models_present(): void {
+		$ids = array_map( static fn( $m ) => $m->getId(), $this->directory->listModelMetadata() );
+
+		$expected = array(
+			'claude-opus-4-7',
+			'claude-opus-4-6',
+			'claude-opus-4-5',
+			'claude-opus-4-1',
+			'claude-sonnet-4-6',
+			'claude-sonnet-4-5',
+			'claude-sonnet-4',
+			'claude-haiku-4-5',
+			'claude-3-5-haiku',
+		);
+
+		foreach ( $expected as $model_id ) {
+			$this->assertContains( $model_id, $ids, "Missing Claude model: {$model_id}" );
+		}
+	}
+
+	/**
+	 * Test all Gemini 3.x model IDs are present.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_all_gemini_models_present(): void {
+		$ids = array_map( static fn( $m ) => $m->getId(), $this->directory->listModelMetadata() );
+
+		$this->assertContains( 'gemini-3.5-flash', $ids );
+		$this->assertContains( 'gemini-3.1-pro', $ids );
+		$this->assertContains( 'gemini-3-flash', $ids );
+	}
+
+	/**
+	 * Test other provider models are present.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_all_other_models_present(): void {
+		$ids = array_map( static fn( $m ) => $m->getId(), $this->directory->listModelMetadata() );
+
+		$expected = array(
+			'qwen3.6-plus',
+			'qwen3.5-plus',
+			'minimax-m2.7',
+			'minimax-m2.5',
+			'glm-5.1',
+			'kimi-k2.6',
+			'kimi-k2.5',
+			'grok-build-0.1',
+			'big-pickle',
+			'deepseek-v4-flash-free',
+			'nemotron-3-super-free',
+		);
+
+		foreach ( $expected as $model_id ) {
+			$this->assertContains( $model_id, $ids, "Missing model: {$model_id}" );
+		}
+	}
+
+	/**
+	 * Test all fallback models have non-empty display names.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_all_models_have_non_empty_names(): void {
+		foreach ( $this->directory->listModelMetadata() as $model ) {
+			$this->assertNotEmpty( $model->getName(), "Empty name for model: {$model->getId()}" );
+		}
+	}
 }

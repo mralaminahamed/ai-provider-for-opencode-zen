@@ -93,4 +93,33 @@ class OpenCodeZenProviderTest extends TestCase {
 			OpenCodeZenProvider::modelMetadataDirectory()
 		);
 	}
+
+	/**
+	 * Test provider metadata has a credentials URL.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_provider_has_credentials_url(): void {
+		$url = OpenCodeZenProvider::metadata()->getCredentialsUrl();
+
+		$this->assertNotEmpty( $url );
+		$this->assertStringStartsWith( 'https://', $url );
+	}
+
+	/**
+	 * Test provider logo SVG file exists on disk.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_provider_logo_file_exists(): void {
+		$path = OpenCodeZenProvider::metadata()->getLogoPath();
+
+		$this->assertNotEmpty( $path );
+		$this->assertFileExists( $path );
+		$this->assertStringEndsWith( '.svg', $path );
+	}
 }

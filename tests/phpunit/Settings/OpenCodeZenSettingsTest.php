@@ -313,4 +313,62 @@ class OpenCodeZenSettingsTest extends TestCase {
 		$this->assertEquals( 1.5, $settings['temperature'] );
 		$this->assertEquals( 8192, $settings['max_tokens'] );
 	}
+
+	/**
+	 * Test sanitize settings falls back to default temperature for non-numeric value.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_sanitize_settings_defaults_for_non_numeric_temperature(): void {
+		Functions\when( 'sanitize_text_field' )->returnArg();
+
+		$result = OpenCodeZenSettings::sanitize_settings(
+			array(
+				'default_model' => '',
+				'temperature'   => 'hot',
+				'max_tokens'    => 100,
+			)
+		);
+
+		$this->assertEquals( 0.7, $result['temperature'] );
+	}
+
+	/**
+	 * Test sanitize settings falls back to default max_tokens for non-numeric value.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_sanitize_settings_defaults_for_non_numeric_max_tokens(): void {
+		Functions\when( 'sanitize_text_field' )->returnArg();
+
+		$result = OpenCodeZenSettings::sanitize_settings(
+			array(
+				'default_model' => '',
+				'temperature'   => 1.0,
+				'max_tokens'    => 'lots',
+			)
+		);
+
+		$this->assertEquals( 4096, $result['max_tokens'] );
+	}
+
+	/**
+	 * Test get settings returns defaults when saved option is false.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function test_get_settings_returns_defaults_for_non_array_option(): void {
+		Functions\when( 'get_option' )->justReturn( false );
+
+		$settings = OpenCodeZenSettings::get_settings();
+
+		$this->assertEquals( 0.7, $settings['temperature'] );
+		$this->assertEquals( 4096, $settings['max_tokens'] );
+	}
 }
