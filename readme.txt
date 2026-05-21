@@ -1,7 +1,7 @@
 === AI Provider for OpenCode Zen ===
 Donate link: https://alaminahamed.com/donate
 Contributors: mralaminahamed
-Tags: ai, opencode, artificial intelligence, llm, text generation
+Tags: ai, opencode, llm, claude, gpt
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 7.4
