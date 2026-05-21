@@ -1,0 +1,15 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect width="40" height="40" rx="8" fill="#6366F1"/>
+  <!-- "zen" pixel-block letterforms, scaled to fit 40×40 badge -->
+  <g transform="translate(3.1 14.3) scale(0.38)">
+    <!-- Letter z -->
+    <path d="M24 24H6V18H18V12H24V24ZM6 18H0V12H6V18Z" fill="#A5B4FC"/>
+    <path d="M6 24H24V30H0V18H6V24ZM18 18H6V12H18V18ZM24 12H18V6H0V0H24V12Z" fill="#FFFFFF"/>
+    <!-- Letter e -->
+    <path d="M54 18V24H36V18H54Z" fill="#A5B4FC"/>
+    <path d="M54 18H36V24H54V30H30V0H54V18ZM36 12H48V6H36V12Z" fill="#FFFFFF"/>
+    <!-- Letter n -->
+    <path d="M78 30H66V12H78V30Z" fill="#A5B4FC"/>
+    <path d="M78 6H66V30H60V0H78V6ZM84 30H78V6H84V30Z" fill="#FFFFFF"/>
+  </g>
+</svg>

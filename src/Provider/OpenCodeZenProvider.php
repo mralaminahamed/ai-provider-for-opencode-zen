@@ -92,6 +92,10 @@ class OpenCodeZenProvider extends AbstractApiProvider {
 			}
 		}
 
+		if ( version_compare( AiClient::VERSION, '1.3.0', '>=' ) ) { // @phpstan-ignore-line
+			$provider_metadata_args[] = dirname( __DIR__, 2 ) . '/assets/images/opencode-zen.svg';
+		}
+
 		return new ProviderMetadata( ...$provider_metadata_args );
 	}
 
