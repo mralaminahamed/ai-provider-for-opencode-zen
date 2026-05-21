@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Updated fallback model list from 4 stale models to 41 current models sourced from the OpenCode Zen pricing page, including GPT 5.x, Claude Opus/Sonnet/Haiku 4.x, Gemini 3.x, Qwen, MiniMax, GLM 5.1, Kimi, Grok, and free-tier models
+
 ## [1.0.0] - 2026-05-11
 
 ### Added
