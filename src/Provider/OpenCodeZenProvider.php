@@ -12,7 +12,6 @@ namespace AlAminAhamed\OpenCodeZenAiProvider\Provider;
 use WordPress\AiClient\AiClient;
 use WordPress\AiClient\Common\Exception\RuntimeException;
 use WordPress\AiClient\Providers\ApiBasedImplementation\AbstractApiProvider;
-use WordPress\AiClient\Providers\ApiBasedImplementation\ListModelsApiBasedProviderAvailability;
 use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;
 use WordPress\AiClient\Providers\Contracts\ProviderAvailabilityInterface;
 use WordPress\AiClient\Providers\DTO\ProviderMetadata;
@@ -20,6 +19,7 @@ use WordPress\AiClient\Providers\Enums\ProviderTypeEnum;
 use WordPress\AiClient\Providers\Http\Enums\RequestAuthenticationMethod;
 use WordPress\AiClient\Providers\Models\Contracts\ModelInterface;
 use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
+use AlAminAhamed\OpenCodeZenAiProvider\Availability\OpenCodeZenProviderAvailability;
 use AlAminAhamed\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
 use AlAminAhamed\OpenCodeZenAiProvider\Models\OpenCodeZenTextGenerationModel;
 
@@ -105,9 +105,7 @@ class OpenCodeZenProvider extends AbstractApiProvider {
 	 * @since 1.0.0
 	 */
 	protected static function createProviderAvailability(): ProviderAvailabilityInterface {
-		return new ListModelsApiBasedProviderAvailability(
-			static::modelMetadataDirectory()
-		);
+		return new OpenCodeZenProviderAvailability();
 	}
 
 	/**
