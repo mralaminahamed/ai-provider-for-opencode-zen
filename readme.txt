@@ -9,7 +9,7 @@ Stable tag: 1.0.0
 License: GPL-2.0-or-later
 License URI: https://spdx.org/licenses/GPL-2.0-or-later.html
 
-Integrates OpenCode Zen as an AI provider for the WordPress AI Client, enabling Claude and GPT model access for coding and general tasks.
+Integrates OpenCode Zen as an AI provider for the WordPress AI Client, enabling access to 40+ models including GPT 5.x, Claude 4.x, Gemini 3.x, and more.
 
 == Description ==
 
@@ -21,16 +21,21 @@ This plugin is an independent, third-party integration and is not affiliated wit
 
 * Seamless integration with the WordPress AI Client plugin
 * Dynamic model discovery from the OpenCode Zen API with hourly caching
-* Support for text generation using Claude and GPT models
+* Support for 40+ models including GPT 5.x, Claude 4.x, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, and more
 * Secure API key management via WordPress settings or environment variable
 * Fallback to a hardcoded model list when the API is unavailable
 
 **Supported Models (fallback list):**
 
-* GPT-4o
-* GPT-4o Mini
-* Claude Sonnet 4
-* Claude 3.5 Sonnet
+GPT models: GPT 5.5, GPT 5.5 Pro, GPT 5.4, GPT 5.4 Pro, GPT 5.4 Mini, GPT 5.4 Nano, GPT 5.3 Codex, GPT 5.3 Codex Spark, GPT 5.2, GPT 5.2 Codex, GPT 5.1, GPT 5.1 Codex, GPT 5.1 Codex Max, GPT 5.1 Codex Mini, GPT 5, GPT 5 Codex, GPT 5 Nano
+
+Claude models: Claude Opus 4.7, Claude Opus 4.6, Claude Opus 4.5, Claude Opus 4.1, Claude Sonnet 4.6, Claude Sonnet 4.5, Claude Sonnet 4, Claude Haiku 4.5, Claude 3.5 Haiku
+
+Gemini models: Gemini 3.5 Flash, Gemini 3.1 Pro, Gemini 3 Flash
+
+Other models: Qwen 3.6 Plus, Qwen 3.5 Plus, MiniMax M2.7, MiniMax M2.5, GLM 5.1, Kimi K2.6, Kimi K2.5, Grok Build 0.1, Big Pickle, DeepSeek V4 Flash Free, Nemotron 3 Super Free
+
+When an API key is configured, the live model list is fetched directly from the OpenCode Zen API.
 
 **Requirements:**
 
@@ -84,7 +89,7 @@ Your API key is stored in the WordPress options table using WordPress's standard
 
 = What happens if the OpenCode Zen API is unreachable? =
 
-The plugin falls back to a hardcoded list of supported models (GPT-4o, GPT-4o Mini, Claude Sonnet 4, Claude 3.5 Sonnet) so the AI Client continues to function.
+The plugin falls back to a hardcoded list of 41 supported models (GPT 5.x, Claude 4.x, Gemini 3.x, and more) so the AI Client continues to function.
 
 == External Services ==
 
