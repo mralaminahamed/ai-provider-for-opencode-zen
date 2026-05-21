@@ -1,5 +1,16 @@
 <?php
 /**
+ * AI Provider for OpenCode Zen — plugin bootstrap.
+ *
+ * Loads the autoloader, registers the OpenCode Zen provider with the
+ * WordPress AI Client registry, and initialises the wp-admin settings page.
+ *
+ * @package AlAminAhamed\OpenCodeZenAiProvider
+ * @author  Al Amin Ahamed
+ * @link    https://github.com/mralaminahamed/ai-provider-for-opencode-zen
+ * @since   1.0.0
+ *
+ * @wordpress-plugin
  * Plugin Name:       AI Provider for OpenCode Zen
  * Plugin URI:        https://github.com/mralaminahamed/ai-provider-for-opencode-zen
  * Description:       OpenCode Zen AI provider for the WordPress AI Client. Not affiliated with OpenCode Zen.
@@ -12,8 +23,6 @@
  * License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
  * Text Domain:       alamin-ai-provider-for-opencode-zen
  * Domain Path:       /languages
- *
- * @package AlAminAhamed\OpenCodeZenAiProvider
  */
 
 declare(strict_types=1);
