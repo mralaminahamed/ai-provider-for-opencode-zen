@@ -194,32 +194,59 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			new SupportedOption( OptionEnum::maxTokens() ),
 		);
 
-		return array(
-			new ModelMetadata(
-				'gpt-4o',
-				'GPT-4o',
-				$capabilities,
-				$options
-			),
-			new ModelMetadata(
-				'gpt-4o-mini',
-				'GPT-4o Mini',
-				$capabilities,
-				$options
-			),
-			new ModelMetadata(
-				'claude-sonnet-4',
-				'Claude Sonnet 4',
-				$capabilities,
-				$options
-			),
-			new ModelMetadata(
-				'claude-3-5-sonnet',
-				'Claude 3.5 Sonnet',
-				$capabilities,
-				$options
-			),
+		$model_list = array(
+			// GPT models.
+			array( 'gpt-5.5', 'GPT 5.5' ),
+			array( 'gpt-5.5-pro', 'GPT 5.5 Pro' ),
+			array( 'gpt-5.4', 'GPT 5.4' ),
+			array( 'gpt-5.4-pro', 'GPT 5.4 Pro' ),
+			array( 'gpt-5.4-mini', 'GPT 5.4 Mini' ),
+			array( 'gpt-5.4-nano', 'GPT 5.4 Nano' ),
+			array( 'gpt-5.3-codex', 'GPT 5.3 Codex' ),
+			array( 'gpt-5.3-codex-spark', 'GPT 5.3 Codex Spark' ),
+			array( 'gpt-5.2', 'GPT 5.2' ),
+			array( 'gpt-5.2-codex', 'GPT 5.2 Codex' ),
+			array( 'gpt-5.1', 'GPT 5.1' ),
+			array( 'gpt-5.1-codex', 'GPT 5.1 Codex' ),
+			array( 'gpt-5.1-codex-max', 'GPT 5.1 Codex Max' ),
+			array( 'gpt-5.1-codex-mini', 'GPT 5.1 Codex Mini' ),
+			array( 'gpt-5', 'GPT 5' ),
+			array( 'gpt-5-codex', 'GPT 5 Codex' ),
+			array( 'gpt-5-nano', 'GPT 5 Nano' ),
+			// Claude models.
+			array( 'claude-opus-4-7', 'Claude Opus 4.7' ),
+			array( 'claude-opus-4-6', 'Claude Opus 4.6' ),
+			array( 'claude-opus-4-5', 'Claude Opus 4.5' ),
+			array( 'claude-opus-4-1', 'Claude Opus 4.1' ),
+			array( 'claude-sonnet-4-6', 'Claude Sonnet 4.6' ),
+			array( 'claude-sonnet-4-5', 'Claude Sonnet 4.5' ),
+			array( 'claude-sonnet-4', 'Claude Sonnet 4' ),
+			array( 'claude-haiku-4-5', 'Claude Haiku 4.5' ),
+			array( 'claude-3-5-haiku', 'Claude 3.5 Haiku' ),
+			// Gemini models.
+			array( 'gemini-3.5-flash', 'Gemini 3.5 Flash' ),
+			array( 'gemini-3.1-pro', 'Gemini 3.1 Pro' ),
+			array( 'gemini-3-flash', 'Gemini 3 Flash' ),
+			// Other models.
+			array( 'qwen3.6-plus', 'Qwen 3.6 Plus' ),
+			array( 'qwen3.5-plus', 'Qwen 3.5 Plus' ),
+			array( 'minimax-m2.7', 'MiniMax M2.7' ),
+			array( 'minimax-m2.5', 'MiniMax M2.5' ),
+			array( 'glm-5.1', 'GLM 5.1' ),
+			array( 'kimi-k2.6', 'Kimi K2.6' ),
+			array( 'kimi-k2.5', 'Kimi K2.5' ),
+			array( 'grok-build-0.1', 'Grok Build 0.1' ),
+			array( 'big-pickle', 'Big Pickle' ),
+			array( 'deepseek-v4-flash-free', 'DeepSeek V4 Flash Free' ),
+			array( 'nemotron-3-super-free', 'Nemotron 3 Super Free' ),
 		);
+
+		$models = array();
+		foreach ( $model_list as $item ) {
+			$models[] = new ModelMetadata( $item[0], $item[1], $capabilities, $options );
+		}
+
+		return $models;
 	}
 
 	/**
