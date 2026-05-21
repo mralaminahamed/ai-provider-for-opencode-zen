@@ -1,18 +1,17 @@
 <?php
 /**
- * Plugin Name: AI Provider for OpenCode Zen
- * Plugin URI: https://github.com/mralaminahamed/ai-provider-for-opencode-zen
- * Donate link: https://alaminahamed.com/donate
- * Description: OpenCode Zen AI provider for the WordPress AI Client. Not affiliated with OpenCode Zen.
+ * Plugin Name:       AI Provider for OpenCode Zen
+ * Plugin URI:        https://github.com/mralaminahamed/ai-provider-for-opencode-zen
+ * Description:       OpenCode Zen AI provider for the WordPress AI Client. Not affiliated with OpenCode Zen.
+ * Version:           1.0.0
  * Requires at least: 6.7
- * Requires PHP: 7.4
- * Version: 1.0.0
- * Author: Al Amin Ahamed
- * Author URI: https://github.com/mralaminahamed
- * License: GPL-2.0-or-later
- * License URI: https://spdx.org/licenses/GPL-2.0-or-later.html
- * Text Domain: alamin-ai-provider-for-opencode-zen
- * Domain Path: /languages
+ * Requires PHP:      7.4
+ * Author:            Al Amin Ahamed
+ * Author URI:        https://alaminahamed.com
+ * License:           GPL-2.0-or-later
+ * License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
+ * Text Domain:       alamin-ai-provider-for-opencode-zen
+ * Domain Path:       /languages
  *
  * @package AlAminAhamed\OpenCodeZenAiProvider
  */
