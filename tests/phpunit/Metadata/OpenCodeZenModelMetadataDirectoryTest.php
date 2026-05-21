@@ -85,10 +85,10 @@ class OpenCodeZenModelMetadataDirectoryTest extends TestCase {
 			$this->directory->listModelMetadata()
 		);
 
-		$this->assertContains( 'gpt-4o', $model_ids );
-		$this->assertContains( 'gpt-4o-mini', $model_ids );
-		$this->assertContains( 'claude-sonnet-4', $model_ids );
-		$this->assertContains( 'claude-3-5-sonnet', $model_ids );
+		$this->assertContains( 'gpt-5.5', $model_ids );
+		$this->assertContains( 'claude-opus-4-7', $model_ids );
+		$this->assertContains( 'gemini-3.5-flash', $model_ids );
+		$this->assertContains( 'qwen3.6-plus', $model_ids );
 	}
 
 	/**
@@ -112,7 +112,7 @@ class OpenCodeZenModelMetadataDirectoryTest extends TestCase {
 	 * @return void
 	 */
 	public function test_has_model_metadata_returns_true(): void {
-		$this->assertTrue( $this->directory->hasModelMetadata( 'gpt-4o' ) );
+		$this->assertTrue( $this->directory->hasModelMetadata( 'gpt-5.5' ) );
 	}
 
 	/**
@@ -134,10 +134,10 @@ class OpenCodeZenModelMetadataDirectoryTest extends TestCase {
 	 * @return void
 	 */
 	public function test_get_model_metadata_returns_model(): void {
-		$model = $this->directory->getModelMetadata( 'gpt-4o' );
+		$model = $this->directory->getModelMetadata( 'gpt-5.5' );
 
 		$this->assertInstanceOf( ModelMetadata::class, $model );
-		$this->assertEquals( 'gpt-4o', $model->getId() );
+		$this->assertEquals( 'gpt-5.5', $model->getId() );
 	}
 
 	/**
@@ -148,10 +148,10 @@ class OpenCodeZenModelMetadataDirectoryTest extends TestCase {
 	 * @return void
 	 */
 	public function test_get_model_metadata_returns_correct_name(): void {
-		$this->assertEquals( 'GPT-4o', $this->directory->getModelMetadata( 'gpt-4o' )->getName() );
-		$this->assertEquals( 'GPT-4o Mini', $this->directory->getModelMetadata( 'gpt-4o-mini' )->getName() );
-		$this->assertEquals( 'Claude Sonnet 4', $this->directory->getModelMetadata( 'claude-sonnet-4' )->getName() );
-		$this->assertEquals( 'Claude 3.5 Sonnet', $this->directory->getModelMetadata( 'claude-3-5-sonnet' )->getName() );
+		$this->assertEquals( 'GPT 5.5', $this->directory->getModelMetadata( 'gpt-5.5' )->getName() );
+		$this->assertEquals( 'GPT 5 Nano', $this->directory->getModelMetadata( 'gpt-5-nano' )->getName() );
+		$this->assertEquals( 'Claude Opus 4.7', $this->directory->getModelMetadata( 'claude-opus-4-7' )->getName() );
+		$this->assertEquals( 'Gemini 3.5 Flash', $this->directory->getModelMetadata( 'gemini-3.5-flash' )->getName() );
 	}
 
 	/**

@@ -28,7 +28,7 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 	 * @return void
 	 */
 	public function test_model_is_created_correctly(): void {
-		$model = OpenCodeZenProvider::model( 'gpt-4o' );
+		$model = OpenCodeZenProvider::model( 'gpt-5.5' );
 
 		$this->assertInstanceOf( OpenCodeZenTextGenerationModel::class, $model );
 	}
@@ -41,9 +41,9 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 	 * @return void
 	 */
 	public function test_model_has_correct_metadata(): void {
-		$model = OpenCodeZenProvider::model( 'gpt-4o' );
+		$model = OpenCodeZenProvider::model( 'gpt-5.5' );
 
-		$this->assertEquals( 'gpt-4o', $model->metadata()->getId() );
+		$this->assertEquals( 'gpt-5.5', $model->metadata()->getId() );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 	 * @return void
 	 */
 	public function test_model_has_provider_metadata(): void {
-		$model = OpenCodeZenProvider::model( 'gpt-4o' );
+		$model = OpenCodeZenProvider::model( 'gpt-5.5' );
 
 		$this->assertEquals( 'OpenCode Zen', $model->providerMetadata()->getName() );
 	}
@@ -67,7 +67,7 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 	 * @return void
 	 */
 	public function test_all_fallback_models_are_creatable(): void {
-		$model_ids = array( 'gpt-4o', 'gpt-4o-mini', 'claude-sonnet-4', 'claude-3-5-sonnet' );
+		$model_ids = array( 'gpt-5.5', 'claude-opus-4-7', 'gemini-3.5-flash', 'qwen3.6-plus' );
 
 		foreach ( $model_ids as $model_id ) {
 			$model = OpenCodeZenProvider::model( $model_id );
@@ -84,7 +84,7 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 	 * @return void
 	 */
 	public function test_model_injects_opencode_provider_header(): void {
-		$model = OpenCodeZenProvider::model( 'gpt-4o' );
+		$model = OpenCodeZenProvider::model( 'gpt-5.5' );
 
 		$reflection = new \ReflectionMethod( OpenCodeZenTextGenerationModel::class, 'createRequest' );
 		$reflection->setAccessible( true );
