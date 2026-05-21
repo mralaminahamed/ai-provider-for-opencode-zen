@@ -13,18 +13,9 @@
     },
     {
       "step": "installPlugin",
-      "pluginZipFile": {
+      "pluginData": {
         "resource": "wordpress.org/plugins",
         "slug": "alamin-ai-provider-for-opencode-zen"
-      },
-      "options": {
-        "activate": true
-      }
-    },
-    {
-      "step": "setSiteOptions",
-      "options": {
-        "blogname": "AI Provider for OpenCode Zen — Demo"
       }
     }
   ]
