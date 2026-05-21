@@ -112,6 +112,13 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 
 == Changelog ==
 
+= 1.1.0 =
+* Updated fallback model list from 4 stale models to 41 current models sourced from the OpenCode Zen pricing page (GPT 5.x, Claude Opus/Sonnet/Haiku 4.x, Gemini 3.x, Qwen, MiniMax, GLM 5.1, Kimi, Grok, and free-tier models)
+* Added Domain Path header field to plugin file
+* Improved plugin file header field ordering and alignment per WordPress.org standard
+* Added file-level PHPDoc block to plugin bootstrap file
+* Updated readme.txt documentation to reflect expanded model support
+
 = 1.0.0 =
 * Initial release
 * OpenCode Zen provider registration with WordPress AI Client
