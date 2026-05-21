@@ -5,11 +5,11 @@ Tags: ai, opencode, llm, claude, gpt
 Requires at least: 6.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPL-2.0-or-later
 License URI: https://spdx.org/licenses/GPL-2.0-or-later.html
 
-Integrates OpenCode Zen as an AI provider for the WordPress AI Client, enabling access to 40+ models including GPT 5.x, Claude 4.x, Gemini 3.x, and more.
+OpenCode Zen AI provider for WordPress AI Client. Access 40+ models including GPT 5.x, Claude 4.x, Gemini 3.x, and more.
 
 == Description ==
 
@@ -111,6 +111,9 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 1. The OpenCode Zen settings page where you configure your API key and default model.
 
 == Changelog ==
+
+= 1.2.1 =
+* Fixed connector showing as "Connected" before any API key is entered — provider availability now correctly checks for a configured API key
 
 = 1.2.0 =
 * Added provider logo displayed on the WordPress Connectors page alongside Anthropic, Google, and OpenAI
