@@ -5,7 +5,7 @@ Tags: ai, opencode, llm, claude, gpt
 Requires at least: 6.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPL-2.0-or-later
 License URI: https://spdx.org/licenses/GPL-2.0-or-later.html
 
@@ -112,6 +112,11 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 
 == Changelog ==
 
+= 1.2.0 =
+* Added provider logo displayed on the WordPress Connectors page alongside Anthropic, Google, and OpenAI
+* Fixed false "no valid connector" warning on the AI admin page when API key is set via the Connectors page
+* Expanded test suite from 37 to 48 tests covering all model families, provider logo path, and settings edge cases
+
 = 1.1.0 =
 * Updated fallback model list from 4 stale models to 41 current models sourced from the OpenCode Zen pricing page (GPT 5.x, Claude Opus/Sonnet/Haiku 4.x, Gemini 3.x, Qwen, MiniMax, GLM 5.1, Kimi, Grok, and free-tier models)
 * Added Domain Path header field to plugin file
@@ -127,6 +132,12 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 * Support for `OPENCODE_ZEN_API_KEY` environment variable
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Fixes a false "no valid connector" warning on the AI admin page. No database changes required.
+
+= 1.1.0 =
+Expanded fallback model list to 40 models. No database changes or manual steps required.
 
 = 1.0.0 =
 Initial release. No upgrade steps required.
