@@ -80,7 +80,7 @@ class OpenCodeZenProvider extends AbstractApiProvider {
 			'opencode-zen',
 			'OpenCode Zen',
 			ProviderTypeEnum::cloud(),
-			'https://opencode.ai/zen',
+			'https://opencode.ai/zen/settings/api-keys',
 			RequestAuthenticationMethod::apiKey(),
 		);
 

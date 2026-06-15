@@ -5,7 +5,7 @@ Tags: ai, opencode, llm, claude, gpt
 Requires at least: 6.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: GPL-2.0-or-later
 License URI: https://spdx.org/licenses/GPL-2.0-or-later.html
 
@@ -23,6 +23,7 @@ This plugin is an independent, third-party integration and is not affiliated wit
 * Dynamic model discovery from the OpenCode Zen API with hourly caching
 * Support for 40+ models including GPT 5.x, Claude 4.x, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, and more
 * Secure API key management via WordPress settings or environment variable
+* Full generation parameter control: temperature, max tokens, top P, presence penalty, and frequency penalty
 * Fallback to a hardcoded model list when the API is unavailable
 
 **Supported Models (fallback list):**
@@ -39,15 +40,20 @@ When an API key is configured, the live model list is fetched directly from the 
 
 **Requirements:**
 
-* WordPress AI Client plugin (or WordPress 7.0+ with built-in AI Client)
+* WordPress 7.0 or higher (the AI Client SDK is built into WordPress core)
 * An [OpenCode Zen](https://opencode.ai) account and API key
 
-**API Key Configuration:**
+**Settings:**
 
-Set your API key in one of two ways:
+Go to **Settings > OpenCode Zen** to configure:
 
-1. `Settings > OpenCode Zen` admin page
-2. `OPENCODE_ZEN_API_KEY` environment variable (takes priority)
+* **API Key** — your OpenCode Zen API key (or set the `OPENCODE_ZEN_API_KEY` environment variable)
+* **Default Model** — the model used when no explicit model is requested
+* **Temperature** — controls output randomness (0.0–2.0, default 1.0)
+* **Max Tokens** — maximum tokens in the generated response (default 2048)
+* **Top P** — nucleus sampling threshold (0.0–1.0, default 1.0)
+* **Presence Penalty** — penalises repeated topics (-2.0–2.0, default 0.0)
+* **Frequency Penalty** — penalises repeated tokens (-2.0–2.0, default 0.0)
 
 == Installation ==
 
@@ -56,14 +62,15 @@ Set your API key in one of two ways:
 1. Download the plugin zip file
 2. Go to **Plugins > Add New > Upload Plugin** in your WordPress admin
 3. Upload the zip and click **Install Now**
-4. Ensure the **WordPress AI Client** plugin is installed and activated
-5. Activate **AI Provider for OpenCode Zen**
-6. Go to **Settings > OpenCode Zen** and enter your API key
+4. Activate **AI Provider for OpenCode Zen**
+5. Go to **Settings > OpenCode Zen** and enter your API key
+
+**Note:** WordPress 7.0 includes the AI Client SDK natively — no additional AI Client plugin is required. If you are running an older WordPress version, you must install the WordPress AI Client plugin separately first.
 
 = Manual Installation =
 
 1. Upload the `alamin-ai-provider-for-opencode-zen` folder to `/wp-content/plugins/`
-2. Follow steps 4–6 above
+2. Follow steps 4–5 above
 
 = As a Composer Package =
 
@@ -75,21 +82,25 @@ Set your API key in one of two ways:
 
 OpenCode Zen is an AI platform that provides access to various AI models including Claude and GPT models through an OpenAI-compatible API. Learn more at [opencode.ai](https://opencode.ai).
 
-= Do I need the WordPress AI Client? =
+= Do I need a separate AI Client plugin? =
 
-Yes. This plugin is a provider add-on for the WordPress AI Client. Install and activate that plugin first.
+Not on WordPress 7.0 or higher — the AI Client SDK is built into WordPress core. On older versions you will need the WordPress AI Client plugin.
 
 = Where do I get an API key? =
 
-Sign up at [opencode.ai](https://opencode.ai) and generate an API key from your account dashboard.
+Sign up at [opencode.ai/zen/settings/api-keys](https://opencode.ai/zen/settings/api-keys) and generate an API key.
 
 = Is my API key stored securely? =
 
-Your API key is stored in the WordPress options table using WordPress's standard options API. For higher security, set the `OPENCODE_ZEN_API_KEY` environment variable on your server instead.
+Your API key is stored in the WordPress options table using WordPress's standard options API. For higher security, set the `OPENCODE_ZEN_API_KEY` environment variable on your server instead — this bypasses the database entirely.
 
 = What happens if the OpenCode Zen API is unreachable? =
 
 The plugin falls back to a hardcoded list of 41 supported models (GPT 5.x, Claude 4.x, Gemini 3.x, and more) so the AI Client continues to function.
+
+= What generation parameters are supported? =
+
+Temperature, max tokens, top P, presence penalty, frequency penalty, stop sequences, system instruction, and function declarations are all declared as supported options.
 
 == External Services ==
 
@@ -99,7 +110,7 @@ This plugin connects to the **OpenCode Zen API** to:
 2. Send text generation requests using your configured AI model
 
 **Service:** OpenCode Zen
-**API endpoint:** `https://api.opencode.ai` (or as configured)
+**API endpoint:** `https://api.opencode.ai`
 **When data is sent:** When generating AI text responses or refreshing the model list
 **Data sent:** Your API key (via Authorization header) and the text prompt/conversation
 **Provider site:** [opencode.ai](https://opencode.ai/) — refer to the OpenCode Zen website for their current Terms of Service and Privacy Policy.
@@ -108,9 +119,17 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 
 == Screenshots ==
 
-1. The OpenCode Zen settings page where you configure your API key and default model.
+1. The OpenCode Zen settings page where you configure your API key, default model, and generation parameters.
 
 == Changelog ==
+
+= 1.3.0 =
+* Added Top P, Presence Penalty, and Frequency Penalty settings fields to the admin settings page
+* Declared full SupportedOptions coverage: temperature, top P, presence penalty, frequency penalty, stop sequences, system instruction, function declarations, and max tokens
+* Extracted all admin HTML markup to `templates/admin/` for cleaner separation of logic and presentation
+* Renamed plugin class directory from `src/` to `includes/` per WordPress plugin conventions
+* Removed AI Client SDK from Composer production dependencies — WordPress 7.0+ provides it natively at runtime
+* Requires at least: updated to reflect WordPress 7.0 native AI Client support
 
 = 1.2.1 =
 * Fixed connector showing as "Connected" before any API key is entered — provider availability now correctly checks for a configured API key
@@ -135,6 +154,9 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 * Support for `OPENCODE_ZEN_API_KEY` environment variable
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Adds Top P, Presence Penalty, and Frequency Penalty settings. No database changes or manual steps required. Requires WordPress 7.0 or higher.
 
 = 1.2.0 =
 Fixes a false "no valid connector" warning on the AI admin page. No database changes required.
