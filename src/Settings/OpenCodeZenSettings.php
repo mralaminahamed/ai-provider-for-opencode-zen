@@ -273,10 +273,13 @@ class OpenCodeZenSettings {
 		}
 
 		return array(
-			'temperature' => isset( $saved['temperature'] ) && is_numeric( $saved['temperature'] )
+			'default_model' => isset( $saved['default_model'] ) && is_string( $saved['default_model'] )
+				? $saved['default_model']
+				: '',
+			'temperature'   => isset( $saved['temperature'] ) && is_numeric( $saved['temperature'] )
 				? (float) $saved['temperature']
 				: $defaults['temperature'],
-			'max_tokens'  => isset( $saved['max_tokens'] ) && is_int( $saved['max_tokens'] )
+			'max_tokens'    => isset( $saved['max_tokens'] ) && is_int( $saved['max_tokens'] )
 				? $saved['max_tokens']
 				: $defaults['max_tokens'],
 		);
