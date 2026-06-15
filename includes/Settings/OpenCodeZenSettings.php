@@ -195,7 +195,7 @@ class OpenCodeZenSettings {
 	 * @return void
 	 */
 	public static function render_general_section(): void {
-		echo '<p>' . esc_html__( 'Configure default settings for the OpenCode Zen AI provider.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
+		require dirname( OPENCODE_ZEN_PLUGIN_FILE ) . '/templates/admin/section-general.php';
 	}
 
 	/**
@@ -206,22 +206,13 @@ class OpenCodeZenSettings {
 	 * @return void
 	 */
 	public static function render_model_field(): void {
-		$settings  = self::get_settings();
-		$directory = new OpenCodeZenModelMetadataDirectory();
-		$models    = $directory->listModelMetadata();
+		$settings       = self::get_settings();
+		$directory      = new OpenCodeZenModelMetadataDirectory();
+		$models         = $directory->listModelMetadata();
+		$selected_model = $settings['default_model'] ?? '';
+		$option_key     = self::OPTION_KEY;
 
-		echo '<select name="' . esc_attr( self::OPTION_KEY ) . '[default_model]" id="opencode_zen_default_model">';
-		echo '<option value="">' . esc_html__( 'Select a model', 'alamin-ai-provider-for-opencode-zen' ) . '</option>';
-
-		foreach ( $models as $model ) {
-			$selected = selected( $settings['default_model'] ?? '', $model->getId(), false );
-			echo '<option value="' . esc_attr( $model->getId() ) . '" ' . $selected . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo esc_html( $model->getName() );
-			echo '</option>';
-		}
-
-		echo '</select>';
-		echo '<p class="description">' . esc_html__( 'The default model to use for text generation.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
+		require dirname( OPENCODE_ZEN_PLUGIN_FILE ) . '/templates/admin/field-model.php';
 	}
 
 	/**
@@ -232,16 +223,12 @@ class OpenCodeZenSettings {
 	 * @return void
 	 */
 	public static function render_temperature_field(): void {
-		$settings = self::get_settings();
-		$temp_raw = $settings['temperature'] ?? 0.7;
-		$value    = is_numeric( $temp_raw ) ? (float) $temp_raw : 0.7;
+		$settings   = self::get_settings();
+		$temp_raw   = $settings['temperature'] ?? 0.7;
+		$value      = is_numeric( $temp_raw ) ? (float) $temp_raw : 0.7;
+		$option_key = self::OPTION_KEY;
 
-		echo '<input type="number" step="0.1" min="0" max="2"';
-		echo ' name="' . esc_attr( self::OPTION_KEY ) . '[temperature]"';
-		echo ' id="opencode_zen_temperature"';
-		echo ' value="' . esc_attr( (string) $value ) . '"';
-		echo ' class="small-text" />';
-		echo '<p class="description">' . esc_html__( 'Controls randomness. Lower values make output more focused. Range: 0-2.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
+		require dirname( OPENCODE_ZEN_PLUGIN_FILE ) . '/templates/admin/field-temperature.php';
 	}
 
 	/**
@@ -255,13 +242,9 @@ class OpenCodeZenSettings {
 		$settings   = self::get_settings();
 		$tokens_raw = $settings['max_tokens'] ?? 4096;
 		$value      = is_int( $tokens_raw ) ? $tokens_raw : 4096;
+		$option_key = self::OPTION_KEY;
 
-		echo '<input type="number" step="1" min="1" max="200000"';
-		echo ' name="' . esc_attr( self::OPTION_KEY ) . '[max_tokens]"';
-		echo ' id="opencode_zen_max_tokens"';
-		echo ' value="' . esc_attr( (string) $value ) . '"';
-		echo ' class="small-text" />';
-		echo '<p class="description">' . esc_html__( 'Maximum number of tokens to generate.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
+		require dirname( OPENCODE_ZEN_PLUGIN_FILE ) . '/templates/admin/field-max-tokens.php';
 	}
 
 	/**
@@ -272,16 +255,12 @@ class OpenCodeZenSettings {
 	 * @return void
 	 */
 	public static function render_top_p_field(): void {
-		$settings = self::get_settings();
-		$raw      = $settings['top_p'] ?? 1.0;
-		$value    = is_numeric( $raw ) ? (float) $raw : 1.0;
+		$settings   = self::get_settings();
+		$raw        = $settings['top_p'] ?? 1.0;
+		$value      = is_numeric( $raw ) ? (float) $raw : 1.0;
+		$option_key = self::OPTION_KEY;
 
-		echo '<input type="number" step="0.01" min="0" max="1"';
-		echo ' name="' . esc_attr( self::OPTION_KEY ) . '[top_p]"';
-		echo ' id="opencode_zen_top_p"';
-		echo ' value="' . esc_attr( (string) $value ) . '"';
-		echo ' class="small-text" />';
-		echo '<p class="description">' . esc_html__( 'Nucleus sampling threshold. 1.0 disables top-p sampling. Range: 0-1.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
+		require dirname( OPENCODE_ZEN_PLUGIN_FILE ) . '/templates/admin/field-top-p.php';
 	}
 
 	/**
@@ -292,16 +271,12 @@ class OpenCodeZenSettings {
 	 * @return void
 	 */
 	public static function render_presence_penalty_field(): void {
-		$settings = self::get_settings();
-		$raw      = $settings['presence_penalty'] ?? 0.0;
-		$value    = is_numeric( $raw ) ? (float) $raw : 0.0;
+		$settings   = self::get_settings();
+		$raw        = $settings['presence_penalty'] ?? 0.0;
+		$value      = is_numeric( $raw ) ? (float) $raw : 0.0;
+		$option_key = self::OPTION_KEY;
 
-		echo '<input type="number" step="0.1" min="-2" max="2"';
-		echo ' name="' . esc_attr( self::OPTION_KEY ) . '[presence_penalty]"';
-		echo ' id="opencode_zen_presence_penalty"';
-		echo ' value="' . esc_attr( (string) $value ) . '"';
-		echo ' class="small-text" />';
-		echo '<p class="description">' . esc_html__( 'Penalizes tokens that have appeared in the output so far. Range: -2 to 2.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
+		require dirname( OPENCODE_ZEN_PLUGIN_FILE ) . '/templates/admin/field-presence-penalty.php';
 	}
 
 	/**
@@ -312,16 +287,12 @@ class OpenCodeZenSettings {
 	 * @return void
 	 */
 	public static function render_frequency_penalty_field(): void {
-		$settings = self::get_settings();
-		$raw      = $settings['frequency_penalty'] ?? 0.0;
-		$value    = is_numeric( $raw ) ? (float) $raw : 0.0;
+		$settings   = self::get_settings();
+		$raw        = $settings['frequency_penalty'] ?? 0.0;
+		$value      = is_numeric( $raw ) ? (float) $raw : 0.0;
+		$option_key = self::OPTION_KEY;
 
-		echo '<input type="number" step="0.1" min="-2" max="2"';
-		echo ' name="' . esc_attr( self::OPTION_KEY ) . '[frequency_penalty]"';
-		echo ' id="opencode_zen_frequency_penalty"';
-		echo ' value="' . esc_attr( (string) $value ) . '"';
-		echo ' class="small-text" />';
-		echo '<p class="description">' . esc_html__( 'Penalizes tokens based on their frequency in the output so far. Range: -2 to 2.', 'alamin-ai-provider-for-opencode-zen' ) . '</p>';
+		require dirname( OPENCODE_ZEN_PLUGIN_FILE ) . '/templates/admin/field-frequency-penalty.php';
 	}
 
 	/**
@@ -336,18 +307,9 @@ class OpenCodeZenSettings {
 			return;
 		}
 
-		?>
-		<div class="wrap">
-			<h1><?php echo esc_html__( 'OpenCode Zen Settings', 'alamin-ai-provider-for-opencode-zen' ); ?></h1>
-			<form method="post" action="options.php">
-				<?php
-				settings_fields( self::OPTION_KEY );
-				do_settings_sections( 'opencode-zen-settings' );
-				submit_button();
-				?>
-			</form>
-		</div>
-		<?php
+		$option_key = self::OPTION_KEY;
+
+		require dirname( OPENCODE_ZEN_PLUGIN_FILE ) . '/templates/admin/settings-page.php';
 	}
 
 	/**

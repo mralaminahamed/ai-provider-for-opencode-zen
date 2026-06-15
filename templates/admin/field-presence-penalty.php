@@ -1,0 +1,16 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; }
+/**
+ * Template: Presence penalty number field.
+ *
+ * @package AlAminAhamed\OpenCodeZenAiProvider\Settings
+ *
+ * @var string $option_key Settings option key used for the field name attribute.
+ * @var float  $value      Current presence_penalty value.
+ */
+?>
+<input type="number" step="0.1" min="-2" max="2"
+	name="<?php echo esc_attr( $option_key ); ?>[presence_penalty]"
+	id="opencode_zen_presence_penalty"
+	value="<?php echo esc_attr( (string) $value ); ?>"
+	class="small-text" />
+<p class="description"><?php echo esc_html__( 'Penalizes tokens that have appeared in the output so far. Range: -2 to 2.', 'alamin-ai-provider-for-opencode-zen' ); ?></p>
