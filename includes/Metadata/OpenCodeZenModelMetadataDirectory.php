@@ -228,6 +228,8 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			array( 'gpt-5-codex', 'GPT 5 Codex' ),
 			array( 'gpt-5-nano', 'GPT 5 Nano' ),
 			// Claude models.
+			array( 'claude-fable-5', 'Claude Fable 5' ),
+			array( 'claude-opus-4-8', 'Claude Opus 4.8' ),
 			array( 'claude-opus-4-7', 'Claude Opus 4.7' ),
 			array( 'claude-opus-4-6', 'Claude Opus 4.6' ),
 			array( 'claude-opus-4-5', 'Claude Opus 4.5' ),
@@ -277,19 +279,26 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			return $api_key;
 		}
 
-		if ( function_exists( 'get_option' ) ) {
-			$option = get_option( 'wp_ai_client_credentials', array() );
-			if ( ! is_array( $option ) ) {
-				return '';
-			}
-			$credentials = $option['opencode-zen'] ?? array();
-			if ( ! is_array( $credentials ) ) {
-				return '';
-			}
-			$api_key_value = $credentials['api_key'] ?? '';
-			return is_string( $api_key_value ) ? $api_key_value : '';
+		if ( ! function_exists( 'get_option' ) ) {
+			return '';
 		}
 
-		return '';
+		// Key stored by WordPress Connectors page (WP 7.0+).
+		$connectors_key = get_option( 'connectors_ai_opencode_zen_api_key', '' );
+		if ( is_string( $connectors_key ) && '' !== $connectors_key ) {
+			return $connectors_key;
+		}
+
+		// Key stored via legacy wp_ai_client_credentials option.
+		$option = get_option( 'wp_ai_client_credentials', array() );
+		if ( ! is_array( $option ) ) {
+			return '';
+		}
+		$credentials = $option['opencode-zen'] ?? array();
+		if ( ! is_array( $credentials ) ) {
+			return '';
+		}
+		$api_key_value = $credentials['api_key'] ?? '';
+		return is_string( $api_key_value ) ? $api_key_value : '';
 	}
 }

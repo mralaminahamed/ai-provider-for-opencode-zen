@@ -169,13 +169,20 @@ new ModelMetadata(
 - **Do NOT** use `@v6` or `@v5` for GitHub Actions — latest stable is `actions/checkout@v4`, `actions/cache@v4`
 - **Do NOT** hardcode only a subset of `SupportedOption` entries — declare all options the API actually supports
 
-## Important SDK Files
+## Key SDK Classes
 
-| File | Purpose |
+The SDK is provided by **WordPress core** (WP 7.0+) — not bundled via Composer. These classes are autoloaded by WordPress at runtime:
+
+| Class | Namespace |
 |---|---|
-| `vendor/wordpress/wp-ai-client/src/Providers/Models/DTO/ModelMetadata.php` | ModelMetadata DTO |
-| `vendor/wordpress/wp-ai-client/src/Providers/Models/Enums/CapabilityEnum.php` | Capability enum |
-| `vendor/wordpress/wp-ai-client/src/Providers/Models/Enums/OptionEnum.php` | Option enum |
-| `vendor/wordpress/wp-ai-client/src/Providers/Contracts/ModelMetadataDirectoryInterface.php` | Directory interface |
-| `vendor/wordpress/wp-ai-client/src/Providers/DTO/ProviderMetadata.php` | Provider metadata DTO |
-| `vendor/wordpress/wp-ai-client/src/Providers/Http/DTO/ApiKeyRequestAuthentication.php` | API key auth DTO |
+| `ModelMetadata` | `WordPress\AiClient\Providers\Models\DTO` |
+| `SupportedOption` | `WordPress\AiClient\Providers\Models\DTO` |
+| `CapabilityEnum` | `WordPress\AiClient\Providers\Models\Enums` |
+| `OptionEnum` | `WordPress\AiClient\Providers\Models\Enums` |
+| `ModelMetadataDirectoryInterface` | `WordPress\AiClient\Providers\Contracts` |
+| `ProviderAvailabilityInterface` | `WordPress\AiClient\Providers\Contracts` |
+| `ProviderMetadata` | `WordPress\AiClient\Providers\DTO` |
+| `AbstractApiProvider` | `WordPress\AiClient\Providers\ApiBasedImplementation` |
+| `AbstractOpenAiCompatibleTextGenerationModel` | `WordPress\AiClient\Providers\OpenAiCompatibleImplementation` |
+| `ApiKeyRequestAuthentication` | `WordPress\AiClient\Providers\Http\DTO` |
+| `AiClient` | `WordPress\AiClient` |
