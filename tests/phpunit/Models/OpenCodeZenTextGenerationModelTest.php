@@ -11,79 +11,33 @@ namespace AlAminAhamed\OpenCodeZenAiProvider\Tests\Models;
 
 use AlAminAhamed\OpenCodeZenAiProvider\Models\OpenCodeZenTextGenerationModel;
 use AlAminAhamed\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
-use Brain\Monkey;
-use Brain\Monkey\Functions;
-use PHPUnit\Framework\TestCase;
+use AlAminAhamed\OpenCodeZenAiProvider\Tests\AbstractTextGenerationModelTest;
 
 /**
  * Class OpenCodeZenTextGenerationModelTest
  *
  * @since 1.0.0
  */
-class OpenCodeZenTextGenerationModelTest extends TestCase {
+class OpenCodeZenTextGenerationModelTest extends AbstractTextGenerationModelTest {
 
-	/**
-	 * Set up Brain Monkey before each test.
-	 *
-	 * @since 1.3.2
-	 *
-	 * @return void
-	 */
-	protected function setUp(): void {
-		parent::setUp();
-		Monkey\setUp();
-		Functions\when( 'get_option' )->justReturn( array() );
+	protected function getModelClass(): string {
+		return OpenCodeZenTextGenerationModel::class;
 	}
 
-	/**
-	 * Tear down Brain Monkey after each test.
-	 *
-	 * @since 1.3.2
-	 *
-	 * @return void
-	 */
-	protected function tearDown(): void {
-		Monkey\tearDown();
-		parent::tearDown();
+	protected function getProviderModelId(): string {
+		return 'gpt-5.5';
 	}
 
-	/**
-	 * Test model is created correctly.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function test_model_is_created_correctly(): void {
-		$model = OpenCodeZenProvider::model( 'gpt-5.5' );
-
-		$this->assertInstanceOf( OpenCodeZenTextGenerationModel::class, $model );
+	protected function getProviderName(): string {
+		return 'OpenCode Zen';
 	}
 
-	/**
-	 * Test model has correct metadata ID.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function test_model_has_correct_metadata(): void {
-		$model = OpenCodeZenProvider::model( 'gpt-5.5' );
-
-		$this->assertEquals( 'gpt-5.5', $model->metadata()->getId() );
+	protected function getCustomHeaderName(): string {
+		return 'OpenCode-Provider';
 	}
 
-	/**
-	 * Test model has correct provider name.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function test_model_has_provider_metadata(): void {
-		$model = OpenCodeZenProvider::model( 'gpt-5.5' );
-
-		$this->assertEquals( 'OpenCode Zen', $model->providerMetadata()->getName() );
+	protected function createModel( string $modelId ): object {
+		return OpenCodeZenProvider::model( $modelId );
 	}
 
 	/**
@@ -101,30 +55,5 @@ class OpenCodeZenTextGenerationModelTest extends TestCase {
 			$this->assertInstanceOf( OpenCodeZenTextGenerationModel::class, $model );
 			$this->assertEquals( $model_id, $model->metadata()->getId() );
 		}
-	}
-
-	/**
-	 * Test model injects OpenCode-Provider header via createRequest.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function test_model_injects_opencode_provider_header(): void {
-		$model = OpenCodeZenProvider::model( 'gpt-5.5' );
-
-		$reflection = new \ReflectionMethod( OpenCodeZenTextGenerationModel::class, 'createRequest' );
-		$reflection->setAccessible( true );
-
-		$request = $reflection->invoke(
-			$model,
-			\WordPress\AiClient\Providers\Http\Enums\HttpMethodEnum::POST(),
-			'chat/completions',
-			array( 'Content-Type' => 'application/json' ),
-			null
-		);
-
-		$this->assertTrue( $request->hasHeader( 'OpenCode-Provider' ) );
-		$this->assertEquals( 'wordpress-plugin', $request->getHeaderAsString( 'OpenCode-Provider' ) );
 	}
 }
