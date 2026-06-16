@@ -207,14 +207,14 @@ class OpenCodeZenModelMetadataDirectoryTest extends TestCase {
 	}
 
 	/**
-	 * Test fallback model list contains exactly 41 models.
+	 * Test fallback model list contains exactly 42 models.
 	 *
 	 * @since 1.1.0
 	 *
 	 * @return void
 	 */
 	public function test_fallback_model_count(): void {
-		$this->assertCount( 40, $this->directory->listModelMetadata() );
+		$this->assertCount( 42, $this->directory->listModelMetadata() );
 	}
 
 	/**
@@ -263,6 +263,8 @@ class OpenCodeZenModelMetadataDirectoryTest extends TestCase {
 		$ids = array_map( static fn( $m ) => $m->getId(), $this->directory->listModelMetadata() );
 
 		$expected = array(
+			'claude-fable-5',
+			'claude-opus-4-8',
 			'claude-opus-4-7',
 			'claude-opus-4-6',
 			'claude-opus-4-5',
