@@ -11,6 +11,8 @@ namespace AlAminAhamed\OpenCodeZenAiProvider\Tests\Models;
 
 use AlAminAhamed\OpenCodeZenAiProvider\Models\OpenCodeZenTextGenerationModel;
 use AlAminAhamed\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
+use Brain\Monkey;
+use Brain\Monkey\Functions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,6 +21,31 @@ use PHPUnit\Framework\TestCase;
  * @since 1.0.0
  */
 class OpenCodeZenTextGenerationModelTest extends TestCase {
+
+	/**
+	 * Set up Brain Monkey before each test.
+	 *
+	 * @since 1.3.2
+	 *
+	 * @return void
+	 */
+	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
+		Functions\when( 'get_option' )->justReturn( array() );
+	}
+
+	/**
+	 * Tear down Brain Monkey after each test.
+	 *
+	 * @since 1.3.2
+	 *
+	 * @return void
+	 */
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		parent::tearDown();
+	}
 
 	/**
 	 * Test model is created correctly.
