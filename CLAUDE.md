@@ -22,45 +22,160 @@ composer phpcbf
 
 # Static analysis
 composer phpstan
+
+# Build production release (strips dev deps, optimises autoloader)
+composer install --no-dev --no-interaction --prefer-dist -o
+```
+
+## Reference Repositories
+
+| Repository | URL |
+|---|---|
+| Base SDK | https://github.com/WordPress/wp-ai-client |
+| Reference Provider | https://github.com/WordPress/ai-provider-for-anthropic |
+| OpenAI Provider | https://github.com/WordPress/ai-provider-for-openai |
+| Google Provider | https://github.com/WordPress/ai-provider-for-google |
+
+## Directory Structure
+
+```
+alamin-ai-provider-for-opencode-zen/
+├── alamin-ai-provider-for-opencode-zen.php   # Plugin entry point
+├── includes/
+│   ├── Availability/
+│   │   └── OpenCodeZenProviderAvailability.php
+│   ├── Metadata/
+│   │   └── OpenCodeZenModelMetadataDirectory.php
+│   ├── Models/
+│   │   └── OpenCodeZenTextGenerationModel.php
+│   ├── Provider/
+│   │   └── OpenCodeZenProvider.php
+│   └── Settings/
+│       └── OpenCodeZenSettings.php
+├── templates/
+│   └── admin/
+│       ├── field-frequency-penalty.php
+│       ├── field-max-tokens.php
+│       ├── field-model.php
+│       ├── field-presence-penalty.php
+│       ├── field-temperature.php
+│       ├── field-top-p.php
+│       ├── section-general.php
+│       └── settings-page.php
+├── assets/
+│   └── images/
+│       └── opencode-zen.svg
+├── .wordpress-org/          # WP.org assets (icon, banner, screenshots)
+├── composer.json
+├── composer.lock
+└── readme.txt
 ```
 
 ## Architecture
 
-Dual-purpose codebase: works as a standalone Composer package **and** a WordPress plugin. Entry point is `alamin-ai-provider-for-opencode-zen.php` (file name matches plugin slug per WP.org convention); `src/` contains all logic.
+Dual-purpose codebase: works as a standalone Composer package **and** a WordPress plugin. Entry point is `alamin-ai-provider-for-opencode-zen.php`; all PHP logic lives under `includes/`; admin UI templates live under `templates/admin/`.
 
 ### Class hierarchy (SDK pattern)
 
-All classes extend from `wordpress/wp-ai-client` (SDK):
+All classes extend from `wordpress/wp-ai-client` (provided by WordPress core on WP 7.0+):
 
 ```
 AbstractApiProvider  (SDK)
-  └── OpenCodeZenProvider          # registers provider ID "opencode-zen", base URL, auth method
+  └── OpenCodeZenProvider          # provider ID "opencode-zen", base URL, auth method
 
 AbstractOpenAiCompatibleTextGenerationModel  (SDK)
-  └── OpenCodeZenTextGenerationModel   # adds OpenCode-Provider header, createRequest override
+  └── OpenCodeZenTextGenerationModel   # adds OpenCode-Provider header via createRequest()
 
 ModelMetadataDirectoryInterface  (SDK)
-  └── OpenCodeZenModelMetadataDirectory  # fetches models from API, caches via WP transients (1hr),
+  └── OpenCodeZenModelMetadataDirectory  # fetches /v1/models, caches via WP transients
+                                          # (1hr on success, 5min on failure),
                                           # falls back to hardcoded list when API unavailable
+
+ProviderAvailabilityInterface  (SDK)
+  └── OpenCodeZenProviderAvailability    # checks all 3 API key sources (see below)
 ```
 
-`OpenCodeZenSettings` — standalone WP settings page, not part of the SDK hierarchy. Registers wp-admin options page at `options-general.php?page=opencode-zen-settings`, stores settings under option key `opencode_zen_settings`.
+`OpenCodeZenSettings` — standalone WP settings page (not in SDK hierarchy). Option key: `opencode_zen_settings`. Settings page: `options-general.php?page=opencode-zen-settings`.
 
 ### Bootstrap flow (WordPress)
 
-1. `alamin-ai-provider-for-opencode-zen.php` defines `OPENCODE_ZEN_PLUGIN_FILE` constant and loads `vendor/autoload.php`
-2. `init` hook (priority 5): calls `register_provider()` → registers `OpenCodeZenProvider` with `AiClient::defaultRegistry()`
-3. `admin_init` hook (priority 5): calls `OpenCodeZenSettings::init()` → wires up wp-admin settings
+1. Plugin file defines `OPENCODE_ZEN_PLUGIN_FILE` constant and loads `vendor/autoload.php`
+2. `init` hook (priority 5): `register_provider()` → registers `OpenCodeZenProvider` with `AiClient::defaultRegistry()`
+3. `init` hook (priority 5): `init_settings()` → `OpenCodeZenSettings::init()` → wires up `admin_menu` and `admin_init` hooks
 
 ### API key resolution (priority order)
 
-1. `OPENCODE_ZEN_API_KEY` environment variable
-2. WordPress option `wp_ai_client_credentials['opencode-zen']['api_key']`
+All three sources are checked by `ProviderAvailability::isConfigured()`, the `wpai_has_ai_credentials` filter, and `get_api_key()` in `OpenCodeZenModelMetadataDirectory`:
 
-### Coding standards
+1. `OPENCODE_ZEN_API_KEY` environment variable
+2. WordPress option `connectors_ai_opencode_zen_api_key` (WP 7.0+ Connectors page)
+3. WordPress option `wp_ai_client_credentials['opencode-zen']['api_key']` (legacy)
+
+**Important:** all three sources must be consistent across `ProviderAvailability`, `ModelMetadataDirectory::get_api_key()`, and the `wpai_has_ai_credentials` / `wpai_pre_has_valid_credentials_check` filter callbacks in the plugin bootstrap.
+
+### Required AbstractApiProvider methods
+
+```php
+protected static function baseUrl(): string
+protected static function createModel(ModelMetadata $model_metadata, ProviderMetadata $provider_metadata): ModelInterface
+protected static function createProviderMetadata(): ProviderMetadata
+protected static function createProviderAvailability(): ProviderAvailabilityInterface
+protected static function createModelMetadataDirectory(): ModelMetadataDirectoryInterface
+```
+
+### Required ModelMetadataDirectoryInterface methods
+
+```php
+public function listModelMetadata(): array           // returns ModelMetadata[]
+public function hasModelMetadata(string $model_id): bool
+public function getModelMetadata(string $model_id): ModelMetadata  // throws InvalidArgumentException
+```
+
+### ModelMetadata constructor
+
+```php
+new ModelMetadata(
+    $model_id,                                       // string
+    $model_name,                                     // string
+    [ CapabilityEnum::textGeneration() ],            // array<CapabilityEnum>
+    [                                                // array<SupportedOption>
+        new SupportedOption( OptionEnum::temperature() ),
+        new SupportedOption( OptionEnum::maxTokens() ),
+        new SupportedOption( OptionEnum::topP() ),
+        new SupportedOption( OptionEnum::presencePenalty() ),
+        new SupportedOption( OptionEnum::frequencyPenalty() ),
+        new SupportedOption( OptionEnum::stopSequences() ),
+        new SupportedOption( OptionEnum::systemInstruction() ),
+        new SupportedOption( OptionEnum::functionDeclarations() ),
+    ]
+)
+```
+
+## Coding Standards
 
 - WordPress Coding Standards (`phpcs.xml.dist`) — text domain `alamin-ai-provider-for-opencode-zen`
-- `declare(strict_types=1)` on every file
+- `declare(strict_types=1)` on every PHP file
 - Namespace root: `AlAminAhamed\OpenCodeZenAiProvider\`
 - PHPStan at `level: max` (WP function stubs via `szepeviktor/phpstan-wordpress`)
-- All output escaped with `esc_html()`, `esc_attr()`, `esc_url()`; all text wrapped with `__()` / `esc_html__()`
+- All output escaped: `esc_html()`, `esc_attr()`, `esc_url()`
+- All strings wrapped: `__()` / `esc_html__()`
+- Templates set variables then `require` the template file — no logic inside template files
+
+## Common Mistakes to Avoid
+
+- **Do NOT** add `wordpress/php-ai-client` to Composer production deps — the SDK is provided by WordPress core (WP 7.0+)
+- **Do NOT** use `TextGenerationCapability` class — use `CapabilityEnum::textGeneration()`
+- **Do NOT** omit the `connectors_ai_opencode_zen_api_key` option check from any code that reads the API key
+- **Do NOT** use `@v6` or `@v5` for GitHub Actions — latest stable is `actions/checkout@v4`, `actions/cache@v4`
+- **Do NOT** hardcode only a subset of `SupportedOption` entries — declare all options the API actually supports
+
+## Important SDK Files
+
+| File | Purpose |
+|---|---|
+| `vendor/wordpress/wp-ai-client/src/Providers/Models/DTO/ModelMetadata.php` | ModelMetadata DTO |
+| `vendor/wordpress/wp-ai-client/src/Providers/Models/Enums/CapabilityEnum.php` | Capability enum |
+| `vendor/wordpress/wp-ai-client/src/Providers/Models/Enums/OptionEnum.php` | Option enum |
+| `vendor/wordpress/wp-ai-client/src/Providers/Contracts/ModelMetadataDirectoryInterface.php` | Directory interface |
+| `vendor/wordpress/wp-ai-client/src/Providers/DTO/ProviderMetadata.php` | Provider metadata DTO |
+| `vendor/wordpress/wp-ai-client/src/Providers/Http/DTO/ApiKeyRequestAuthentication.php` | API key auth DTO |
