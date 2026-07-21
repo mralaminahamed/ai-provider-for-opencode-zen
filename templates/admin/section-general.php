@@ -5,4 +5,4 @@
  * @package AlAminAhamed\OpenCodeZenAiProvider\Settings
  */
 ?>
-<p><?php echo esc_html__( 'Configure default settings for the OpenCode Zen AI provider.', 'alamin-ai-provider-for-opencode-zen' ); ?></p>
+<p><?php echo esc_html__( 'These defaults apply to text generation requests that do not specify their own values. The OpenCode Zen API key itself is managed on the Connectors screen.', 'alamin-ai-provider-for-opencode-zen' ); ?></p>
