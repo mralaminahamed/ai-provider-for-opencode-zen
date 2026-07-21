@@ -3,12 +3,12 @@ Contributors:      mralaminahamed
 Tags:              ai, opencode, llm, connector, artificial-intelligence
 Requires at least: 7.0
 Tested up to:      7.0
-Stable tag:        1.3.1
+Stable tag:        1.4.0
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-OpenCode Zen provider for the WordPress AI Client. One API key — 40+ models including GPT 5, Claude 4, and Gemini 3.
+OpenCode Zen provider for the WordPress AI Client. One API key — 54 models including GPT 5, Claude, and Gemini 3.
 
 == Description ==
 
@@ -18,13 +18,13 @@ This plugin is an independent, third-party integration and is not affiliated wit
 
 = Why OpenCode Zen? =
 
-OpenCode Zen is an **AI model aggregator** — one API key gives you access to 40+ frontier models from OpenAI, Anthropic, Google, and others. Instead of managing separate API keys and billing accounts for each AI provider, you connect once to OpenCode Zen and switch between models freely.
+OpenCode Zen is an **AI model aggregator** — one API key gives you access to 54 frontier models from OpenAI, Anthropic, Google, and others. Instead of managing separate API keys and billing accounts for each AI provider, you connect once to OpenCode Zen and switch between models freely.
 
 This makes it ideal for WordPress sites that want to experiment with different AI models, compare output quality, or use specialised models (e.g. a coding model for code-related tasks and a creative model for content).
 
 = Features =
 
-* **40+ models from one API key** — GPT 5.x, Claude 4.x, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, DeepSeek, and more
+* **54 models from one API key** — GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, DeepSeek, and more
 * **Automatic model discovery** — live model list fetched from the OpenCode Zen API and cached hourly; falls back to a hardcoded list when offline
 * **Full parameter control** — temperature, max tokens, top P, presence penalty, frequency penalty, stop sequences, system instruction, and function declarations
 * **Settings page** — configure default model and generation parameters without touching code
@@ -50,16 +50,16 @@ Once this provider is configured, any WordPress plugin or theme that integrates 
 When an API key is configured, the live model list is fetched from the OpenCode Zen API. The built-in fallback list includes:
 
 **GPT models**
-GPT 5.5, GPT 5.5 Pro, GPT 5.4, GPT 5.4 Pro, GPT 5.4 Mini, GPT 5.4 Nano, GPT 5.3 Codex, GPT 5.3 Codex Spark, GPT 5.2, GPT 5.2 Codex, GPT 5.1, GPT 5.1 Codex, GPT 5.1 Codex Max, GPT 5.1 Codex Mini, GPT 5, GPT 5 Codex, GPT 5 Nano
+GPT 5.6 Sol, GPT 5.6 Terra, GPT 5.6 Luna, GPT 5.5, GPT 5.5 Pro, GPT 5.4, GPT 5.4 Pro, GPT 5.4 Mini, GPT 5.4 Nano, GPT 5.3 Codex, GPT 5.3 Codex Spark, GPT 5.2, GPT 5.2 Codex, GPT 5.1, GPT 5.1 Codex, GPT 5.1 Codex Max, GPT 5.1 Codex Mini, GPT 5, GPT 5 Codex, GPT 5 Nano
 
 **Claude models**
-Claude Fable 5, Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Opus 4.5, Claude Opus 4.1, Claude Sonnet 4.6, Claude Sonnet 4.5, Claude Sonnet 4, Claude Haiku 4.5, Claude 3.5 Haiku
+Claude Fable 5, Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Opus 4.5, Claude Opus 4.1, Claude Sonnet 5, Claude Sonnet 4.6, Claude Sonnet 4.5, Claude Sonnet 4, Claude Haiku 4.5
 
 **Gemini models**
 Gemini 3.5 Flash, Gemini 3.1 Pro, Gemini 3 Flash
 
 **Other models**
-Qwen 3.6 Plus, Qwen 3.5 Plus, MiniMax M2.7, MiniMax M2.5, GLM 5.1, Kimi K2.6, Kimi K2.5, Grok Build 0.1, Big Pickle, DeepSeek V4 Flash Free, Nemotron 3 Super Free
+Grok 4.5, Grok Build 0.1, Qwen 3.6 Plus, Qwen 3.5 Plus, DeepSeek V4 Pro, DeepSeek V4 Flash, DeepSeek V4 Flash Free, MiniMax M3, MiniMax M2.7, MiniMax M2.5, GLM 5.2, GLM 5.1, GLM 5, Kimi K2.7 Code, Kimi K2.6, Kimi K2.5, Big Pickle, MiMo v2.5 Free, Nemotron 3 Ultra Free, North Mini Code Free
 
 = Requirements =
 
@@ -149,7 +149,7 @@ It depends on your use case:
 
 = What happens if the OpenCode Zen API is unreachable? =
 
-The plugin falls back to a hardcoded list of 42+ models so the AI Client continues to function and AI-enabled plugins stay operational.
+The plugin falls back to a hardcoded list of 54 models so the AI Client continues to function and AI-enabled plugins stay operational.
 
 = Can I use multiple AI provider plugins at the same time? =
 
@@ -169,7 +169,7 @@ Temperature, max tokens, top P, presence penalty, frequency penalty, stop sequen
 
 = Can I use this for WooCommerce product descriptions? =
 
-Yes, if you have a WooCommerce plugin that integrates with the WordPress AI Client. Once this provider is active and your API key is set, any AI-enabled WooCommerce plugin can generate product descriptions, SEO meta, and more using any of the 42+ models.
+Yes, if you have a WooCommerce plugin that integrates with the WordPress AI Client. Once this provider is active and your API key is set, any AI-enabled WooCommerce plugin can generate product descriptions, SEO meta, and more using any of the 54 models.
 
 = Does this work with the Gutenberg block editor? =
 
@@ -200,6 +200,19 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 2. Settings > Connectors screen where you enter your OpenCode Zen API key.
 
 == Changelog ==
+
+= 1.4.0 - 2026-07-21 =
+
+**Added**
+- Connection status on the settings page — shows whether an OpenCode Zen API key is configured, with a link to the Connectors screen.
+- "Connectors" quick link on the Plugins screen, next to Settings.
+
+**Changed**
+- Synced the built-in fallback model list to the current OpenCode Zen catalogue — now 54 models (added GPT 5.6 Sol/Terra/Luna, Claude Sonnet 5, Grok 4.5, DeepSeek V4 Pro/Flash, MiniMax M3, GLM 5.2/5, Kimi K2.7 Code, and free-tier models; removed the retired Claude 3.5 Haiku and Nemotron 3 Super Free).
+- A default model (GPT 5.5) is now pre-selected out of the box instead of an empty choice.
+
+**Fixed**
+- Autoloader collision with WordPress core's bundled AI Client that could cause a TypeError on AI requests — the plugin no longer ships a conflicting copy of php-ai-client (WordPress core provides it at runtime).
 
 = 1.3.1 - 2026-06-16 =
 
@@ -255,6 +268,9 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 * Support for `OPENCODE_ZEN_API_KEY` environment variable.
 
 == Upgrade Notice ==
+
+= 1.4.0 =
+Expands the fallback model list to 54 current models, adds a connection-status indicator, and pre-selects a default model. Fixes a possible AI Client TypeError. No database changes required.
 
 = 1.3.1 =
 Fixes live model list not loading when API key is set via Settings > Connectors. Adds Claude Fable 5 and Claude Opus 4.8 to the fallback list. No database changes required.
