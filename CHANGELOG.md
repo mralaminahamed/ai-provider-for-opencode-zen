@@ -9,6 +9,7 @@
 
 ### Changed
 
+- Synced the built-in fallback model list to the current OpenCode Zen catalogue — now 54 models (added GPT 5.6 Sol/Terra/Luna, Claude Sonnet 5, Grok 4.5, DeepSeek V4 Pro/Flash, MiniMax M3, GLM 5.2/5, Kimi K2.7 Code, and free-tier models; removed the retired Claude 3.5 Haiku and Nemotron 3 Super Free).
 - A default model (`gpt-5.5`) is now selected out of the box instead of an empty choice, so generation works before the live model list loads.
 
 ### Fixed
