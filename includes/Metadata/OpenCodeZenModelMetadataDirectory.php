@@ -208,8 +208,13 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			new SupportedOption( OptionEnum::functionDeclarations() ),
 		);
 
+		// Mirrors the OpenCode Zen catalogue returned by GET /zen/v1/models.
+		// See https://opencode.ai/docs/zen/.
 		$model_list = array(
 			// GPT models.
+			array( 'gpt-5.6-sol', 'GPT 5.6 Sol' ),
+			array( 'gpt-5.6-terra', 'GPT 5.6 Terra' ),
+			array( 'gpt-5.6-luna', 'GPT 5.6 Luna' ),
 			array( 'gpt-5.5', 'GPT 5.5' ),
 			array( 'gpt-5.5-pro', 'GPT 5.5 Pro' ),
 			array( 'gpt-5.4', 'GPT 5.4' ),
@@ -234,27 +239,36 @@ class OpenCodeZenModelMetadataDirectory implements ModelMetadataDirectoryInterfa
 			array( 'claude-opus-4-6', 'Claude Opus 4.6' ),
 			array( 'claude-opus-4-5', 'Claude Opus 4.5' ),
 			array( 'claude-opus-4-1', 'Claude Opus 4.1' ),
+			array( 'claude-sonnet-5', 'Claude Sonnet 5' ),
 			array( 'claude-sonnet-4-6', 'Claude Sonnet 4.6' ),
 			array( 'claude-sonnet-4-5', 'Claude Sonnet 4.5' ),
 			array( 'claude-sonnet-4', 'Claude Sonnet 4' ),
 			array( 'claude-haiku-4-5', 'Claude Haiku 4.5' ),
-			array( 'claude-3-5-haiku', 'Claude 3.5 Haiku' ),
 			// Gemini models.
 			array( 'gemini-3.5-flash', 'Gemini 3.5 Flash' ),
 			array( 'gemini-3.1-pro', 'Gemini 3.1 Pro' ),
 			array( 'gemini-3-flash', 'Gemini 3 Flash' ),
 			// Other models.
+			array( 'grok-4.5', 'Grok 4.5' ),
+			array( 'grok-build-0.1', 'Grok Build 0.1' ),
 			array( 'qwen3.6-plus', 'Qwen 3.6 Plus' ),
 			array( 'qwen3.5-plus', 'Qwen 3.5 Plus' ),
+			array( 'deepseek-v4-pro', 'DeepSeek V4 Pro' ),
+			array( 'deepseek-v4-flash', 'DeepSeek V4 Flash' ),
+			array( 'deepseek-v4-flash-free', 'DeepSeek V4 Flash Free' ),
+			array( 'minimax-m3', 'MiniMax M3' ),
 			array( 'minimax-m2.7', 'MiniMax M2.7' ),
 			array( 'minimax-m2.5', 'MiniMax M2.5' ),
+			array( 'glm-5.2', 'GLM 5.2' ),
 			array( 'glm-5.1', 'GLM 5.1' ),
+			array( 'glm-5', 'GLM 5' ),
+			array( 'kimi-k2.7-code', 'Kimi K2.7 Code' ),
 			array( 'kimi-k2.6', 'Kimi K2.6' ),
 			array( 'kimi-k2.5', 'Kimi K2.5' ),
-			array( 'grok-build-0.1', 'Grok Build 0.1' ),
 			array( 'big-pickle', 'Big Pickle' ),
-			array( 'deepseek-v4-flash-free', 'DeepSeek V4 Flash Free' ),
-			array( 'nemotron-3-super-free', 'Nemotron 3 Super Free' ),
+			array( 'mimo-v2.5-free', 'MiMo v2.5 Free' ),
+			array( 'nemotron-3-ultra-free', 'Nemotron 3 Ultra Free' ),
+			array( 'north-mini-code-free', 'North Mini Code Free' ),
 		);
 
 		$models = array();
