@@ -9,6 +9,16 @@ declare(strict_types=1);
 
 require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
+// WordPress\AiClient\* is provided by WordPress core at runtime and is kept out
+// of the plugin's own vendor/ by the root composer.json `replace`. For the test
+// suite only, load a dev-only side install of wordpress/php-ai-client so the
+// plugin's provider/model classes can resolve their base classes. Populated by
+// `composer stubs:install`.
+$opencodezen_ai_client_autoload = dirname( __DIR__ ) . '/tools/ai-client/vendor/autoload.php';
+if ( file_exists( $opencodezen_ai_client_autoload ) ) {
+	require_once $opencodezen_ai_client_autoload;
+}
+
 // Patchwork must be loaded before any class that will be patched.
 require_once dirname( __DIR__ ) . '/vendor/antecedent/patchwork/Patchwork.php';
 
