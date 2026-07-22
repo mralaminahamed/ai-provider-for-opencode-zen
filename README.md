@@ -1,30 +1,68 @@
+<div align="center">
+
+<img src="assets/images/opencode-zen.svg" alt="AI Provider for OpenCode Zen logo" width="96" height="96">
+
 # AI Provider for OpenCode Zen
 
-An independent, third-party OpenCode Zen provider for the [WordPress PHP AI Client](https://github.com/WordPress/php-ai-client) SDK. Works as both a Composer package and a WordPress plugin. One API key gives the WordPress AI Client access to 57 frontier models — GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, DeepSeek, and more.
+**One API key. 57 frontier AI models, inside WordPress.**
+An independent [OpenCode Zen](https://opencode.ai) provider for the WordPress AI Client — brings GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, and DeepSeek to every AI-enabled plugin on your site.
+
+[![WordPress.org version](https://img.shields.io/wordpress/plugin/v/alamin-ai-provider-for-opencode-zen?label=WordPress.org&logo=wordpress&logoColor=white&color=21759B)](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/)
+[![Downloads](https://img.shields.io/wordpress/plugin/dt/alamin-ai-provider-for-opencode-zen?label=Downloads&color=21759B)](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/advanced/)
+[![Tested up to](https://img.shields.io/wordpress/plugin/tested/alamin-ai-provider-for-opencode-zen?label=Tested&logo=wordpress&logoColor=white)](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/)
+[![PHP](https://img.shields.io/badge/PHP-7.4%2B-777BB4?logo=php&logoColor=white)](https://www.php.net/)
+[![License](https://img.shields.io/badge/License-GPL--2.0--or--later-blue.svg)](LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/pulls)
+
+</div>
 
 > Not affiliated with, endorsed by, or sponsored by OpenCode Zen.
 
+---
+
+## What it does
+
+WordPress 7.0 ships a built-in **AI Client** SDK: plugins ask it to "generate text from this prompt" without caring which AI service answers. This plugin registers **OpenCode Zen** as one of those services — an AI model aggregator where a **single API key** unlocks frontier models from OpenAI, Anthropic, Google, and more.
+
+Activate it, paste one key, and every AI-enabled plugin on your site can generate content through 57 models — no separate accounts, no per-provider billing, no code.
+
+## Features
+
+**One key, every model**
+- **57 models** across GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, and DeepSeek — one OpenCode Zen key instead of an account per provider
+- **Live model discovery** from the OpenCode Zen API (cached for one hour), with a built-in 57-model fallback so generation keeps working if the API is briefly unreachable
+- A sensible **default model** (`gpt-5.5`) preselected out of the box
+
+**Native WordPress integration**
+- Registers as a first-class provider for the WordPress 7.0+ AI Client — any AI-enabled plugin uses it with **zero extra wiring**
+- Enter your key on **Settings → OpenCode Zen**, the core **Settings → Connectors** screen, or via the `OPENCODE_ZEN_API_KEY` environment variable
+- **Connection-status indicator** on the settings page and the provider logo on the Connectors screen
+- Standard generation controls: temperature, max tokens, top&nbsp;P, and presence/frequency penalties
+
+**Built to stay out of the way**
+- **OpenAI-compatible** under the hood — text generation, system instructions, stop sequences, and function declarations
+- Ships as both a **WordPress plugin** and a **Composer package** for standalone PHP use
+- **No SDK bloat** — WordPress core provides the AI Client at runtime, and the plugin excludes its own copy to stay collision-safe
+
 ## Requirements
 
-- PHP 7.4 or higher
-- WordPress 7.0 or higher (the AI Client SDK ships in WordPress core)
-  - On older WordPress releases, install the [WordPress AI Client](https://wordpress.org/plugins/wp-ai-client/) plugin separately
+- PHP **7.4+**
+- WordPress **7.0+** (the AI Client SDK ships in core)
+  - On older WordPress, install the [WordPress AI Client](https://wordpress.org/plugins/wp-ai-client/) plugin separately
 
 ## Installation
 
-**As a WordPress plugin** — upload the zip via **Plugins > Add New > Upload Plugin**, then activate.
-
-**As a Composer package:**
-
-```bash
-composer require mralaminahamed/ai-provider-for-opencode-zen
-```
+| Method | How |
+|---|---|
+| **WordPress.org** | Search "AI Provider for OpenCode Zen" under **Plugins → Add New**, then install and activate |
+| **Upload** | Download the zip and upload it via **Plugins → Add New → Upload Plugin** |
+| **Composer** | `composer require mralaminahamed/ai-provider-for-opencode-zen` |
 
 ## Quick start
 
-1. Activate the plugin.
-2. Go to **Settings > OpenCode Zen** (or the WordPress 7.0+ **Settings > Connectors** screen) and paste your API key. Get one at [opencode.ai/zen/settings/api-keys](https://opencode.ai/zen/settings/api-keys).
-3. Any AI-enabled plugin can now generate text through the `opencode-zen` provider.
+1. **Activate** the plugin.
+2. Open **Settings → OpenCode Zen** (or the core **Settings → Connectors** screen) and paste your API key. Get one at [opencode.ai/zen/settings/api-keys](https://opencode.ai/zen/settings/api-keys).
+3. Any AI-enabled plugin can now generate text through the `opencode-zen` provider:
 
 ```php
 use WordPress\AiClient\AiClient;
@@ -35,6 +73,38 @@ echo AiClient::prompt('Explain quantum computing')
     ->toText();
 ```
 
+See [docs/USAGE.md](docs/USAGE.md) for the standalone-Composer setup and per-request options.
+
+## Configuration
+
+Configure defaults on **Settings → OpenCode Zen** (option key `opencode_zen_settings`):
+
+| Setting | Range | Default |
+|---|---|---|
+| Default Model | any available model | `gpt-5.5` |
+| Temperature | 0.0–2.0 | 0.7 |
+| Max Tokens | 1–200,000 | 4096 |
+| Top P | 0.0–1.0 | 1.0 |
+| Presence Penalty | -2.0–2.0 | 0.0 |
+| Frequency Penalty | -2.0–2.0 | 0.0 |
+
+The `OPENCODE_ZEN_API_KEY` environment variable takes priority over the stored key. Full resolution order is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#credential-resolution).
+
+## Supported models
+
+When a key is configured, the live model list comes straight from the OpenCode Zen API, so you always see the latest models. If the API is unavailable, a **57-model fallback** keeps everything working:
+
+- **GPT 5.x** — Sol / Terra / Luna, plus Pro, Mini, Nano, and Codex variants
+- **Claude** — Fable 5, Opus 4.x, Sonnet 5 / 4.x, Haiku 4.5
+- **Gemini 3.x** — Flash, Flash Lite, and Pro
+- **More** — Grok, Qwen, DeepSeek, MiniMax, GLM, Kimi, and free-tier models
+
+The complete, ID-by-ID catalogue is in [docs/MODELS.md](docs/MODELS.md).
+
+## How it works
+
+WordPress 7.0's AI Client is a provider-agnostic layer. Install one or more **provider plugins** — like this one — and any plugin built on the AI Client can generate content through whichever provider is active, switchable from the Connectors screen with no per-plugin reconfiguration. This plugin handles the OpenCode Zen side: credential resolution, live model discovery, and the OpenAI-compatible API calls. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 ## Documentation
 
 | Doc | What's in it |
@@ -44,17 +114,31 @@ echo AiClient::prompt('Explain quantum computing')
 | [Architecture](docs/ARCHITECTURE.md) | Provider identity, file layout, request flow, runtime SDK dependency |
 | [Development](docs/DEVELOPMENT.md) | Build/test/lint/analysis scripts, the AI Client `replace` guard and dev-only stub install, CI and release |
 
-Version history: [CHANGELOG.md](CHANGELOG.md).
+Release history: [CHANGELOG.md](CHANGELOG.md).
+
+## Development
+
+```bash
+composer install
+composer test        # PHPUnit
+composer phpcs       # WordPress Coding Standards
+composer phpstan     # static analysis
+composer release     # build the distributable zip
+```
+
+Full workflow — including the AI Client `replace` guard and the dev-only stub install that keeps PHPStan and PHPUnit green — is in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## Contributing
 
 Issues and pull requests are welcome:
 
 - [Open a new issue](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/issues/new) to report a bug or request a feature
-- [Submit a pull request](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/pulls)
+- [Submit a pull request](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/pulls) — see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for the local build and test workflow
 
-See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for the local build, test, and lint workflow.
+## Support
+
+If this plugin is useful, **star the repo** and leave a [review on WordPress.org](https://wordpress.org/support/plugin/alamin-ai-provider-for-opencode-zen/reviews/). Questions and bug reports go in the [issue tracker](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/issues).
 
 ## License
 
-GPL-2.0-or-later
+[GPL-2.0-or-later](LICENSE) © Al Amin Ahamed
