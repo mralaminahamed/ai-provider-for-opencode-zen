@@ -36,4 +36,6 @@ composer.phar
 
 # Build output
 /release/
-docs/
+
+# docs/ is tracked (GitHub-facing developer docs); it is kept out of the
+# plugin zip via .distignore, not here.

@@ -47,19 +47,14 @@ Once this provider is configured, any WordPress plugin or theme that integrates 
 
 = Supported Models =
 
-When an API key is configured, the live model list is fetched from the OpenCode Zen API. The built-in fallback list includes:
+When an API key is configured, the live model list is fetched directly from the OpenCode Zen API, so you always see the latest models. If the API is ever unavailable, a built-in fallback list of 57 models keeps everything working. Families include:
 
-**GPT models**
-GPT 5.6 Sol, GPT 5.6 Terra, GPT 5.6 Luna, GPT 5.5, GPT 5.5 Pro, GPT 5.4, GPT 5.4 Pro, GPT 5.4 Mini, GPT 5.4 Nano, GPT 5.3 Codex, GPT 5.3 Codex Spark, GPT 5.2, GPT 5.2 Codex, GPT 5.1, GPT 5.1 Codex, GPT 5.1 Codex Max, GPT 5.1 Codex Mini, GPT 5, GPT 5 Codex, GPT 5 Nano
+* **GPT 5.x** — Sol, Terra, Luna, plus Pro, Mini, Nano, and Codex variants
+* **Claude** — Fable 5, Opus 4.x, Sonnet 5 / 4.x, Haiku 4.5
+* **Gemini 3.x** — Flash, Flash Lite, and Pro
+* **More** — Grok, Qwen, DeepSeek, MiniMax, GLM, Kimi, and free-tier models
 
-**Claude models**
-Claude Fable 5, Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Opus 4.5, Claude Sonnet 5, Claude Sonnet 4.6, Claude Sonnet 4.5, Claude Haiku 4.5
-
-**Gemini models**
-Gemini 3.6 Flash, Gemini 3.5 Flash, Gemini 3.5 Flash Lite, Gemini 3.1 Pro, Gemini 3 Flash
-
-**Other models**
-Grok 4.5, Grok Build 0.1, Qwen 3.7 Max, Qwen 3.7 Plus, Qwen 3.6 Plus, Qwen 3.5 Plus, DeepSeek V4 Pro, DeepSeek V4 Flash, DeepSeek V4 Flash Free, MiniMax M3, MiniMax M2.7, MiniMax M2.5, GLM 5.2, GLM 5.1, GLM 5, Kimi K2.7 Code, Kimi K2.6, Kimi K2.5, Big Pickle, MiMo v2.5 Free, Laguna S 2.1 Free, Nemotron 3 Ultra Free, North Mini Code Free
+See the [full model catalogue](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/blob/trunk/docs/MODELS.md) for every model ID.
 
 = Requirements =
 
@@ -92,18 +87,13 @@ Go to **Settings > OpenCode Zen** to configure:
 
 = For Developers =
 
-This plugin follows the official WordPress AI Provider pattern and is fully compatible with any plugin built on the WordPress AI Client SDK.
+This plugin follows the official WordPress AI Provider pattern and works with any plugin built on the WordPress AI Client SDK. It registers the `opencode-zen` provider and supports the standard generation options (temperature, max tokens, top P, presence/frequency penalties, stop sequences, system instruction, and function declarations).
 
-**Supported SupportedOptions:** `temperature`, `maxTokens`, `topP`, `presencePenalty`, `frequencyPenalty`, `stopSequences`, `systemInstruction`, `functionDeclarations`
+Full developer documentation lives on GitHub:
 
-**Provider ID:** `opencode-zen`
-
-**Base URL:** `https://opencode.ai/zen/v1`
-
-**API key resolution order:**
-1. `OPENCODE_ZEN_API_KEY` environment variable
-2. WordPress option `connectors_ai_opencode_zen_api_key` (Settings > Connectors)
-3. WordPress option `wp_ai_client_credentials['opencode-zen']['api_key']` (legacy)
+* [Usage and code examples](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/blob/trunk/docs/USAGE.md)
+* [Architecture and API key resolution](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/blob/trunk/docs/ARCHITECTURE.md)
+* [Development and contributing](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/blob/trunk/docs/DEVELOPMENT.md)
 
 == Installation ==
 
