@@ -29,7 +29,7 @@ class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirecto
 	}
 
 	protected function getExpectedModelCount(): int {
-		return 54;
+		return 57;
 	}
 
 	/**
@@ -119,11 +119,9 @@ class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirecto
 			'claude-opus-4-7',
 			'claude-opus-4-6',
 			'claude-opus-4-5',
-			'claude-opus-4-1',
 			'claude-sonnet-5',
 			'claude-sonnet-4-6',
 			'claude-sonnet-4-5',
-			'claude-sonnet-4',
 			'claude-haiku-4-5',
 		);
 
@@ -142,7 +140,9 @@ class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirecto
 	public function test_all_gemini_models_present(): void {
 		$ids = array_map( static fn( $m ) => $m->getId(), $this->directory->listModelMetadata() );
 
+		$this->assertContains( 'gemini-3.6-flash', $ids );
 		$this->assertContains( 'gemini-3.5-flash', $ids );
+		$this->assertContains( 'gemini-3.5-flash-lite', $ids );
 		$this->assertContains( 'gemini-3.1-pro', $ids );
 		$this->assertContains( 'gemini-3-flash', $ids );
 	}
@@ -160,6 +160,8 @@ class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirecto
 		$expected = array(
 			'grok-4.5',
 			'grok-build-0.1',
+			'qwen3.7-max',
+			'qwen3.7-plus',
 			'qwen3.6-plus',
 			'qwen3.5-plus',
 			'deepseek-v4-pro',
@@ -176,6 +178,7 @@ class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirecto
 			'kimi-k2.5',
 			'big-pickle',
 			'mimo-v2.5-free',
+			'laguna-s-2.1-free',
 			'nemotron-3-ultra-free',
 			'north-mini-code-free',
 		);

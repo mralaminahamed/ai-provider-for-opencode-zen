@@ -8,7 +8,7 @@ Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-OpenCode Zen provider for the WordPress AI Client. One API key — 54 models including GPT 5, Claude, and Gemini 3.
+OpenCode Zen provider for the WordPress AI Client. One API key — 57 models including GPT 5, Claude, and Gemini 3.
 
 == Description ==
 
@@ -18,13 +18,13 @@ This plugin is an independent, third-party integration and is not affiliated wit
 
 = Why OpenCode Zen? =
 
-OpenCode Zen is an **AI model aggregator** — one API key gives you access to 54 frontier models from OpenAI, Anthropic, Google, and others. Instead of managing separate API keys and billing accounts for each AI provider, you connect once to OpenCode Zen and switch between models freely.
+OpenCode Zen is an **AI model aggregator** — one API key gives you access to 57 frontier models from OpenAI, Anthropic, Google, and others. Instead of managing separate API keys and billing accounts for each AI provider, you connect once to OpenCode Zen and switch between models freely.
 
 This makes it ideal for WordPress sites that want to experiment with different AI models, compare output quality, or use specialised models (e.g. a coding model for code-related tasks and a creative model for content).
 
 = Features =
 
-* **54 models from one API key** — GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, DeepSeek, and more
+* **57 models from one API key** — GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, DeepSeek, and more
 * **Automatic model discovery** — live model list fetched from the OpenCode Zen API and cached hourly; falls back to a hardcoded list when offline
 * **Full parameter control** — temperature, max tokens, top P, presence penalty, frequency penalty, stop sequences, system instruction, and function declarations
 * **Settings page** — configure default model and generation parameters without touching code
@@ -53,13 +53,13 @@ When an API key is configured, the live model list is fetched from the OpenCode 
 GPT 5.6 Sol, GPT 5.6 Terra, GPT 5.6 Luna, GPT 5.5, GPT 5.5 Pro, GPT 5.4, GPT 5.4 Pro, GPT 5.4 Mini, GPT 5.4 Nano, GPT 5.3 Codex, GPT 5.3 Codex Spark, GPT 5.2, GPT 5.2 Codex, GPT 5.1, GPT 5.1 Codex, GPT 5.1 Codex Max, GPT 5.1 Codex Mini, GPT 5, GPT 5 Codex, GPT 5 Nano
 
 **Claude models**
-Claude Fable 5, Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Opus 4.5, Claude Opus 4.1, Claude Sonnet 5, Claude Sonnet 4.6, Claude Sonnet 4.5, Claude Sonnet 4, Claude Haiku 4.5
+Claude Fable 5, Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Opus 4.5, Claude Sonnet 5, Claude Sonnet 4.6, Claude Sonnet 4.5, Claude Haiku 4.5
 
 **Gemini models**
-Gemini 3.5 Flash, Gemini 3.1 Pro, Gemini 3 Flash
+Gemini 3.6 Flash, Gemini 3.5 Flash, Gemini 3.5 Flash Lite, Gemini 3.1 Pro, Gemini 3 Flash
 
 **Other models**
-Grok 4.5, Grok Build 0.1, Qwen 3.6 Plus, Qwen 3.5 Plus, DeepSeek V4 Pro, DeepSeek V4 Flash, DeepSeek V4 Flash Free, MiniMax M3, MiniMax M2.7, MiniMax M2.5, GLM 5.2, GLM 5.1, GLM 5, Kimi K2.7 Code, Kimi K2.6, Kimi K2.5, Big Pickle, MiMo v2.5 Free, Nemotron 3 Ultra Free, North Mini Code Free
+Grok 4.5, Grok Build 0.1, Qwen 3.7 Max, Qwen 3.7 Plus, Qwen 3.6 Plus, Qwen 3.5 Plus, DeepSeek V4 Pro, DeepSeek V4 Flash, DeepSeek V4 Flash Free, MiniMax M3, MiniMax M2.7, MiniMax M2.5, GLM 5.2, GLM 5.1, GLM 5, Kimi K2.7 Code, Kimi K2.6, Kimi K2.5, Big Pickle, MiMo v2.5 Free, Laguna S 2.1 Free, Nemotron 3 Ultra Free, North Mini Code Free
 
 = Requirements =
 
@@ -149,7 +149,7 @@ It depends on your use case:
 
 = What happens if the OpenCode Zen API is unreachable? =
 
-The plugin falls back to a hardcoded list of 54 models so the AI Client continues to function and AI-enabled plugins stay operational.
+The plugin falls back to a hardcoded list of 57 models so the AI Client continues to function and AI-enabled plugins stay operational.
 
 = Can I use multiple AI provider plugins at the same time? =
 
@@ -169,7 +169,7 @@ Temperature, max tokens, top P, presence penalty, frequency penalty, stop sequen
 
 = Can I use this for WooCommerce product descriptions? =
 
-Yes, if you have a WooCommerce plugin that integrates with the WordPress AI Client. Once this provider is active and your API key is set, any AI-enabled WooCommerce plugin can generate product descriptions, SEO meta, and more using any of the 54 models.
+Yes, if you have a WooCommerce plugin that integrates with the WordPress AI Client. Once this provider is active and your API key is set, any AI-enabled WooCommerce plugin can generate product descriptions, SEO meta, and more using any of the 57 models.
 
 = Does this work with the Gutenberg block editor? =
 

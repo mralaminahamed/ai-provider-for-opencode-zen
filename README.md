@@ -84,12 +84,12 @@ echo $result->toText();
 
 ## Supported Models
 
-Models are discovered dynamically from the OpenCode Zen API (cached for 1 hour). The fallback list mirrors the [`/zen/v1/models` catalogue](https://opencode.ai/docs/zen/) — 54 models:
+Models are discovered dynamically from the OpenCode Zen API (cached for 1 hour). The fallback list mirrors the [`/zen/v1/models` catalogue](https://opencode.ai/docs/zen/) — 57 models:
 
 - **GPT 5.x** — GPT 5.6 Sol/Terra/Luna, GPT 5.5, GPT 5.4, GPT 5.3 Codex, GPT 5.2, GPT 5.1, GPT 5, and variants
-- **Claude** — Claude Fable 5, Opus 4.8/4.7/4.6/4.5/4.1, Sonnet 5/4.6/4.5/4, Haiku 4.5
-- **Gemini 3.x** — Gemini 3.5 Flash, 3.1 Pro, 3 Flash
-- **Other** — Grok 4.5, Qwen, DeepSeek V4, MiniMax M3/M2, GLM 5.x, Kimi K2, and free-tier models
+- **Claude** — Claude Fable 5, Opus 4.8/4.7/4.6/4.5, Sonnet 5/4.6/4.5, Haiku 4.5
+- **Gemini 3.x** — Gemini 3.6 Flash, 3.5 Flash, 3.5 Flash Lite, 3.1 Pro, 3 Flash
+- **Other** — Grok 4.5, Qwen 3.7/3.6/3.5, DeepSeek V4, MiniMax M3/M2, GLM 5.x, Kimi K2, and free-tier models
 
 ## Architecture
 

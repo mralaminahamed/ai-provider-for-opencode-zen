@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Refreshed the built-in fallback model list against the current OpenCode Zen `/zen/v1/models` catalogue — now 57 models. Added Gemini 3.6 Flash, Gemini 3.5 Flash Lite, Qwen 3.7 Max, Qwen 3.7 Plus, and Laguna S 2.1 Free; removed the now-deprecated Claude Opus 4.1 and Claude Sonnet 4.
+
 ## [1.4.0] - 2026-07-21
 
 ### Added
