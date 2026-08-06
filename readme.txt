@@ -190,11 +190,6 @@ This plugin connects to the **OpenCode Zen API** (`https://opencode.ai/zen/v1`) 
 
 No data is sent to the OpenCode Zen API until you enter an API key and a WordPress feature triggers a text generation request.
 
-== Screenshots ==
-
-1. Settings > OpenCode Zen screen showing default model selection and generation parameter configuration.
-2. Settings > Connectors screen where you enter your OpenCode Zen API key.
-
 == Changelog ==
 
 = 1.4.0 - 2026-07-21 =
