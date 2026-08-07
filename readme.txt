@@ -1,6 +1,6 @@
-=== AI Provider for OpenCode Zen ===
+=== AI Provider for OpenCode Zen – One API Key for 57 LLM Models ===
 Contributors:      mralaminahamed
-Tags:              ai, opencode, llm, connector, artificial-intelligence
+Tags:              opencode, ai, llm, ai provider, text generation
 Requires at least: 7.0
 Tested up to:      7.0
 Stable tag:        1.4.0
