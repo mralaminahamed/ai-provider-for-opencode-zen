@@ -33,12 +33,15 @@
     },
     "autoload": {
         "psr-4": {
-            "AlAminAhamed\\OpenCodeZenAiProvider\\": "includes/"
-        }
+            "OpenCodeZen\\OpenCodeZenAiProvider\\": "includes/"
+        },
+        "classmap": [
+            "class-ai-provider-for-opencode-zen.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "AlAminAhamed\\OpenCodeZenAiProvider\\Tests\\": "tests/phpunit/"
+            "OpenCodeZen\\OpenCodeZenAiProvider\\Tests\\": "tests/phpunit/"
         }
     },
     "scripts": {
@@ -59,7 +62,7 @@
         "phpcs": "@lint",
         "phpcbf": "@lint:fix",
         "phpstan": "@analyze",
-        "makepot": "wp i18n make-pot . languages/alamin-ai-provider-for-opencode-zen.pot --exclude=node_modules,vendor,docs,release,tests,.wordpress-org,.playwright-mcp,.claude,.remember",
+        "makepot": "wp i18n make-pot . languages/alamin-ai-provider-for-opencode-zen.pot --package-name=\"AI Provider for OpenCode Zen\" --exclude=node_modules,vendor,docs,release,tests,.wordpress-org,.playwright-mcp,.claude,.remember",
         "release": [
             "rm -rf release vendor",
             "@makepot",

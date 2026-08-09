@@ -2,25 +2,25 @@
 /**
  * OpenCode Zen Settings.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Settings
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Settings
  */
 
 declare(strict_types=1);
 
-namespace AlAminAhamed\OpenCodeZenAiProvider\Settings;
+namespace OpenCodeZen\OpenCodeZenAiProvider\Settings;
 
-use AlAminAhamed\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
+use OpenCodeZen\OpenCodeZenAiProvider\Metadata\ModelMetadataDirectory;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Class OpenCodeZenSettings
+ * Class Settings
  *
  * @since 1.0.0
  */
-class OpenCodeZenSettings {
+class Settings {
 
 	/**
 	 * Option key for settings.
@@ -32,7 +32,7 @@ class OpenCodeZenSettings {
 	/**
 	 * Default model used when none has been chosen.
 	 *
-	 * Matches the flagship entry in OpenCodeZenModelMetadataDirectory's built-in
+	 * Matches the flagship entry in ModelMetadataDirectory's built-in
 	 * list, so it is always a valid selection even before the API is reachable.
 	 *
 	 * @since 1.3.2
@@ -219,7 +219,7 @@ class OpenCodeZenSettings {
 	 */
 	public static function render_model_field(): void {
 		$settings       = self::get_settings();
-		$directory      = new OpenCodeZenModelMetadataDirectory();
+		$directory      = new ModelMetadataDirectory();
 		$models         = $directory->listModelMetadata();
 		$selected_model = $settings['default_model'] ?? '';
 		$option_key     = self::OPTION_KEY;

@@ -1,27 +1,27 @@
 <?php
 /**
- * Tests for OpenCodeZenModelMetadataDirectory.
+ * Tests for ModelMetadataDirectory.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Tests\Metadata
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Tests\Metadata
  */
 
 declare(strict_types=1);
 
-namespace AlAminAhamed\OpenCodeZenAiProvider\Tests\Metadata;
+namespace OpenCodeZen\OpenCodeZenAiProvider\Tests\Metadata;
 
-use AlAminAhamed\OpenCodeZenAiProvider\Metadata\OpenCodeZenModelMetadataDirectory;
-use AlAminAhamed\OpenCodeZenAiProvider\Tests\AbstractModelMetadataDirectoryTest;
+use OpenCodeZen\OpenCodeZenAiProvider\Metadata\ModelMetadataDirectory;
+use OpenCodeZen\OpenCodeZenAiProvider\Tests\AbstractModelMetadataDirectoryTest;
 use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;
 
 /**
- * Class OpenCodeZenModelMetadataDirectoryTest
+ * Class ModelMetadataDirectoryTest
  *
  * @since 1.0.0
  */
-class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirectoryTest {
+class ModelMetadataDirectoryTest extends AbstractModelMetadataDirectoryTest {
 
 	protected function createDirectory(): ModelMetadataDirectoryInterface {
-		return new OpenCodeZenModelMetadataDirectory();
+		return new ModelMetadataDirectory();
 	}
 
 	protected function getKnownModelId(): string {
@@ -29,7 +29,7 @@ class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirecto
 	}
 
 	protected function getExpectedModelCount(): int {
-		return 57;
+		return 61;
 	}
 
 	/**
@@ -160,8 +160,6 @@ class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirecto
 		$expected = array(
 			'grok-4.5',
 			'grok-build-0.1',
-			'qwen3.7-max',
-			'qwen3.7-plus',
 			'qwen3.6-plus',
 			'qwen3.5-plus',
 			'deepseek-v4-pro',
@@ -173,18 +171,41 @@ class OpenCodeZenModelMetadataDirectoryTest extends AbstractModelMetadataDirecto
 			'glm-5.2',
 			'glm-5.1',
 			'glm-5',
+			'kimi-k3',
 			'kimi-k2.7-code',
 			'kimi-k2.6',
 			'kimi-k2.5',
 			'big-pickle',
 			'mimo-v2.5-free',
+			'ling-3.0-flash-free',
+			'ling-3.0-tiny-free',
 			'laguna-s-2.1-free',
+			'longcat-2.0-free',
 			'nemotron-3-ultra-free',
 			'north-mini-code-free',
 		);
 
 		foreach ( $expected as $model_id ) {
 			$this->assertContains( $model_id, $ids, "Missing model: {$model_id}" );
+		}
+	}
+
+	/**
+	 * Models OpenCode Zen does not serve are not offered.
+	 *
+	 * Both of these were in the bundled catalogue and are not in the API's.
+	 * Choosing one produced a model id the API rejects, which surfaces to the
+	 * user as a failed generation rather than as an invalid setting.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return void
+	 */
+	public function test_models_not_served_are_absent(): void {
+		$ids = array_map( static fn( $m ) => $m->getId(), $this->directory->listModelMetadata() );
+
+		foreach ( array( 'qwen3.7-max', 'qwen3.7-plus' ) as $model_id ) {
+			$this->assertNotContains( $model_id, $ids, "Retired model still offered: {$model_id}" );
 		}
 	}
 }

@@ -2,12 +2,12 @@
 /**
  * Abstract base test for Settings implementations.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Tests
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Tests
  */
 
 declare(strict_types=1);
 
-namespace AlAminAhamed\OpenCodeZenAiProvider\Tests;
+namespace OpenCodeZen\OpenCodeZenAiProvider\Tests;
 
 use Brain\Monkey;
 use Brain\Monkey\Functions;

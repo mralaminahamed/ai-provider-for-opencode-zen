@@ -2,7 +2,7 @@
 /**
  * Template: Settings page wrapper.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Settings
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Settings
  *
  * @var string $option_key     Settings option key used by settings_fields().
  * @var bool   $is_connected   Whether an OpenCode Zen API key is configured.
@@ -21,8 +21,8 @@
 			<p>
 				<?php
 				printf(
-					/* translators: %s: URL of the WordPress Connectors settings screen. */
 					wp_kses(
+						/* translators: %s: URL of the WordPress Connectors settings screen. */
 						__( 'No OpenCode Zen API key found. Add your key on the <a href="%s">Connectors screen</a> to activate this provider.', 'alamin-ai-provider-for-opencode-zen' ),
 						array( 'a' => array( 'href' => array() ) )
 					),

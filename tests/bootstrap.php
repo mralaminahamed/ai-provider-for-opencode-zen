@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Tests
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Tests
  */
 
 declare(strict_types=1);

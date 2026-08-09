@@ -2,7 +2,7 @@
 /**
  * Template: Presence penalty number field.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Settings
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Settings
  *
  * @var string $option_key Settings option key used for the field name attribute.
  * @var float  $value      Current presence_penalty value.
