@@ -1,6 +1,6 @@
-=== AI Provider for OpenCode Zen – One API Key for 61 LLM Models ===
+=== AI Provider for OpenCode Zen – One AI Connector for 61 LLM Models ===
 Contributors:      mralaminahamed
-Tags:              opencode, ai, llm, ai provider, text generation
+Tags:              ai, artificial intelligence, connector, opencode, llm
 Requires at least: 7.0
 Tested up to:      7.0
 Stable tag:        1.5.0
@@ -8,11 +8,11 @@ Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-OpenCode Zen provider for the WordPress AI Client. One API key — 61 models including GPT 5, Claude, and Gemini 3.
+AI connector for OpenCode Zen. One API key adds 61 LLMs — GPT 5, Claude, Gemini 3 and more — to the WordPress AI Client.
 
 == Description ==
 
-This plugin provides [OpenCode Zen](https://opencode.ai) integration for the WordPress AI Client. It enables WordPress sites to use OpenCode Zen's AI gateway — accessing GPT, Claude, Gemini, Qwen, MiniMax, Kimi, and more through a single OpenAI-compatible API.
+This plugin is an AI connector for [OpenCode Zen](https://opencode.ai). It registers OpenCode Zen with the WordPress AI Client, so every AI-enabled plugin on your site can reach 61 large language models through one API key — GPT, Claude, Gemini, Grok, Qwen, DeepSeek, MiniMax, Kimi and more, with no separate account per vendor.
 
 This plugin is an independent, third-party integration and is not affiliated with, endorsed by, or sponsored by OpenCode Zen.
 
