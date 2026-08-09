@@ -1,6 +1,38 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code (claude.ai/code) working in this repository.
+
+Every command and path below was checked against the tree on 2026-08-09. If one
+turns out to be wrong, fix the code or fix this file — do not work around it
+silently.
+
+## What this plugin is
+
+A provider for the WordPress AI Client: it teaches WordPress how to talk to
+OpenCode Zen, and nothing else. It does not add AI features to a site — the
+plugins that consume the AI Client do that.
+
+OpenCode Zen is an **aggregator**, which makes this provider unusual. One key
+and one base URL front 61 models from OpenAI, Anthropic, Google, xAI, DeepSeek,
+Moonshot, Alibaba and others. Two consequences shape the code:
+
+**The catalogue is the product, and it moves.** Models are added and retired on
+OpenCode Zen's schedule, not on this plugin's release schedule. `GET
+/zen/v1/models` is public — no key required — so the live list is always
+fetched and the bundled list is only a floor for when the endpoint is
+unreachable. Re-sync it with `curl https://opencode.ai/zen/v1/models`, never by
+hand.
+
+**One parameter set does not fit every model.** The penalties mean something to
+the GPT family and nothing to Claude or Gemini. That is what the
+`opencode_zen_generate_text_params` filter exists for: it receives the model id
+so a site can shape the request for whatever it actually routes to.
+
+**Accuracy is the product.** `ModelMetadata` is not documentation; the AI
+Client reads it to decide which provider can satisfy a request. Declaring a
+capability the gateway cannot serve routes real work here and fails it. Every
+version up to 1.4.0 omitted `chatHistory`, which the gateway has always
+supported, so conversation requests were routed elsewhere.
 
 ## Commands
 
@@ -29,12 +61,16 @@ composer install --no-dev --no-interaction --prefer-dist -o
 
 ## Reference Repositories
 
-| Repository | URL |
+| Repository | Read it for |
 |---|---|
-| Base SDK | https://github.com/WordPress/wp-ai-client |
-| Reference Provider | https://github.com/WordPress/ai-provider-for-anthropic |
-| OpenAI Provider | https://github.com/WordPress/ai-provider-for-openai |
-| Google Provider | https://github.com/WordPress/ai-provider-for-google |
+| [wp-ai-client](https://github.com/WordPress/wp-ai-client) | The SDK. `CapabilityEnum` and `OptionEnum` define everything a provider may declare |
+| [ai-provider-for-anthropic](https://github.com/WordPress/ai-provider-for-anthropic) | The minimal shape — text only, plus a custom authentication class |
+| [ai-provider-for-openai](https://github.com/WordPress/ai-provider-for-openai) | A second modality: `OpenAiImageGenerationModel`, and `textToSpeechConversion` |
+| [ai-provider-for-google](https://github.com/WordPress/ai-provider-for-google) | The fullest example — image, combined text-and-image, and a shared trait for aspect ratio |
+
+[OpenCode Zen docs](https://opencode.ai/docs/zen/) — and the live catalogue at
+`https://opencode.ai/zen/v1/models`, which is the authority when the two
+disagree.
 
 ## Directory Structure
 
@@ -146,19 +182,56 @@ public function getModelMetadata(string $model_id): ModelMetadata  // throws Inv
 new ModelMetadata(
     $model_id,                                       // string
     $model_name,                                     // string
-    [ CapabilityEnum::textGeneration() ],            // array<CapabilityEnum>
-    [                                                // array<SupportedOption>
-        new SupportedOption( OptionEnum::temperature() ),
-        new SupportedOption( OptionEnum::maxTokens() ),
-        new SupportedOption( OptionEnum::topP() ),
-        new SupportedOption( OptionEnum::presencePenalty() ),
-        new SupportedOption( OptionEnum::frequencyPenalty() ),
-        new SupportedOption( OptionEnum::stopSequences() ),
-        new SupportedOption( OptionEnum::systemInstruction() ),
-        new SupportedOption( OptionEnum::functionDeclarations() ),
-    ]
+    $this->capabilities(),                           // list<CapabilityEnum>
+    $options                                         // list<SupportedOption>
 )
 ```
+
+`capabilities()` is a single private method shared by the live-fetch path and
+the fallback path. Keep it that way — when the list was inlined twice, the two
+copies drifted.
+
+### What this provider declares, and why
+
+| Declared | Reason |
+|---|---|
+| `CapabilityEnum::textGeneration()` | The obvious one |
+| `CapabilityEnum::chatHistory()` | The endpoint takes a `messages` array; multi-turn has always worked |
+| `OptionEnum::temperature()` | — |
+| `OptionEnum::maxTokens()` | — |
+| `OptionEnum::topP()` | — |
+| `OptionEnum::presencePenalty()` | Honoured by the GPT family; ignored by Claude and Gemini |
+| `OptionEnum::frequencyPenalty()` | Same |
+| `OptionEnum::stopSequences()` | — |
+| `OptionEnum::systemInstruction()` | — |
+| `OptionEnum::functionDeclarations()` | Sent as `tools` |
+
+The declaration is per-provider, not per-model, so it has to describe what the
+gateway accepts across the catalogue. Where a specific model ignores something,
+that is what the `opencode_zen_generate_text_params` filter is for — it
+receives the model id precisely so a site can strip what will not apply.
+
+Do not declare a capability the gateway cannot serve at all. Zen is a text and
+code gateway: **every one of its 61 models is an LLM**. There is no image,
+speech, video or embedding endpoint, so `imageGeneration()`,
+`textToSpeechConversion()`, `videoGeneration()`, `musicGeneration()` and
+`embeddingGeneration()` are all wrong here — unlike the MiniMax provider, where
+the API does offer them.
+
+### Model catalogue
+
+Resolution order is live fetch → transient cache → bundled fallback:
+
+1. `GET https://opencode.ai/zen/v1/models`, **public**, key sent when present
+2. Cached in `opencode_zen_models_cache` — 1 hour on success, 5 minutes on
+   failure so an outage does not hammer the endpoint on every page load
+3. `get_fallback_models()` only when the endpoint cannot be reached at all
+
+The fallback list drifts by design. Re-sync it against the live endpoint rather
+than editing entries by hand, and update the count in `readme.txt` (title,
+description and FAQ), `README.md`, `docs/MODELS.md` and the test's
+`getExpectedModelCount()` at the same time — the count appears in more places
+than is comfortable.
 
 ## Coding Standards
 
@@ -167,16 +240,59 @@ new ModelMetadata(
 - Namespace root: `OpenCodeZen\OpenCodeZenAiProvider\`
 - PHPStan at `level: max` (WP function stubs via `szepeviktor/phpstan-wordpress`)
 - All output escaped: `esc_html()`, `esc_attr()`, `esc_url()`
-- All strings wrapped: `__()` / `esc_html__()`
+- All strings wrapped: `__()` / `esc_html__()`; a `translators:` comment goes
+  immediately above the `__()` it describes, not above an enclosing
+  `wp_kses()` — make-pot associates by adjacency and silently drops it otherwise
 - Templates set variables then `require` the template file — no logic inside template files
+
+### Naming
+
+Class names carry no vendor prefix — the namespace supplies it. A class is
+named for what it *is*: `Provider`, `Settings`, `ModelMetadataDirectory`,
+`TextGenerationModel`, `ProviderAvailability`. This diverges from the official
+providers, which prefix everything (`AnthropicProvider`), and matches the rest
+of this author's plugins.
+
+### Comments
+
+Comments explain **why**, and earn their place where the code looks wrong but is
+not. A comment restating the line above it is noise; a comment recording that
+the catalogue endpoint needs no API key saves the next person from re-adding
+the guard. Where a change corrects a real defect, say what the defect was.
+
+No AI attribution anywhere — not in comments, commits, or output.
+
+### Commits
+
+Conventional Commits: `type(scope): description`. Branch off `trunk`, never
+commit to it directly. Merge with `gh pr merge --merge` — **never `--squash`**.
+Stage explicit paths; never `git add -A`.
 
 ## Common Mistakes to Avoid
 
+- **Do NOT declare a capability the gateway cannot serve.** `SupportedOption`
+  and `CapabilityEnum` are routing promises, not feature lists — see *What this
+  plugin is*.
+- **Do NOT** re-add an API-key requirement to the model list. The catalogue
+  endpoint is public, and requiring a key meant a site saw the stale bundled
+  list at exactly the moment it was first being configured.
+- **Do NOT** hand-edit the fallback model list. Re-sync it from
+  `curl https://opencode.ai/zen/v1/models`. Two models that the gateway does not
+  serve reached the list by hand and produced failed generations.
 - **Do NOT** add `wordpress/php-ai-client` to Composer production deps — the SDK is provided by WordPress core (WP 7.0+)
 - **Do NOT** use `TextGenerationCapability` class — use `CapabilityEnum::textGeneration()`
 - **Do NOT** omit the `connectors_ai_opencode_zen_api_key` option check from any code that reads the API key
+- **Do NOT** add a setting without wiring it into
+  `TextGenerationModel::prepareGenerateTextParams()`. Every setting on the
+  screen was stored and never read until 1.5.0; a control that changes nothing
+  is worse than a missing one.
+- **Do NOT** add a root-level PHP file without adding it to `phpcs.xml.dist`
+  *and* `phpstan.neon.dist`. Both list files explicitly, so a new file is
+  silently unchecked.
+- **Do NOT** call WordPress functions in `includes/` without a
+  `function_exists()` guard. The classes are documented as usable as a plain
+  Composer package, and that is only true while the guards hold.
 - **Do NOT** downgrade GitHub Actions versions — current baseline: `actions/checkout@v6`, `actions/cache@v5`, `actions/upload-artifact@v7`, `actions/download-artifact@v8`, `softprops/action-gh-release@v3`
-- **Do NOT** hardcode only a subset of `SupportedOption` entries — declare all options the API actually supports
 
 ## CI / Release Workflows
 

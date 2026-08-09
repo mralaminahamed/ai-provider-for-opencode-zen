@@ -6,6 +6,7 @@
 
 - Saved settings are now applied to generation requests. Temperature, max tokens, top_p and the penalties had been stored since 1.0.0 and never read — nothing outside the settings class touched `opencode_zen_settings`. A caller's own value still wins; the saved values fill in what was left unset.
 - `opencode_zen_generate_text_params` filter, which also receives the model id — useful because Zen fronts several vendors and they do not all accept the same parameters.
+- Chat history. The models are now declared as supporting multi-turn conversations, not just single prompts. They always could (the endpoint takes a `messages` array and the AI Client already sends one), but the capability was never declared and the AI Client routes on the declaration, so conversation requests went to other providers. Every official WordPress AI provider declares this.
 
 ### Changed
 
