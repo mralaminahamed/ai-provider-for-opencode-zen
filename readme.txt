@@ -27,6 +27,7 @@ This makes it ideal for WordPress sites that want to experiment with different A
 * **61 models from one API key** — GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, DeepSeek, and more
 * **Automatic model discovery** — live model list fetched from the OpenCode Zen API and cached hourly; falls back to a hardcoded list when offline
 * **Full parameter control** — temperature, max tokens, top P, presence penalty, frequency penalty, stop sequences, system instruction, and function declarations
+* **Chat history** — multi-turn conversations, not just single prompts
 * **Settings page** — configure default model and generation parameters without touching code
 * **API key via Connectors** — enter your key once in **Settings > Connectors**; all AI-enabled plugins share it automatically
 * **Environment variable support** — `OPENCODE_ZEN_API_KEY` for server-level configuration, bypassing the database entirely
@@ -215,6 +216,8 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 **Added**
 - **Settings are now applied to requests.** Temperature, max tokens, top_p and the penalties had been stored since 1.0.0 and never read — nothing outside the settings class touched `opencode_zen_settings`, so saving the form changed a database row and nothing else. A caller's own value still wins; the saved values fill in what was left unset.
 - `opencode_zen_generate_text_params` filter, which receives the model id — useful because Zen fronts several vendors and they do not all accept the same parameters.
+
+* **Chat history** — the models are now declared as supporting multi-turn conversations, not just single prompts. They always could (the endpoint takes a `messages` array and the AI Client already sends one), but the capability was never declared and the AI Client routes on the declaration, so conversation requests were going to other providers. Every official WordPress AI provider declares this.
 
 **Changed**
 - **PHP namespace is now `OpenCodeZen\OpenCodeZenAiProvider\`** (was `AlAminAhamed\OpenCodeZenAiProvider\`).

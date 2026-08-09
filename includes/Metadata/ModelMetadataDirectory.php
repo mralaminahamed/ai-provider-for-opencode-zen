@@ -177,9 +177,7 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 			return array();
 		}
 
-		$capabilities = array(
-			CapabilityEnum::textGeneration(),
-		);
+		$capabilities = $this->capabilities();
 		$options      = array(
 			new SupportedOption( OptionEnum::temperature() ),
 			new SupportedOption( OptionEnum::maxTokens() ),
@@ -233,6 +231,27 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 	}
 
 	/**
+	 * What these models can do.
+	 *
+	 * `chatHistory` was missing, and every official WordPress provider declares
+	 * it. It means the model accepts a conversation rather than a single
+	 * prompt — which OpenCode Zen has always done, because the endpoint takes a
+	 * `messages` array and the SDK already sends one. Without the declaration
+	 * the AI Client will not route a chat request here, so the plugin was
+	 * declining work it could do.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return list<CapabilityEnum>
+	 */
+	private function capabilities(): array {
+		return array(
+			CapabilityEnum::textGeneration(),
+			CapabilityEnum::chatHistory(),
+		);
+	}
+
+	/**
 	 * Get fallback models when API is not available.
 	 *
 	 * @since 1.0.0
@@ -240,9 +259,7 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 	 * @return ModelMetadata[]
 	 */
 	private function get_fallback_models(): array {
-		$capabilities = array(
-			CapabilityEnum::textGeneration(),
-		);
+		$capabilities = $this->capabilities();
 		$options      = array(
 			new SupportedOption( OptionEnum::temperature() ),
 			new SupportedOption( OptionEnum::maxTokens() ),

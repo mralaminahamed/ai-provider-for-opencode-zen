@@ -40,7 +40,7 @@ Activate it, paste one key, and every AI-enabled plugin on your site can generat
 - Standard generation controls: temperature, max tokens, top&nbsp;P, and presence/frequency penalties
 
 **Built to stay out of the way**
-- **OpenAI-compatible** under the hood — text generation, system instructions, stop sequences, and function declarations
+- **OpenAI-compatible** under the hood — text generation, chat history, system instructions, stop sequences, and function declarations
 - Ships as both a **WordPress plugin** and a **Composer package** for standalone PHP use
 - **No SDK bloat** — WordPress core provides the AI Client at runtime, and the plugin excludes its own copy to stay collision-safe
 
