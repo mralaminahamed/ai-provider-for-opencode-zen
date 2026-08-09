@@ -205,11 +205,20 @@ copies drifted.
 | `OptionEnum::stopSequences()` | — |
 | `OptionEnum::systemInstruction()` | — |
 | `OptionEnum::functionDeclarations()` | Sent as `tools` |
+| `OptionEnum::customOptions()` | Passthrough the SDK base already merges into the body — worth more here than for a single-vendor provider, since a parameter only one of eight vendors understands has nowhere else to go |
 
 The declaration is per-provider, not per-model, so it has to describe what the
 gateway accepts across the catalogue. Where a specific model ignores something,
 that is what the `opencode_zen_generate_text_params` filter is for — it
 receives the model id precisely so a site can strip what will not apply.
+
+**Not declared, and deliberately:** `inputModalities` and `outputSchema`. Many
+of the models behind Zen support vision and structured output — GPT-5, Claude
+and Gemini all do — but the declaration is per *provider*, not per model, and
+Zen's `/zen/v1/models` returns only an id with no capability data. Declaring
+either would promise it for all 61 models including the ones that cannot. A
+caller who knows which model they are routing to can reach both through
+`customOptions`.
 
 Do not declare a capability the gateway cannot serve at all. Zen is a text and
 code gateway: **every one of its 61 models is an LLM**. There is no image,

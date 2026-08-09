@@ -187,6 +187,18 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 			new SupportedOption( OptionEnum::stopSequences() ),
 			new SupportedOption( OptionEnum::systemInstruction() ),
 			new SupportedOption( OptionEnum::functionDeclarations() ),
+
+			/*
+			 * A passthrough for anything the SDK does not model. The base class
+			 * already merges these into the request body — the option was
+			 * simply never declared, so no caller could reach it. All three
+			 * official WordPress providers declare it.
+			 *
+			 * It matters more here than for a single-vendor provider: Zen
+			 * fronts eight vendors, and a parameter that only one of them
+			 * understands has nowhere else to go.
+			 */
+			new SupportedOption( OptionEnum::customOptions() ),
 		);
 
 		$models = array();
@@ -269,6 +281,18 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 			new SupportedOption( OptionEnum::stopSequences() ),
 			new SupportedOption( OptionEnum::systemInstruction() ),
 			new SupportedOption( OptionEnum::functionDeclarations() ),
+
+			/*
+			 * A passthrough for anything the SDK does not model. The base class
+			 * already merges these into the request body — the option was
+			 * simply never declared, so no caller could reach it. All three
+			 * official WordPress providers declare it.
+			 *
+			 * It matters more here than for a single-vendor provider: Zen
+			 * fronts eight vendors, and a parameter that only one of them
+			 * understands has nowhere else to go.
+			 */
+			new SupportedOption( OptionEnum::customOptions() ),
 		);
 
 		/*

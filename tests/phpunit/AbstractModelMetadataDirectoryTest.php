@@ -379,4 +379,23 @@ abstract class AbstractModelMetadataDirectoryTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Every model accepts arbitrary passthrough options.
+	 *
+	 * The SDK's base class has always merged `customOptions` into the request
+	 * body; the option was simply never declared, so no caller could reach it.
+	 * It matters more for an aggregator than for a single-vendor provider — a
+	 * parameter only one of eight vendors understands has nowhere else to go.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return void
+	 */
+	public function test_all_models_support_custom_options(): void {
+		foreach ( $this->directory->listModelMetadata() as $model ) {
+			$names = array_map( static fn( $opt ) => (string) $opt->getName(), $model->getSupportedOptions() );
+			$this->assertContains( 'customOptions', $names, "Model {$model->getId()} cannot take custom options" );
+		}
+	}
+
 }

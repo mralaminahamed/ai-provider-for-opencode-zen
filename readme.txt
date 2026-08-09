@@ -217,6 +217,7 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 - **Settings are now applied to requests.** Temperature, max tokens, top_p and the penalties had been stored since 1.0.0 and never read — nothing outside the settings class touched `opencode_zen_settings`, so saving the form changed a database row and nothing else. A caller's own value still wins; the saved values fill in what was left unset.
 - `opencode_zen_generate_text_params` filter, which receives the model id — useful because Zen fronts several vendors and they do not all accept the same parameters.
 
+* **Custom options.** Arbitrary passthrough parameters, which the AI Client's base class already merged into the request body but which no caller could reach, because the option was not declared. It matters more here than for a single-vendor provider: Zen fronts eight vendors, and a parameter only one of them understands has nowhere else to go.
 * **Chat history** — the models are now declared as supporting multi-turn conversations, not just single prompts. They always could (the endpoint takes a `messages` array and the AI Client already sends one), but the capability was never declared and the AI Client routes on the declaration, so conversation requests were going to other providers. Every official WordPress AI provider declares this.
 
 **Changed**
