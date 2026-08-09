@@ -2,12 +2,12 @@
 /**
  * Abstract base test for Provider implementations.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Tests
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Tests
  */
 
 declare(strict_types=1);
 
-namespace AlAminAhamed\OpenCodeZenAiProvider\Tests;
+namespace OpenCodeZen\OpenCodeZenAiProvider\Tests;
 
 use PHPUnit\Framework\TestCase;
 use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;

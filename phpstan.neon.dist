@@ -10,6 +10,7 @@ parameters:
 	paths:
 		- ./includes
 		- ./alamin-ai-provider-for-opencode-zen.php
+		- ./class-ai-provider-for-opencode-zen.php
 	excludePaths:
 		- ./vendor
 		- ./tests

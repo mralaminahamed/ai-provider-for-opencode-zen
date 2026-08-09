@@ -2,10 +2,10 @@
 /**
  * Template: Default model select field.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Settings
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Settings
  *
  * @var string                                                                $option_key     Settings option key used for the field name attribute.
- * @var \AlAminAhamed\OpenCodeZenAiProvider\Metadata\ModelMetadataInterface[] $models         List of model metadata objects.
+ * @var \WordPress\AiClient\Providers\Models\DTO\ModelMetadata[] $models         List of model metadata objects.
  * @var string                                                                $selected_model Currently saved model ID.
  */
 ?>

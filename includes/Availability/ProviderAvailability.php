@@ -2,12 +2,12 @@
 /**
  * OpenCode Zen Provider Availability.
  *
- * @package AlAminAhamed\OpenCodeZenAiProvider\Availability
+ * @package OpenCodeZen\OpenCodeZenAiProvider\Availability
  */
 
 declare(strict_types=1);
 
-namespace AlAminAhamed\OpenCodeZenAiProvider\Availability;
+namespace OpenCodeZen\OpenCodeZenAiProvider\Availability;
 
 use WordPress\AiClient\Providers\Contracts\ProviderAvailabilityInterface;
 use WordPress\AiClient\Providers\Http\Contracts\RequestAuthenticationInterface;
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.2.0
  */
-class OpenCodeZenProviderAvailability implements ProviderAvailabilityInterface {
+class ProviderAvailability implements ProviderAvailabilityInterface {
 
 	/**
 	 * Request authentication instance set by the registry.

@@ -1,20 +1,18 @@
 <?php
 /**
- * AI Provider for OpenCode Zen — plugin bootstrap.
+ * AI Provider for OpenCode Zen
  *
- * Loads the autoloader, registers the OpenCode Zen provider with the
- * WordPress AI Client registry, and initialises the wp-admin settings page.
- *
- * @package AlAminAhamed\OpenCodeZenAiProvider
- * @author  Al Amin Ahamed
- * @link    https://github.com/mralaminahamed/ai-provider-for-opencode-zen
- * @since   1.0.0
+ * @package           OpenCodeZen
+ * @author            Al Amin Ahamed
+ * @copyright         2026 Al Amin Ahamed
+ * @license           GPL-2.0-or-later
+ * @link              https://github.com/mralaminahamed/ai-provider-for-opencode-zen
  *
  * @wordpress-plugin
  * Plugin Name:       AI Provider for OpenCode Zen
  * Plugin URI:        https://github.com/mralaminahamed/ai-provider-for-opencode-zen
  * Description:       OpenCode Zen AI provider for the WordPress AI Client. Not affiliated with OpenCode Zen.
- * Version:           1.4.0
+ * Version:           1.5.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Al Amin Ahamed
@@ -27,97 +25,37 @@
 
 declare(strict_types=1);
 
-namespace AlAminAhamed\OpenCodeZenAiProvider;
-
-use WordPress\AiClient\AiClient;
-use AlAminAhamed\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
-use AlAminAhamed\OpenCodeZenAiProvider\Settings\OpenCodeZenSettings;
-
-define( 'OPENCODE_ZEN_PLUGIN_FILE', __FILE__ );
-
 if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+define( 'OPENCODE_ZEN_VERSION', '1.5.0' );
+define( 'OPENCODE_ZEN_PLUGIN_FILE', __FILE__ );
+define( 'OPENCODE_ZEN_URL', plugin_dir_url( __FILE__ ) );
+define( 'OPENCODE_ZEN_PATH', plugin_dir_path( __FILE__ ) );
+
+/*
+ * Bail rather than fatal when the autoloader is absent.
+ *
+ * A plugin installed from git rather than from a built zip has no vendor
+ * directory, and requiring a file that is not there takes the whole site down
+ * instead of just this plugin.
+ */
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	return;
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 /**
- * Registers the OpenCode Zen provider with the AI Client.
+ * Get the main plugin instance.
  *
- * @since 1.0.0
+ * @since 1.5.0
  *
- * @return void
+ * @return AI_Provider_For_OpenCode_Zen Plugin instance.
  */
-function register_provider(): void {
-	if ( ! class_exists( AiClient::class ) ) {
-		return;
-	}
-
-	$registry = AiClient::defaultRegistry();
-
-	if ( $registry->hasProvider( OpenCodeZenProvider::class ) ) {
-		return;
-	}
-
-	$registry->registerProvider( OpenCodeZenProvider::class );
+function ai_provider_for_opencode_zen(): AI_Provider_For_OpenCode_Zen {
+	return AI_Provider_For_OpenCode_Zen::get_instance();
 }
 
-add_action( 'init', __NAMESPACE__ . '\\register_provider', 5 );
-
-/**
- * Initialize settings page.
- *
- * @since 1.0.0
- *
- * @return void
- */
-function init_settings(): void {
-	OpenCodeZenSettings::init();
-}
-
-add_action( 'init', __NAMESPACE__ . '\\init_settings', 5 );
-
-/**
- * Declare credential availability to the AI plugin.
- *
- * The AI plugin's has_ai_credentials() only checks connectors that store an
- * API key as a flat WP option. OpenCode Zen stores its key under the nested
- * wp_ai_client_credentials option, so we must hook this filter explicitly.
- *
- * @since 1.1.0
- *
- * @param bool $has_credentials Current credential status.
- * @return bool
- */
-function declare_credentials( bool $has_credentials ): bool {
-	if ( $has_credentials ) {
-		return true;
-	}
-
-	return OpenCodeZenSettings::has_api_key();
-}
-
-add_filter( 'wpai_has_ai_credentials', __NAMESPACE__ . '\\declare_credentials' );
-
-/**
- * Short-circuit the valid credentials check when OpenCode Zen key is configured.
- *
- * The default check calls wp_ai_client_prompt()->is_supported_for_text_generation()
- * which may not resolve our provider correctly since we store the API key
- * outside the standard wp_ai_client_credentials option. Return true early when
- * we can confirm the key exists so the AI plugin admin page shows no error.
- *
- * @since 1.1.0
- *
- * @param bool|null $valid Current validity status; null means "use default check".
- * @return bool|null
- */
-function declare_valid_credentials( $valid ) {
-	if ( true === $valid ) {
-		return true;
-	}
-
-	return declare_credentials( false ) ? true : null;
-}
-
-add_filter( 'wpai_pre_has_valid_credentials_check', __NAMESPACE__ . '\\declare_valid_credentials' );
+ai_provider_for_opencode_zen()->init();

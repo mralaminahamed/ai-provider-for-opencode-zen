@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 composer test
 
 # Run a single test file
-./vendor/bin/phpunit tests/phpunit/Provider/OpenCodeZenProviderTest.php
+./vendor/bin/phpunit tests/phpunit/Provider/ProviderTest.php
 
 # Run a single test method
 ./vendor/bin/phpunit --filter test_provider_has_correct_base_url
@@ -40,18 +40,19 @@ composer install --no-dev --no-interaction --prefer-dist -o
 
 ```
 alamin-ai-provider-for-opencode-zen/
-├── alamin-ai-provider-for-opencode-zen.php   # Plugin entry point
+├── alamin-ai-provider-for-opencode-zen.php   # Entry point: constants, autoloader, boot
+├── class-ai-provider-for-opencode-zen.php  # Main class: every hook the plugin registers
 ├── includes/
 │   ├── Availability/
-│   │   └── OpenCodeZenProviderAvailability.php
+│   │   └── ProviderAvailability.php
 │   ├── Metadata/
-│   │   └── OpenCodeZenModelMetadataDirectory.php
+│   │   └── ModelMetadataDirectory.php
 │   ├── Models/
-│   │   └── OpenCodeZenTextGenerationModel.php
+│   │   └── TextGenerationModel.php
 │   ├── Provider/
-│   │   └── OpenCodeZenProvider.php
+│   │   └── Provider.php
 │   └── Settings/
-│       └── OpenCodeZenSettings.php
+│       └── Settings.php
 ├── templates/
 │   └── admin/
 │       ├── field-frequency-penalty.php
@@ -81,31 +82,39 @@ All classes extend from `wordpress/wp-ai-client` (provided by WordPress core on 
 
 ```
 AbstractApiProvider  (SDK)
-  └── OpenCodeZenProvider          # provider ID "opencode-zen", base URL, auth method
+  └── Provider          # provider ID "opencode-zen", base URL, auth method
 
 AbstractOpenAiCompatibleTextGenerationModel  (SDK)
-  └── OpenCodeZenTextGenerationModel   # adds OpenCode-Provider header via createRequest()
+  └── TextGenerationModel   # adds OpenCode-Provider header via createRequest()
 
 ModelMetadataDirectoryInterface  (SDK)
-  └── OpenCodeZenModelMetadataDirectory  # fetches /v1/models, caches via WP transients
+  └── ModelMetadataDirectory  # fetches /v1/models, caches via WP transients
                                           # (1hr on success, 5min on failure),
                                           # falls back to hardcoded list when API unavailable
 
 ProviderAvailabilityInterface  (SDK)
-  └── OpenCodeZenProviderAvailability    # checks all 3 API key sources (see below)
+  └── ProviderAvailability    # checks all 3 API key sources (see below)
 ```
 
-`OpenCodeZenSettings` — standalone WP settings page (not in SDK hierarchy). Option key: `opencode_zen_settings`. Settings page: `options-general.php?page=opencode-zen-settings`.
+`Settings` — standalone WP settings page (not in SDK hierarchy). Option key: `opencode_zen_settings`. Settings page: `options-general.php?page=opencode-zen-settings`.
 
 ### Bootstrap flow (WordPress)
 
-1. Plugin file defines `OPENCODE_ZEN_PLUGIN_FILE` constant and loads `vendor/autoload.php`
-2. `init` hook (priority 5): `register_provider()` → registers `OpenCodeZenProvider` with `AiClient::defaultRegistry()`
-3. `init` hook (priority 5): `init_settings()` → `OpenCodeZenSettings::init()` → wires up `admin_menu` and `admin_init` hooks
+1. `alamin-ai-provider-for-opencode-zen.php` defines `OPENCODE_ZEN_VERSION`, `OPENCODE_ZEN_PLUGIN_FILE`, `OPENCODE_ZEN_URL` and `OPENCODE_ZEN_PATH`, then loads `vendor/autoload.php` — returning early rather than fataling if it is absent, which is the case for a git checkout with no `composer install`
+2. `ai_provider_for_opencode_zen()` returns the `AI_Provider_For_OpenCode_Zen` singleton and `init()` registers every hook
+3. `init` hook (priority 5): `register_provider()` → registers `Provider` with `AiClient::defaultRegistry()`
+4. `init` hook (priority 5): `init_settings()` → `Settings::init()` → wires up `admin_menu` and `admin_init`
+5. `wpai_has_ai_credentials` / `wpai_pre_has_valid_credentials_check` → `declare_credentials()` / `declare_valid_credentials()`
+
+Priority 5 is deliberate: anything generating text on `init` needs the provider
+in the registry before it asks.
+
+`class-ai-provider-for-opencode-zen.php` holds the wiring and nothing else — every hook the plugin
+registers is visible in one file. The work lives in `includes/`.
 
 ### API key resolution (priority order)
 
-All three sources are checked by `ProviderAvailability::isConfigured()`, the `wpai_has_ai_credentials` filter, and `get_api_key()` in `OpenCodeZenModelMetadataDirectory`:
+All three sources are checked by `ProviderAvailability::isConfigured()`, the `wpai_has_ai_credentials` filter, and `get_api_key()` in `ModelMetadataDirectory`:
 
 1. `OPENCODE_ZEN_API_KEY` environment variable
 2. WordPress option `connectors_ai_opencode_zen_api_key` (WP 7.0+ Connectors page)
@@ -155,7 +164,7 @@ new ModelMetadata(
 
 - WordPress Coding Standards (`phpcs.xml.dist`) — text domain `alamin-ai-provider-for-opencode-zen`
 - `declare(strict_types=1)` on every PHP file
-- Namespace root: `AlAminAhamed\OpenCodeZenAiProvider\`
+- Namespace root: `OpenCodeZen\OpenCodeZenAiProvider\`
 - PHPStan at `level: max` (WP function stubs via `szepeviktor/phpstan-wordpress`)
 - All output escaped: `esc_html()`, `esc_attr()`, `esc_url()`
 - All strings wrapped: `__()` / `esc_html__()`

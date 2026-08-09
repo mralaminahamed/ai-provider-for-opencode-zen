@@ -15,14 +15,19 @@ How the plugin is put together and how a request flows through it.
 ## File layout
 
 ```
+alamin-ai-provider-for-opencode-zen.php   # Entry point: constants, autoloader, boot
+class-ai-provider-for-opencode-zen.php   # Main class: every hook the plugin registers
 includes/
   Provider/
-    OpenCodeZenProvider.php               # Registers provider ID "opencode-zen", base URL
-    OpenCodeZenTextGenerationModel.php     # OpenAI-compatible text generation
+    Provider.php                # Registers provider ID "opencode-zen", base URL
+  Models/
+    TextGenerationModel.php     # OpenAI-compatible text generation, applies saved settings
   Metadata/
-    OpenCodeZenModelMetadataDirectory.php  # Live model discovery + transient cache + fallback list
+    ModelMetadataDirectory.php  # Live model discovery + transient cache + fallback list
+  Availability/
+    ProviderAvailability.php    # Is a key configured, and where
   Settings/
-    OpenCodeZenSettings.php               # WP admin settings page (logic only)
+    Settings.php                # WP admin settings page (logic only)
 templates/
   admin/
     settings-page.php                     # <form> wrapper
@@ -41,15 +46,15 @@ Settings logic lives in PHP; all markup lives in `templates/admin/` so the two n
 
 ```
 AiClient::prompt(…)->usingProvider('opencode-zen')->generateTextResult()
-  └─ OpenCodeZenProvider                    resolves provider + base URL + credentials
-       └─ OpenCodeZenTextGenerationModel    POST {base}/chat/completions (OpenAI-compatible)
+  └─ Provider                    resolves provider + base URL + credentials
+       └─ TextGenerationModel    POST {base}/chat/completions (OpenAI-compatible)
             └─ returns GenerateTextResult
 ```
 
 Model discovery is a separate path:
 
 ```
-OpenCodeZenModelMetadataDirectory::listModelMetadata()
+ModelMetadataDirectory::listModelMetadata()
   └─ GET {base}/models   (when an API key is present)
        ├─ success → cache in transient (1 h) and return live list
        └─ failure → cache empty (5 min) and return the built-in fallback list
@@ -65,7 +70,7 @@ The API key is resolved in priority order (first hit wins):
 2. `connectors_ai_opencode_zen_api_key` option (WordPress 7.0+ Connectors screen)
 3. `wp_ai_client_credentials['opencode-zen']['api_key']` (legacy AI Client credentials option)
 
-`OpenCodeZenSettings::has_api_key()` centralises this check; it is reused by the credential filters described in [USAGE.md](USAGE.md).
+`Settings::has_api_key()` centralises this check; it is reused by the credential filters described in [USAGE.md](USAGE.md).
 
 ## Runtime dependency: the AI Client SDK
 

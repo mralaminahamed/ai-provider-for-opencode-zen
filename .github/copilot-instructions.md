@@ -14,9 +14,9 @@ This file provides comprehensive guidelines for using GitHub Copilot in the alam
 
 ### PHP Standards
 
-- Follow WordPress Coding Standards (WPCS) — PSR-4 autoloading with `AlAminAhamed\OpenCodeZenAiProvider\` namespace
+- Follow WordPress Coding Standards (WPCS) — PSR-4 autoloading with `OpenCodeZen\OpenCodeZenAiProvider\` namespace
 - PHP 7.4+ minimum; `declare(strict_types=1)` on every file
-- Class names: PascalCase (e.g., `OpenCodeZenProvider`)
+- Class names: PascalCase (e.g., `Provider`)
 - Method/variable names: snake_case (WordPress style)
 - File names: snake_case with hyphens
 - PHPDoc comments for all classes, methods, and properties
@@ -30,29 +30,29 @@ All plugin classes extend from the `wordpress/wp-ai-client` SDK:
 
 ```
 AbstractApiProvider  (SDK)
-  └── OpenCodeZenProvider          # registers provider ID "opencode-zen"
+  └── Provider          # registers provider ID "opencode-zen"
 
 AbstractOpenAiCompatibleTextGenerationModel  (SDK)
-  └── OpenCodeZenTextGenerationModel   # adds OpenCode-Provider header
+  └── TextGenerationModel   # adds OpenCode-Provider header
 
 ModelMetadataDirectoryInterface  (SDK)
-  └── OpenCodeZenModelMetadataDirectory  # API fetch + WP transient cache + fallback list
+  └── ModelMetadataDirectory  # API fetch + WP transient cache + fallback list
 ```
 
-`OpenCodeZenSettings` — standalone WP settings page; not part of the SDK hierarchy.
+`Settings` — standalone WP settings page; not part of the SDK hierarchy.
 
 ## File Structure
 
 ```
 alamin-ai-provider-for-opencode-zen.php   # Plugin entry point; defines constant, loads autoloader
 src/
-  OpenCodeZenProvider.php                 # Provider registration
+  Provider.php                 # Provider registration
   Metadata/
-    OpenCodeZenModelMetadataDirectory.php # Model list (API + fallback)
+    ModelMetadataDirectory.php # Model list (API + fallback)
   Models/
-    OpenCodeZenTextGenerationModel.php    # Text generation model
+    TextGenerationModel.php    # Text generation model
   Settings/
-    OpenCodeZenSettings.php              # WP admin settings page
+    Settings.php              # WP admin settings page
 ```
 
 ## API Key Resolution (priority order)
