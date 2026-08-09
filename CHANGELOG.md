@@ -1,10 +1,27 @@
 # Changelog
 
-## [Unreleased]
+## [1.5.0] - 2026-08-09
+
+### Added
+
+- Saved settings are now applied to generation requests. Temperature, max tokens, top_p and the penalties had been stored since 1.0.0 and never read — nothing outside the settings class touched `opencode_zen_settings`. A caller's own value still wins; the saved values fill in what was left unset.
+- `opencode_zen_generate_text_params` filter, which also receives the model id — useful because Zen fronts several vendors and they do not all accept the same parameters.
 
 ### Changed
 
-- Refreshed the built-in fallback model list against the current OpenCode Zen `/zen/v1/models` catalogue — now 57 models. Added Gemini 3.6 Flash, Gemini 3.5 Flash Lite, Qwen 3.7 Max, Qwen 3.7 Plus, and Laguna S 2.1 Free; removed the now-deprecated Claude Opus 4.1 and Claude Sonnet 4.
+- PHP namespace is now `OpenCodeZen\OpenCodeZenAiProvider\` (was `AlAminAhamed\OpenCodeZenAiProvider\`).
+- Class names dropped their `OpenCodeZen` prefix, which the namespace already carries: `Provider`, `Settings`, `ModelMetadataDirectory`, `TextGenerationModel`, `ProviderAvailability`.
+- The model list no longer requires an API key. The catalogue is public, and the plugin was returning early without a key — so a site saw the built-in fallback at exactly the moment it was first being configured. A key is still sent when there is one.
+- Refreshed the built-in fallback list against the live `/zen/v1/models` catalogue — now **61 models**. Adds Claude Opus 5, Claude Sonnet 4, Kimi K3, Ling 3.0 Flash Free, Ling 3.0 Tiny Free and LongCat 2.0 Free, on top of the Gemini 3.6 Flash, Gemini 3.5 Flash Lite and Laguna S 2.1 Free that were staged here unreleased.
+
+- **Restructured the bootstrap.** The plugin file is now an entry point — constants, autoloader, boot — and all wiring moved into an `AI_Provider_For_OpenCode_Zen` singleton in `class-ai-provider-for-opencode-zen.php`, so every hook the plugin registers is visible in one file. Matches the layout used across this author's other plugins.
+- Added `OPENCODE_ZEN_VERSION`, `OPENCODE_ZEN_URL` and `OPENCODE_ZEN_PATH` constants; only `OPENCODE_ZEN_PLUGIN_FILE` existed before.
+
+### Fixed
+
+- The plugin no longer fatals when `vendor/autoload.php` is missing, which is the case for a git checkout with no `composer install`. It now returns quietly and leaves the rest of the site up.
+- Removed `qwen3.7-max` and `qwen3.7-plus`, which the fallback list offered and OpenCode Zen does not serve. Selecting either produced a failed generation rather than an invalid-setting warning. They were added in the unreleased entry this release absorbs, so no shipped version ever offered them.
+- The model directory no longer calls WordPress functions when running outside WordPress, which the class is documented to support. It was previously safe only by accident: the API-key lookup returned early before reaching them.
 
 ## [1.4.0] - 2026-07-21
 

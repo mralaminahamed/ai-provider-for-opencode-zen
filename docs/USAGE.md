@@ -18,10 +18,10 @@ echo $result->toText();
 
 ```php
 use WordPress\AiClient\AiClient;
-use AlAminAhamed\OpenCodeZenAiProvider\Provider\OpenCodeZenProvider;
+use OpenCodeZen\OpenCodeZenAiProvider\Provider\Provider;
 
 $registry = AiClient::defaultRegistry();
-$registry->registerProvider(OpenCodeZenProvider::class);
+$registry->registerProvider(Provider::class);
 
 putenv('OPENCODE_ZEN_API_KEY=your-api-key');
 
@@ -59,7 +59,7 @@ Defaults are configurable on the settings page and can be overridden per request
 
 So the WordPress AI admin page does not show a false "no valid connector" warning when the key is stored outside the standard flat option, the plugin hooks two filters:
 
-- `wpai_has_ai_credentials` — returns `true` when `OpenCodeZenSettings::has_api_key()` finds a key (env var, Connectors option, or legacy credentials option).
+- `wpai_has_ai_credentials` — returns `true` when `Settings::has_api_key()` finds a key (env var, Connectors option, or legacy credentials option).
 - `wpai_pre_has_valid_credentials_check` — short-circuits the validity check to `true` when a key is confirmed present.
 
 Both are thin wrappers over the credential resolution described in [ARCHITECTURE.md](ARCHITECTURE.md#credential-resolution).

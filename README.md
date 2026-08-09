@@ -4,7 +4,7 @@
 
 # AI Provider for OpenCode Zen
 
-**One API key. 57 frontier AI models, inside WordPress.**
+**One API key. 61 frontier AI models, inside WordPress.**
 An independent [OpenCode Zen](https://opencode.ai) provider for the WordPress AI Client — brings GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, and DeepSeek to every AI-enabled plugin on your site.
 
 [![WordPress.org version](https://img.shields.io/wordpress/plugin/v/alamin-ai-provider-for-opencode-zen?label=WordPress.org&logo=wordpress&logoColor=white&color=21759B)](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/)
@@ -24,13 +24,13 @@ An independent [OpenCode Zen](https://opencode.ai) provider for the WordPress AI
 
 WordPress 7.0 ships a built-in **AI Client** SDK: plugins ask it to "generate text from this prompt" without caring which AI service answers. This plugin registers **OpenCode Zen** as one of those services — an AI model aggregator where a **single API key** unlocks frontier models from OpenAI, Anthropic, Google, and more.
 
-Activate it, paste one key, and every AI-enabled plugin on your site can generate content through 57 models — no separate accounts, no per-provider billing, no code.
+Activate it, paste one key, and every AI-enabled plugin on your site can generate content through 61 models — no separate accounts, no per-provider billing, no code.
 
 ## Features
 
 **One key, every model**
-- **57 models** across GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, and DeepSeek — one OpenCode Zen key instead of an account per provider
-- **Live model discovery** from the OpenCode Zen API (cached for one hour), with a built-in 57-model fallback so generation keeps working if the API is briefly unreachable
+- **61 models** across GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, and DeepSeek — one OpenCode Zen key instead of an account per provider
+- **Live model discovery** from the OpenCode Zen API (cached for one hour), with a built-in 61-model fallback so generation keeps working if the API is briefly unreachable
 - A sensible **default model** (`gpt-5.5`) preselected out of the box
 
 **Native WordPress integration**
@@ -92,7 +92,7 @@ The `OPENCODE_ZEN_API_KEY` environment variable takes priority over the stored k
 
 ## Supported models
 
-When a key is configured, the live model list comes straight from the OpenCode Zen API, so you always see the latest models. If the API is unavailable, a **57-model fallback** keeps everything working:
+The live model list comes straight from the OpenCode Zen API, so you always see the latest models — the catalogue is public, so no key is needed to read it. If the API is unavailable, a **61-model fallback** keeps everything working:
 
 - **GPT 5.x** — Sol / Terra / Luna, plus Pro, Mini, Nano, and Codex variants
 - **Claude** — Fable 5, Opus 4.x, Sonnet 5 / 4.x, Haiku 4.5
@@ -110,7 +110,7 @@ WordPress 7.0's AI Client is a provider-agnostic layer. Install one or more **pr
 | Doc | What's in it |
 |---|---|
 | [Usage](docs/USAGE.md) | WordPress + standalone Composer examples, API key resolution, generation options, credential filters |
-| [Models](docs/MODELS.md) | How model discovery and caching work, and the full 57-model fallback catalogue |
+| [Models](docs/MODELS.md) | How model discovery and caching work, and the full 61-model fallback catalogue |
 | [Architecture](docs/ARCHITECTURE.md) | Provider identity, file layout, request flow, runtime SDK dependency |
 | [Development](docs/DEVELOPMENT.md) | Build/test/lint/analysis scripts, the AI Client `replace` guard and dev-only stub install, CI and release |
 

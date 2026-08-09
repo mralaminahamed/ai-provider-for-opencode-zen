@@ -1,14 +1,14 @@
-=== AI Provider for OpenCode Zen – One API Key for 57 LLM Models ===
+=== AI Provider for OpenCode Zen – One API Key for 61 LLM Models ===
 Contributors:      mralaminahamed
 Tags:              opencode, ai, llm, ai provider, text generation
 Requires at least: 7.0
 Tested up to:      7.0
-Stable tag:        1.4.0
+Stable tag:        1.5.0
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-OpenCode Zen provider for the WordPress AI Client. One API key — 57 models including GPT 5, Claude, and Gemini 3.
+OpenCode Zen provider for the WordPress AI Client. One API key — 61 models including GPT 5, Claude, and Gemini 3.
 
 == Description ==
 
@@ -18,13 +18,13 @@ This plugin is an independent, third-party integration and is not affiliated wit
 
 = Why OpenCode Zen? =
 
-OpenCode Zen is an **AI model aggregator** — one API key gives you access to 57 frontier models from OpenAI, Anthropic, Google, and others. Instead of managing separate API keys and billing accounts for each AI provider, you connect once to OpenCode Zen and switch between models freely.
+OpenCode Zen is an **AI model aggregator** — one API key gives you access to 61 frontier models from OpenAI, Anthropic, Google, and others. Instead of managing separate API keys and billing accounts for each AI provider, you connect once to OpenCode Zen and switch between models freely.
 
 This makes it ideal for WordPress sites that want to experiment with different AI models, compare output quality, or use specialised models (e.g. a coding model for code-related tasks and a creative model for content).
 
 = Features =
 
-* **57 models from one API key** — GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, DeepSeek, and more
+* **61 models from one API key** — GPT 5.x, Claude, Gemini 3.x, Qwen, MiniMax, Kimi, Grok, DeepSeek, and more
 * **Automatic model discovery** — live model list fetched from the OpenCode Zen API and cached hourly; falls back to a hardcoded list when offline
 * **Full parameter control** — temperature, max tokens, top P, presence penalty, frequency penalty, stop sequences, system instruction, and function declarations
 * **Settings page** — configure default model and generation parameters without touching code
@@ -47,7 +47,7 @@ Once this provider is configured, any WordPress plugin or theme that integrates 
 
 = Supported Models =
 
-When an API key is configured, the live model list is fetched directly from the OpenCode Zen API, so you always see the latest models. If the API is ever unavailable, a built-in fallback list of 57 models keeps everything working. Families include:
+The live model list is fetched directly from the OpenCode Zen API, so you always see the latest models — no API key needed to read the catalogue. If the API is ever unavailable, a built-in fallback list of 61 models keeps everything working. Families include:
 
 * **GPT 5.x** — Sol, Terra, Luna, plus Pro, Mini, Nano, and Codex variants
 * **Claude** — Fable 5, Opus 4.x, Sonnet 5 / 4.x, Haiku 4.5
@@ -163,7 +163,7 @@ It depends on your use case:
 
 = What happens if the OpenCode Zen API is unreachable? =
 
-The plugin falls back to a hardcoded list of 57 models so the AI Client continues to function and AI-enabled plugins stay operational.
+The plugin falls back to a hardcoded list of 61 models so the AI Client continues to function and AI-enabled plugins stay operational.
 
 = Can I use multiple AI provider plugins at the same time? =
 
@@ -183,7 +183,7 @@ Temperature, max tokens, top P, presence penalty, frequency penalty, stop sequen
 
 = Can I use this for WooCommerce product descriptions? =
 
-Yes, if you have a WooCommerce plugin that integrates with the WordPress AI Client. Once this provider is active and your API key is set, any AI-enabled WooCommerce plugin can generate product descriptions, SEO meta, and more using any of the 57 models.
+Yes, if you have a WooCommerce plugin that integrates with the WordPress AI Client. Once this provider is active and your API key is set, any AI-enabled WooCommerce plugin can generate product descriptions, SEO meta, and more using any of the 61 models.
 
 = Does this work with the Gutenberg block editor? =
 
@@ -209,6 +209,27 @@ This plugin connects to the **OpenCode Zen API** (`https://opencode.ai/zen/v1`) 
 No data is sent to the OpenCode Zen API until you enter an API key and a WordPress feature triggers a text generation request.
 
 == Changelog ==
+
+= 1.5.0 - 2026-08-09 =
+
+**Added**
+- **Settings are now applied to requests.** Temperature, max tokens, top_p and the penalties had been stored since 1.0.0 and never read — nothing outside the settings class touched `opencode_zen_settings`, so saving the form changed a database row and nothing else. A caller's own value still wins; the saved values fill in what was left unset.
+- `opencode_zen_generate_text_params` filter, which receives the model id — useful because Zen fronts several vendors and they do not all accept the same parameters.
+
+**Changed**
+- **PHP namespace is now `OpenCodeZen\OpenCodeZenAiProvider\`** (was `AlAminAhamed\OpenCodeZenAiProvider\`).
+- **Class names dropped their `OpenCodeZen` prefix**, which the namespace already carries: `OpenCodeZenProvider` is `Provider`, `OpenCodeZenSettings` is `Settings`, `OpenCodeZenModelMetadataDirectory` is `ModelMetadataDirectory`, `OpenCodeZenTextGenerationModel` is `TextGenerationModel`, and `OpenCodeZenProviderAvailability` is `ProviderAvailability`.
+- **The model list no longer requires an API key.** OpenCode Zen serves its catalogue publicly, and this plugin was returning early without a key — so a site saw the built-in fallback list at exactly the moment it was first being configured. The key is still sent when there is one.
+- Synced the built-in fallback list to the live catalogue: **61 models**, adding Claude Opus 5, Claude Sonnet 4, Kimi K3, Ling 3.0 Flash Free, Ling 3.0 Tiny Free and LongCat 2.0 Free.
+
+- **Restructured the bootstrap.** The plugin file is now an entry point — constants, autoloader, boot — and all wiring moved into an `AI_Provider_For_OpenCode_Zen` singleton in `class-ai-provider-for-opencode-zen.php`, so every hook the plugin registers is visible in one file. Matches the layout used across this author's other plugins.
+- Added `OPENCODE_ZEN_VERSION`, `OPENCODE_ZEN_URL` and `OPENCODE_ZEN_PATH` constants; only `OPENCODE_ZEN_PLUGIN_FILE` existed before.
+
+Both renames are internal. No hook, option, setting or model id changes, and nothing a site has configured is affected — but any code referencing these classes directly needs updating.
+
+**Fixed**
+- Removed `qwen3.7-max` and `qwen3.7-plus`, which were offered in the model list and are not served by OpenCode Zen. Selecting either produced a failed generation rather than an invalid-setting warning.
+- The model directory no longer calls WordPress functions when running outside WordPress, which the class is documented to support.
 
 = 1.4.0 - 2026-07-21 =
 
@@ -277,6 +298,9 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 * Support for `OPENCODE_ZEN_API_KEY` environment variable.
 
 == Upgrade Notice ==
+
+= 1.5.0 =
+Settings now actually apply to requests — temperature, max tokens, top_p and the penalties were stored and never read. The model list no longer needs an API key and is synced to the live catalogue of 61 models; two models that OpenCode Zen does not serve have been removed. Internal PHP namespace and class names changed; no database changes and no settings to redo.
 
 = 1.4.0 =
 Expands the fallback model list to 54 current models, adds a connection-status indicator, and pre-selects a default model. Fixes a possible AI Client TypeError. No database changes required.
