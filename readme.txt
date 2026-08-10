@@ -1,6 +1,6 @@
-=== AI Provider for OpenCode Zen – One AI Connector for 61 LLM Models ===
+=== AI Provider for OpenCode Zen – Multi-Model LLM Connector ===
 Contributors:      mralaminahamed
-Tags:              ai, artificial intelligence, connector, opencode, llm
+Tags:              artificial intelligence, connector, opencode, llm, text generation
 Requires at least: 7.0
 Tested up to:      7.0
 Stable tag:        1.5.0
@@ -8,7 +8,7 @@ Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-AI connector for OpenCode Zen. One API key adds 61 LLMs — GPT 5, Claude, Gemini 3 and more — to the WordPress AI Client.
+AI connector for OpenCode Zen. One API key adds 61 LLMs for text generation — GPT 5, Claude, Gemini 3 and more — to the WordPress AI Client.
 
 == Description ==
 
