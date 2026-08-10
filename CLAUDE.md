@@ -237,10 +237,14 @@ Resolution order is live fetch → transient cache → bundled fallback:
 3. `get_fallback_models()` only when the endpoint cannot be reached at all
 
 The fallback list drifts by design. Re-sync it against the live endpoint rather
-than editing entries by hand, and update the count in `readme.txt` (title,
-description and FAQ), `README.md`, `docs/MODELS.md` and the test's
+than editing entries by hand, and update the count in `readme.txt` (short
+description, description and FAQ), `README.md`, `docs/MODELS.md` and the test's
 `getExpectedModelCount()` at the same time — the count appears in more places
 than is comfortable.
+
+The readme **title** deliberately no longer carries the count. It read "One AI
+Connector for 61 LLM Models" and went stale every time the gateway shipped a
+model, in the one field that costs a release to correct.
 
 ## Coding Standards
 
@@ -302,6 +306,40 @@ Stage explicit paths; never `git add -A`.
   `function_exists()` guard. The classes are documented as usable as a plain
   Composer package, and that is only true while the guards hold.
 - **Do NOT** downgrade GitHub Actions versions — current baseline: `actions/checkout@v6`, `actions/cache@v5`, `actions/upload-artifact@v7`, `actions/download-artifact@v8`, `softprops/action-gh-release@v3`
+
+## WordPress.org listing
+
+Five tag slots, and a tag listing is ordered by **active installs** — so a tag
+holding a thousand plugins shows a thirty-install plugin to nobody. Pick tags by
+where this plugin actually lands, not by how well the word describes it.
+
+Measured 2026-08-10 against
+`https://api.wordpress.org/plugins/info/1.2/?action=query_plugins&request[tag]=…`:
+
+| Tag | Plugins in it | We place | Kept |
+|---|---|---|---|
+| `text generation` | 5 | #2 | yes |
+| `llm` | 88 | #19 | yes |
+| `artificial intelligence` | 121 | #24 | yes |
+| `connector` | 80 | #29 | yes |
+| `opencode` | — | — | yes — brand |
+| `ai` | 1832 | #275 | **dropped**, never reached |
+
+Re-measure before changing tags; installs move and so does the answer. Do not
+re-add `ai` on the reasoning that this is an AI plugin — it is, and the tag
+still returns nothing.
+
+No `image generation` tag, unlike the MiniMax provider: every model here is an
+LLM. Tagging for a capability the gateway does not serve routes the wrong
+searches here, which is the same mistake as declaring a `CapabilityEnum` it
+cannot serve.
+
+The readme title is the highest-weighted field in directory search, which is why
+it no longer carries the model count — see *Model catalogue* above.
+
+readme-only changes need no version bump: pushing `readme.txt` to `trunk` fires
+`svn-readme-assets-update.yml`. Only the plugin header version and `Stable tag`
+require a release.
 
 ## CI / Release Workflows
 
