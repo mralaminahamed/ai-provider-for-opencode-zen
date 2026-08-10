@@ -1,4 +1,4 @@
-=== AI Provider for OpenCode Zen – One AI Connector for 61 LLM Models ===
+=== AI Provider for OpenCode Zen – Multi-Model LLM Connector ===
 Contributors:      mralaminahamed
 Tags:              artificial intelligence, connector, opencode, llm, text generation
 Requires at least: 7.0
