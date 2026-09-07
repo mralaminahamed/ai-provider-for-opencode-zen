@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { exit; }
+<?php
 /**
  * Template: Top P number field.
  *
@@ -7,6 +7,10 @@
  * @var string $option_key Settings option key used for the field name attribute.
  * @var float  $value      Current top_p value.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 <input type="number" step="0.01" min="0" max="1"
 	name="<?php echo esc_attr( $option_key ); ?>[top_p]"

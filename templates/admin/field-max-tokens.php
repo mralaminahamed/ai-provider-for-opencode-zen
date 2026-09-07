@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { exit; }
+<?php
 /**
  * Template: Max tokens number field.
  *
@@ -7,6 +7,10 @@
  * @var string $option_key Settings option key used for the field name attribute.
  * @var int    $value      Current max tokens value.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 <input type="number" step="1" min="1" max="200000"
 	name="<?php echo esc_attr( $option_key ); ?>[max_tokens]"
