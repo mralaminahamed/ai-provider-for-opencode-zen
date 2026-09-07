@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OpenCodeZen\OpenCodeZenAiProvider\Metadata;
 
 use WordPress\AiClient\Common\Exception\InvalidArgumentException;
+use WordPress\AiClient\Messages\Enums\ModalityEnum;
 use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;
 use WordPress\AiClient\Providers\Models\DTO\ModelMetadata;
 use WordPress\AiClient\Providers\Models\DTO\SupportedOption;
@@ -26,6 +27,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  */
 class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
+
+	/**
+	 * The models Zen documents as accepting image input.
+	 *
+	 * Zen's model table marks exactly one entry as vision-capable, and its
+	 * pricing notes say images on that model are converted to tokens and billed
+	 * as input. Nothing else in the catalogue is documented as reading images,
+	 * so nothing else claims to.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @var list<string>
+	 */
+	public const VISION_MODELS = array(
+		'deepseek-v4-flash-vision-exp',
+	);
 
 	/**
 	 * {@inheritDoc}
@@ -178,28 +195,6 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 		}
 
 		$capabilities = $this->capabilities();
-		$options      = array(
-			new SupportedOption( OptionEnum::temperature() ),
-			new SupportedOption( OptionEnum::maxTokens() ),
-			new SupportedOption( OptionEnum::topP() ),
-			new SupportedOption( OptionEnum::presencePenalty() ),
-			new SupportedOption( OptionEnum::frequencyPenalty() ),
-			new SupportedOption( OptionEnum::stopSequences() ),
-			new SupportedOption( OptionEnum::systemInstruction() ),
-			new SupportedOption( OptionEnum::functionDeclarations() ),
-
-			/*
-			 * A passthrough for anything the SDK does not model. The base class
-			 * already merges these into the request body — the option was
-			 * simply never declared, so no caller could reach it. All three
-			 * official WordPress providers declare it.
-			 *
-			 * It matters more here than for a single-vendor provider: Zen
-			 * fronts eight vendors, and a parameter that only one of them
-			 * understands has nowhere else to go.
-			 */
-			new SupportedOption( OptionEnum::customOptions() ),
-		);
 
 		$models = array();
 		foreach ( $data['data'] as $model_data ) {
@@ -215,7 +210,7 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 			$name_raw = $model_data['name'] ?? $id;
 			$name     = is_string( $name_raw ) ? $name_raw : $id;
 
-			$models[] = new ModelMetadata( $id, $name, $capabilities, $options );
+			$models[] = new ModelMetadata( $id, $name, $capabilities, $this->supported_options( $this->is_vision_model( $id ) ) );
 		}
 
 		$this->cache( $transient_key, $models, HOUR_IN_SECONDS, $can_cache );
@@ -240,6 +235,87 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 		}
 
 		set_transient( $key, $value, $ttl );
+	}
+
+	/**
+	 * The generation options Zen honours.
+	 *
+	 * `SupportedOption` is a promise, not a wish list. The AI Client uses it to
+	 * decide which model can satisfy a request, so declaring an option here
+	 * routes callers who need that option to Zen — and if Zen ignores it, they
+	 * get a silently wrong answer rather than an error.
+	 *
+	 * This used to be written out twice, once for the live catalogue and once
+	 * for the fallback, which is two places for the same promise to drift.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param bool $vision Whether this model reads images.
+	 * @return list<SupportedOption>
+	 */
+	private function supported_options( bool $vision = false ): array {
+		$options = array(
+			new SupportedOption( OptionEnum::temperature() ),
+			new SupportedOption( OptionEnum::maxTokens() ),
+			new SupportedOption( OptionEnum::topP() ),
+			new SupportedOption( OptionEnum::presencePenalty() ),
+			new SupportedOption( OptionEnum::frequencyPenalty() ),
+			new SupportedOption( OptionEnum::stopSequences() ),
+			new SupportedOption( OptionEnum::systemInstruction() ),
+			new SupportedOption( OptionEnum::functionDeclarations() ),
+
+			/*
+			 * A passthrough for anything the SDK does not model. The base class
+			 * already merges these into the request body — the option was
+			 * simply never declared, so no caller could reach it. All three
+			 * official WordPress providers declare it.
+			 *
+			 * It matters more here than for a single-vendor provider: Zen
+			 * fronts eight vendors, and a parameter that only one of them
+			 * understands has nowhere else to go.
+			 */
+			new SupportedOption( OptionEnum::customOptions() ),
+		);
+
+		/*
+		 * Declared per model, and only where Zen documents it. All three
+		 * official WordPress providers declare input modalities, and without
+		 * the declaration the AI Client will not route an image prompt here at
+		 * all.
+		 *
+		 * Zen fronts several vendors whose models are multimodal upstream, but
+		 * Zen is a coding gateway and documents image input for exactly one
+		 * entry in its catalogue — the one that says so in its name, and the
+		 * only one with a note about images being billed as input tokens.
+		 * Declaring vision for the rest on the strength of what the underlying
+		 * vendor supports would be a guess, and a guess here routes real
+		 * traffic.
+		 *
+		 * @link https://opencode.ai/docs/zen/
+		 */
+		if ( $vision ) {
+			$options[] = new SupportedOption(
+				OptionEnum::inputModalities(),
+				array(
+					array( ModalityEnum::text() ),
+					array( ModalityEnum::text(), ModalityEnum::image() ),
+				)
+			);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Whether Zen documents this model as accepting images.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string $model_id Model id.
+	 * @return bool
+	 */
+	private function is_vision_model( string $model_id ): bool {
+		return in_array( $model_id, self::VISION_MODELS, true );
 	}
 
 	/**
@@ -272,28 +348,6 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 	 */
 	private function get_fallback_models(): array {
 		$capabilities = $this->capabilities();
-		$options      = array(
-			new SupportedOption( OptionEnum::temperature() ),
-			new SupportedOption( OptionEnum::maxTokens() ),
-			new SupportedOption( OptionEnum::topP() ),
-			new SupportedOption( OptionEnum::presencePenalty() ),
-			new SupportedOption( OptionEnum::frequencyPenalty() ),
-			new SupportedOption( OptionEnum::stopSequences() ),
-			new SupportedOption( OptionEnum::systemInstruction() ),
-			new SupportedOption( OptionEnum::functionDeclarations() ),
-
-			/*
-			 * A passthrough for anything the SDK does not model. The base class
-			 * already merges these into the request body — the option was
-			 * simply never declared, so no caller could reach it. All three
-			 * official WordPress providers declare it.
-			 *
-			 * It matters more here than for a single-vendor provider: Zen
-			 * fronts eight vendors, and a parameter that only one of them
-			 * understands has nowhere else to go.
-			 */
-			new SupportedOption( OptionEnum::customOptions() ),
-		);
 
 		/*
 		 * Mirrors the catalogue returned by GET /zen/v1/models.
@@ -392,7 +446,7 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 
 		$models = array();
 		foreach ( $model_list as $item ) {
-			$models[] = new ModelMetadata( $item[0], $item[1], $capabilities, $options );
+			$models[] = new ModelMetadata( $item[0], $item[1], $capabilities, $this->supported_options( $this->is_vision_model( $item[0] ) ) );
 		}
 
 		return $models;

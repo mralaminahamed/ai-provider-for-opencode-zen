@@ -2,13 +2,18 @@
 
 ## [Unreleased]
 
-### Fixed
+### Added
 
-- Generation requests are now addressed to OpenCode Zen. The AI Client hands the plugin a path relative to the provider's base URL and expects an absolute URL back; the plugin returned the path unchanged, so every request named no host and could not be sent. The three official WordPress AI providers all resolve the path through their provider's `url()`, and this now does the same.
+- Image input on `deepseek-v4-flash-vision-exp`. All three official WordPress AI providers declare which input modalities a model accepts, and without the declaration the AI Client will not route an image prompt to Zen at all — so the plugin was declining work it can do. Declared per model and only where Zen documents it: Zen fronts several vendors whose models are multimodal upstream, but it is a coding gateway and documents image input for one entry in its catalogue.
 
 ### Changed
 
+- The live catalogue and the built-in fallback now share one supported-option builder. Each wrote the list out in full, which is two places for the same promise to drift.
 - Re-synced the built-in fallback model catalogue with the live `/zen/v1/models` endpoint — 70 models, up from 61.
+
+### Fixed
+
+- Generation requests are now addressed to OpenCode Zen. The AI Client hands the plugin a path relative to the provider's base URL and expects an absolute URL back; the plugin returned the path unchanged, so every request named no host and could not be sent. The three official WordPress AI providers all resolve the path through their provider's `url()`, and this now does the same.
 
 ## [1.5.0] - 2026-08-09
 

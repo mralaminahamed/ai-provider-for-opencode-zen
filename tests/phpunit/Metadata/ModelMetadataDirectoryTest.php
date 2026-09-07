@@ -11,6 +11,7 @@ namespace OpenCodeZen\OpenCodeZenAiProvider\Tests\Metadata;
 
 use OpenCodeZen\OpenCodeZenAiProvider\Metadata\ModelMetadataDirectory;
 use OpenCodeZen\OpenCodeZenAiProvider\Tests\AbstractModelMetadataDirectoryTest;
+use WordPress\AiClient\Messages\Enums\ModalityEnum;
 use WordPress\AiClient\Providers\Contracts\ModelMetadataDirectoryInterface;
 
 /**
@@ -208,6 +209,77 @@ class ModelMetadataDirectoryTest extends AbstractModelMetadataDirectoryTest {
 
 		foreach ( array( 'qwen3.7-max', 'qwen3.7-plus' ) as $model_id ) {
 			$this->assertNotContains( $model_id, $ids, "Retired model still offered: {$model_id}" );
+		}
+	}
+
+	/**
+	 * Only the models Zen documents as vision-capable advertise image input.
+	 *
+	 * Without the declaration the AI Client will not route an image prompt to
+	 * Zen at all, so the plugin was declining work it can do. Claiming it for
+	 * every model Zen fronts would be the opposite mistake: Zen is a coding
+	 * gateway, and it documents image billing for one entry in its catalogue.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return void
+	 */
+	public function test_only_documented_vision_models_declare_image_input(): void {
+		$with_vision = array();
+
+		foreach ( $this->directory->listModelMetadata() as $model ) {
+			foreach ( $model->getSupportedOptions() as $option ) {
+				if ( 'inputModalities' !== (string) $option->getName() ) {
+					continue;
+				}
+
+				foreach ( (array) $option->getSupportedValues() as $combination ) {
+					foreach ( (array) $combination as $modality ) {
+						if ( $modality instanceof ModalityEnum && $modality->isImage() ) {
+							$with_vision[] = $model->getId();
+							continue 4;
+						}
+					}
+				}
+			}
+		}
+
+		$this->assertSame( ModelMetadataDirectory::VISION_MODELS, $with_vision );
+	}
+
+	/**
+	 * Every model still carries the full option set.
+	 *
+	 * The live catalogue and the fallback each wrote the option list out in
+	 * full, which is two places for the same promise to drift. They now share
+	 * one builder; this checks the shared one did not lose anything.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return void
+	 */
+	public function test_every_model_declares_the_shared_option_set(): void {
+		$expected = array(
+			'temperature',
+			'maxTokens',
+			'topP',
+			'presencePenalty',
+			'frequencyPenalty',
+			'stopSequences',
+			'systemInstruction',
+			'functionDeclarations',
+			'customOptions',
+		);
+
+		foreach ( $this->directory->listModelMetadata() as $model ) {
+			$names = array_map(
+				static fn( $option ) => (string) $option->getName(),
+				$model->getSupportedOptions()
+			);
+
+			foreach ( $expected as $option_name ) {
+				$this->assertContains( $option_name, $names, $model->getId() );
+			}
 		}
 	}
 }
