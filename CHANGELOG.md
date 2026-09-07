@@ -7,6 +7,7 @@
 - The plugin now autoloads its own classes from `includes/autoload.php` and ships no `vendor/` directory. There was never a runtime dependency to justify Composer here — `composer.json` requires `php` and `ext-json` and nothing else — and the three official WordPress AI provider plugins do the same.
 - Image input on `deepseek-v4-flash-vision-exp`. All three official WordPress AI providers declare which input modalities a model accepts, and without the declaration the AI Client will not route an image prompt to Zen at all — so the plugin was declining work it can do. Declared per model and only where Zen documents it: Zen fronts several vendors whose models are multimodal upstream, but it is a coding gateway and documents image input for one entry in its catalogue.
 
+- An uninstall handler. Deleting the plugin now removes the `opencode_zen_settings` option and the `opencode_zen_models_cache` transient, which it used to leave behind for good. Credentials are deliberately left alone: `connectors_ai_opencode_zen_api_key` is written by the WordPress Connectors screen and `wp_ai_client_credentials` is shared by every AI provider on the site, so removing either would delete a row this plugin did not create — and in the second case, other providers' keys along with its own.
 ### Changed
 
 - The live catalogue and the built-in fallback now share one supported-option builder. Each wrote the list out in full, which is two places for the same promise to drift.

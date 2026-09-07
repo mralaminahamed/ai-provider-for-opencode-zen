@@ -11,6 +11,7 @@ parameters:
 		- ./includes
 		- ./alamin-ai-provider-for-opencode-zen.php
 		- ./class-ai-provider-for-opencode-zen.php
+		- ./uninstall.php
 	excludePaths:
 		- ./vendor
 		- ./tests
