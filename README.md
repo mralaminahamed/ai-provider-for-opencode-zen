@@ -2,139 +2,116 @@
 
 <img src=".wordpress-org/icon-256x256.png" alt="AI Provider for OpenCode Zen icon" width="96" height="96">
 
-# AI Provider for OpenCode Zen — Developer Guide
+# AI Provider for OpenCode Zen
 
-**A OpenCode Zen provider for the WordPress AI Client — register the models, hand over an API key, and any AI-Client consumer can call them.**
+[![WordPress plugin version](https://img.shields.io/wordpress/plugin/v/alamin-ai-provider-for-opencode-zen?style=flat-square)](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/)
+[![WordPress version tested up to](https://img.shields.io/wordpress/plugin/tested/alamin-ai-provider-for-opencode-zen?style=flat-square)](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/)
+[![Minimum PHP version required](https://img.shields.io/wordpress/plugin/required-php/alamin-ai-provider-for-opencode-zen?style=flat-square)](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/)
+[![Total downloads from WordPress.org](https://img.shields.io/wordpress/plugin/dt/alamin-ai-provider-for-opencode-zen?style=flat-square)](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/advanced/)
+[![License GPL v2 or later](https://img.shields.io/badge/license-GPL--2.0--or--later-blue?style=flat-square)](LICENSE)
 
-[![Version](https://img.shields.io/badge/version-1.5.0-21759b.svg)](https://github.com/mralaminahamed/ai-provider-for-opencode-zen)
-[![WordPress](https://img.shields.io/badge/WordPress-7.0%2B-21759b.svg?logo=wordpress&logoColor=white)](https://wordpress.org/)
-[![PHP](https://img.shields.io/badge/PHP-7.4%2B-777BB4.svg)](https://php.net/)
-[![PHPStan](https://img.shields.io/badge/PHPStan-Level%20max-brightgreen.svg)](https://phpstan.org/)
-[![Tests](https://img.shields.io/badge/tests-98-brightgreen.svg)](tests/)
-[![License: GPL-2.0-or-later](https://img.shields.io/badge/License-GPL--2.0--or--later-green.svg)](LICENSE)
+A OpenCode Zen provider for the WordPress AI Client — register the models, hand over an API key, and anything that already speaks AI Client can call them.
 
 </div>
 
-> This is the **contributor / technical** guide. For the public plugin listing — features, screenshots, changelog, upgrade notices — see [`readme.txt`](readme.txt).
+> [!NOTE]
+> Not affiliated with OpenCode Zen. You supply your own API key, and requests are billed to your own account.
 
-| Requirement   | Minimum | Tested up to |
-|---------------|---------|--------------|
-| **WordPress** | 7.0     | 7.1          |
-| **PHP**       | 7.4     | —            |
+## Quick Start
 
-Current version **1.5.0** · License **GPL-2.0-or-later** · Tooling **Composer** · Delivered free on WordPress.org
+Install from the WordPress admin — **Plugins → Add New**, search for "AI Provider for OpenCode Zen", then **Install Now** and **Activate**. Add your API key on the plugin's settings screen.
 
-> Not affiliated with OpenCode Zen.
+To run it from source instead:
 
----
+```bash
+git clone https://github.com/mralaminahamed/ai-provider-for-opencode-zen.git
+cd alamin-ai-provider-for-opencode-zen
+composer install
+composer stubs:install
+```
 
-## What it is
+Needs the WordPress **AI Client** — this plugin implements its provider contract and does nothing on its own. Minimum WordPress, PHP, and tested-up-to versions are shown in the badges above; `readme.txt` and the plugin header are the source of truth.
 
-The WordPress **AI Client** defines what a provider looks like; it does not ship every
-provider. This plugin is the OpenCode Zen implementation — it declares the models, reports whether
-the site is configured to reach them, and performs the requests.
+## What It Does
 
-Nothing here is an interface of its own. Install it and OpenCode Zen's models appear to whatever
-already speaks AI Client, which is the point: the calling code does not learn a new API and
-does not learn this plugin's name.
+The AI Client defines what a provider looks like; it does not ship every provider. This is the OpenCode Zen implementation — it declares the models, reports whether the site is configured to reach them, and performs the requests.
 
----
+There is no interface of its own to learn. Install it and OpenCode Zen's models appear to whatever already speaks AI Client, which is the point: the calling code does not learn a new API, and does not learn this plugin's name.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| Model catalogue | OpenCode Zen models, with per-model capabilities declared to the AI Client |
+| Cheap availability | Whether the provider is usable is answered without a network call |
+| Key storage | Stored server-side under `connectors_ai_opencode_zen_api_key`; never sent to the browser |
+| Provider metadata | What the AI Client displays and reasons about |
+| Static analysis | PHPStan at level max |
+
+## Development
+
+```bash
+composer install             # Dependencies + dev tooling
+composer stubs:install       # WordPress and AI Client stubs, for static analysis
+
+composer test                # PHPUnit (98 tests)
+composer test-f -- --filter SomeTest
+composer phpcs               # WordPress coding standards lint
+composer phpcbf              # Auto-fix coding standards
+composer phpstan             # Static analysis (level max)
+composer analyze             # phpcs + phpstan
+composer lint:review         # Stricter directory-review ruleset
+composer makepot             # Translations
+composer release             # Build and package
+```
 
 ## Architecture
 
-### PHP — `includes/` (PSR-4 `OpenCodeZen\\OpenCodeZenAiProvider\\`)
-
-| Dir             | Responsibility                                                        |
-|-----------------|------------------------------------------------------------------------|
-| `Provider/`     | The AI Client provider implementation — the entry point for requests   |
-| `Models/`       | Model catalogue: identifiers and per-model capabilities                |
-| `Metadata/`     | Provider metadata the AI Client displays and reasons about             |
-| `Availability/` | Whether the provider is usable right now — chiefly, is a key present   |
-| `Settings/`     | The API key, stored under `connectors_ai_opencode_zen_api_key`                                    |
-
-The split that matters is **Availability** against **Provider**: availability answers "can
-this be used" without making a network call, so a consumer can enumerate providers cheaply and
-only reach the network when it actually intends to.
-
-### Repo map
-
-```
-alamin-ai-provider-for-opencode-zen.php     Bootstrap: constants, autoloader, provider registration
-includes/                  PHP (PSR-4 OpenCodeZen\\OpenCodeZenAiProvider\\)
-templates/                 Settings markup
-assets/                    Admin CSS/JS
-tools/                     Maintenance scripts
-tests/phpunit/             PHPUnit (98 tests)
-docs/                      Longer-form documentation
-.wordpress-org/            Directory assets: icon, banners, screenshots
+```mermaid
+flowchart LR
+    A["AI Client consumer"] -->|"is this usable?"| B["Availability<br/>no network call"]
+    A -->|"run a request"| C["Provider"]
+    C --> D["Models<br/>catalogue + capabilities"]
+    C --> E["Settings<br/>API key"]
+    C --> F["OpenCode Zen API"]
 ```
 
----
+PHP lives under the PSR-4 namespace `OpenCodeZen\OpenCodeZenAiProvider\`:
 
-## Getting started
-
-```bash
-composer install       # dependencies + dev tooling
-composer stubs:install # WordPress / AI Client stubs for static analysis
+```
+alamin-ai-provider-for-opencode-zen.php
+includes/
+  Provider/                  AI Client provider implementation — the request entry point
+  Models/                    Model identifiers and per-model capabilities
+  Metadata/                  Provider metadata the AI Client displays
+  Availability/              Whether the provider is usable right now
+  Settings/                  API key storage and the settings screen
+templates/                   Settings markup
+tests/phpunit/               PHPUnit (98 tests)
 ```
 
-Add an API key under the plugin's settings screen. Without one the provider reports itself
-unavailable rather than failing at call time.
+The split worth knowing is **Availability against Provider**. Availability answers "can this be used" without making a network call, so a consumer can enumerate every installed provider cheaply and only reach the network when it actually intends to send a request.
 
----
+## Security
 
-## Testing
+- The API key is stored server-side and never reaches the browser, a log, an error message, or a REST response
+- Requests go to OpenCode Zen only, with your key, billed to your account
+- No analytics, telemetry, or phone-home
 
-```bash
-composer test                      # PHPUnit — 98 tests
-composer test-f -- --filter SomeTest
-```
+Report vulnerabilities privately — see the [security policy](SECURITY.md).
 
----
+## Changelog
 
-## Code quality
+The complete version history lives in [CHANGELOG.md](CHANGELOG.md). [`readme.txt`](readme.txt) carries only the most recent releases, and is rendered on the [WordPress.org changelog page](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/#developers).
 
-```bash
-composer phpcs         # WordPress Coding Standards
-composer phpcbf        # auto-fix
-composer phpstan       # static analysis, level max
-composer analyze       # phpcs + phpstan
-composer lint:review   # the stricter directory-review ruleset
-```
+## Contributing
 
----
+Bug reports, feature requests, and pull requests are welcome. Read the [contributing guide](CONTRIBUTING.md) before opening a pull request, and file issues on the [issue tracker](https://github.com/mralaminahamed/ai-provider-for-opencode-zen/issues).
 
-## Internationalization
+## Maintainer
 
-```bash
-composer makepot
-```
+Al Amin Ahamed — [alaminahamed.com](https://alaminahamed.com) · [@mralaminahamed](https://github.com/mralaminahamed)
 
-Text domain `alamin-ai-provider-for-opencode-zen`. Translations live in `languages/`.
+## License
 
----
-
-## Release
-
-```bash
-composer release
-```
-
----
-
-## Links
-
-- [WordPress.org listing](https://wordpress.org/plugins/alamin-ai-provider-for-opencode-zen/)
-- [Public readme](readme.txt) — features, screenshots, changelog
-- [`docs/`](docs/) — longer-form documentation
-
----
-
-## Contributing · Security · License
-
-Issues and pull requests are welcome. Please run `composer analyze` and `composer test`
-before opening one.
-
-An API key is a credential: report security issues privately rather than in a public issue.
-
-GPL-2.0-or-later. See [`LICENSE`](LICENSE).
+[GPL-2.0-or-later](LICENSE)
