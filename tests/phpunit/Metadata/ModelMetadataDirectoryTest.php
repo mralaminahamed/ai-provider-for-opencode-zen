@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OpenCodeZen\OpenCodeZenAiProvider\Tests\Metadata;
 
+use Brain\Monkey\Functions;
 use OpenCodeZen\OpenCodeZenAiProvider\Metadata\ModelMetadataDirectory;
 use OpenCodeZen\OpenCodeZenAiProvider\Tests\AbstractModelMetadataDirectoryTest;
 use WordPress\AiClient\Messages\Enums\ModalityEnum;
@@ -281,5 +282,65 @@ class ModelMetadataDirectoryTest extends AbstractModelMetadataDirectoryTest {
 				$this->assertContains( $option_name, $names, $model->getId() );
 			}
 		}
+	}
+
+	/**
+	 * The configured default model is the one the AI Client reaches first.
+	 *
+	 * The setting has existed since 1.0.0 and nothing read it. Order is how the
+	 * choice has to be expressed: the registry keeps matching models in
+	 * `listModelMetadata()` order, and `PromptBuilder` falls back to "the first
+	 * candidate discovered" when the caller names neither a model nor a
+	 * preference list. With seventy models from eight vendors, that fallback
+	 * was a coin toss the site owner had no say in.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return void
+	 */
+	public function test_configured_default_model_is_listed_first(): void {
+		Functions\when( 'get_option' )->justReturn( array( 'default_model' => 'kimi-k3' ) );
+
+		$ids = array_map( static fn( $m ) => $m->getId(), ( new ModelMetadataDirectory() )->listModelMetadata() );
+
+		$this->assertSame( 'kimi-k3', $ids[0] );
+	}
+
+	/**
+	 * Choosing a default drops nothing from the catalogue.
+	 *
+	 * Reordering, not filtering: a caller who names another model still gets it.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return void
+	 */
+	public function test_choosing_a_default_does_not_hide_other_models(): void {
+		$all = array_map( static fn( $m ) => $m->getId(), ( new ModelMetadataDirectory() )->listModelMetadata() );
+
+		Functions\when( 'get_option' )->justReturn( array( 'default_model' => 'kimi-k3' ) );
+
+		$reordered = array_map( static fn( $m ) => $m->getId(), ( new ModelMetadataDirectory() )->listModelMetadata() );
+
+		sort( $all );
+		sort( $reordered );
+		$this->assertSame( $all, $reordered );
+	}
+
+	/**
+	 * A default naming a model Zen no longer serves costs nothing.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return void
+	 */
+	public function test_a_stale_default_leaves_the_order_alone(): void {
+		Functions\when( 'get_option' )->justReturn( array( 'default_model' => 'qwen3.7-max' ) );
+
+		$ids = array_map( static fn( $m ) => $m->getId(), ( new ModelMetadataDirectory() )->listModelMetadata() );
+
+		// The catalogue's own first entry, unpromoted.
+		$this->assertSame( 'claude-fable-5', $ids[0] );
+		$this->assertNotContains( 'qwen3.7-max', $ids );
 	}
 }

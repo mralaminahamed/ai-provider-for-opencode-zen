@@ -4,15 +4,20 @@
 
 ### Added
 
+- The plugin now autoloads its own classes from `includes/autoload.php` and ships no `vendor/` directory. There was never a runtime dependency to justify Composer here — `composer.json` requires `php` and `ext-json` and nothing else — and the three official WordPress AI provider plugins do the same.
 - Image input on `deepseek-v4-flash-vision-exp`. All three official WordPress AI providers declare which input modalities a model accepts, and without the declaration the AI Client will not route an image prompt to Zen at all — so the plugin was declining work it can do. Declared per model and only where Zen documents it: Zen fronts several vendors whose models are multimodal upstream, but it is a coding gateway and documents image input for one entry in its catalogue.
 
 ### Changed
 
 - The live catalogue and the built-in fallback now share one supported-option builder. Each wrote the list out in full, which is two places for the same promise to drift.
 - Re-synced the built-in fallback model catalogue with the live `/zen/v1/models` endpoint — 70 models, up from 61.
+- The release build no longer installs and packages a production `vendor/` directory, because nothing under it ships any more.
 
+- Declared as tested against WordPress 7.1.
 ### Fixed
 
+- The chosen default model now decides which model the AI Client reaches for. The setting has been stored since 1.0.0 and never read: picking one wrote a row to `wp_options` and changed no request that followed. The catalogue is now returned with that model first, which is what the AI Client reads — it keeps matching models in catalogue order and, when the caller names neither a model nor a preference, uses the first. With seventy models from eight vendors, that fallback was a coin toss the site owner had no say in. Nothing is filtered, so a caller who names another model still gets it.
+- A copy installed from git no longer activates and silently does nothing. It used to look for Composer's autoloader, find no `vendor/`, and return without registering a provider or saying why.
 - Generation requests are now addressed to OpenCode Zen. The AI Client hands the plugin a path relative to the provider's base URL and expects an absolute URL back; the plugin returned the path unchanged, so every request named no host and could not be sent. The three official WordPress AI providers all resolve the path through their provider's `url()`, and this now does the same.
 
 ## [1.5.0] - 2026-08-09
