@@ -40,6 +40,10 @@ class TextGenerationModelTest extends AbstractTextGenerationModelTest {
 		return Provider::model( $modelId );
 	}
 
+	protected function getApiBaseUrl(): string {
+		return 'https://opencode.ai/zen/v1';
+	}
+
 	/**
 	 * Test model can be created for each fallback model ID.
 	 *
