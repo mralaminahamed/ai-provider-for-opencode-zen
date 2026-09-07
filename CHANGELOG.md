@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Generation requests are now addressed to OpenCode Zen. The AI Client hands the plugin a path relative to the provider's base URL and expects an absolute URL back; the plugin returned the path unchanged, so every request named no host and could not be sent. The three official WordPress AI providers all resolve the path through their provider's `url()`, and this now does the same.
+
+### Changed
+
+- Re-synced the built-in fallback model catalogue with the live `/zen/v1/models` endpoint — 70 models, up from 61.
+
 ## [1.5.0] - 2026-08-09
 
 ### Added
