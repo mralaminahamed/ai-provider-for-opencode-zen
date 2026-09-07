@@ -64,14 +64,12 @@
         "phpstan": "@analyze",
         "makepot": "wp i18n make-pot . languages/alamin-ai-provider-for-opencode-zen.pot --package-name=\"AI Provider for OpenCode Zen\" --exclude=node_modules,vendor,docs,release,tests,.wordpress-org,.playwright-mcp,.claude,.remember",
         "release": [
-            "rm -rf release vendor",
+            "rm -rf release",
             "@makepot",
             "mkdir -p release",
-            "composer install --no-dev --optimize-autoloader",
             "rsync -av --exclude-from=.distignore . release/alamin-ai-provider-for-opencode-zen/",
             "cd release && zip -r alamin-ai-provider-for-opencode-zen.zip alamin-ai-provider-for-opencode-zen/",
-            "rm -rf release/alamin-ai-provider-for-opencode-zen/",
-            "composer install"
+            "rm -rf release/alamin-ai-provider-for-opencode-zen/"
         ]
     },
     "config": {
