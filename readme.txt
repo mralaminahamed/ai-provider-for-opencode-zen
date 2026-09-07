@@ -3,7 +3,7 @@ Contributors:      mralaminahamed
 Tags:              artificial intelligence, connector, opencode, llm, text generation
 Requires at least: 7.0
 Tested up to: 7.1
-Stable tag:        1.5.0
+Stable tag:        1.6.0
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -210,6 +210,23 @@ This plugin connects to the **OpenCode Zen API** (`https://opencode.ai/zen/v1`) 
 No data is sent to the OpenCode Zen API until you enter an API key and a WordPress feature triggers a text generation request.
 
 == Changelog ==
+
+= 1.6.0 - 2026-09-07 =
+
+**Added**
+- **A Test connection button** on the settings page. The page used to say OpenCode Zen was connected as soon as a key was present anywhere, without ever asking Zen about it — a key that had been revoked or mistyped read as connected, and the first sign of trouble was a generation failing somewhere else. Zen's public model list answers the same whether your key is good or nonsense, so the check is addressed to a generation endpoint using one of Zen's own free models, capped at a single token. It costs nothing. A network failure is reported as "could not be checked" rather than as a bad key.
+- **Image input** on `deepseek-v4-flash-vision-exp`, the one model Zen documents as reading images. Without the declaration the AI Client would not route an image prompt here at all.
+- **An uninstall handler.** Deleting the plugin now removes its settings and its cached model list, which it used to leave in the database for good. API keys are deliberately left alone — they are managed on the Connectors screen and shared with every other AI provider on the site.
+
+**Fixed**
+- **Requests now reach OpenCode Zen.** Every request was addressed to a relative path with no host and could not be sent. This is the fix that matters most in this release.
+- **The default model setting now decides something.** It had been stored since 1.0.0 and read by nothing, so choosing a model changed no request that followed. With seventy models from eight vendors, which one answered was previously a coin toss. Your choice is now the model used when a caller does not name one; naming a model explicitly still wins.
+- **A copy installed from git works.** The plugin used to look for a Composer autoloader, not find one, and quietly do nothing — no provider registered, no explanation. It now loads its own classes and needs no `vendor` directory at all.
+
+**Changed**
+- The settings page no longer claims to be connected on the strength of a key existing. It says a key is configured, notes that this is not the same as a key that works, and offers to check.
+- Re-synced the built-in model list with the live catalogue — 70 models, up from 61.
+- Declared as tested against WordPress 7.1.
 
 = 1.5.0 - 2026-08-09 =
 

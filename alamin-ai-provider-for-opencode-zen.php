@@ -12,7 +12,7 @@
  * Plugin Name:       AI Provider for OpenCode Zen
  * Plugin URI:        https://github.com/mralaminahamed/ai-provider-for-opencode-zen
  * Description:       OpenCode Zen AI provider for the WordPress AI Client. Not affiliated with OpenCode Zen.
- * Version:           1.5.0
+ * Version:           1.6.0
  * Requires at least: 7.0
  * Requires PHP:      7.4
  * Author:            Al Amin Ahamed
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'OPENCODE_ZEN_VERSION', '1.5.0' );
+define( 'OPENCODE_ZEN_VERSION', '1.6.0' );
 define( 'OPENCODE_ZEN_PLUGIN_FILE', __FILE__ );
 define( 'OPENCODE_ZEN_URL', plugin_dir_url( __FILE__ ) );
 define( 'OPENCODE_ZEN_PATH', plugin_dir_path( __FILE__ ) );
