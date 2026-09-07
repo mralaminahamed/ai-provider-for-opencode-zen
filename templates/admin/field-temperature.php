@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { exit; }
+<?php
 /**
  * Template: Temperature number field.
  *
@@ -7,6 +7,10 @@
  * @var string $option_key Settings option key used for the field name attribute.
  * @var float  $value      Current temperature value.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 <input type="number" step="0.1" min="0" max="2"
 	name="<?php echo esc_attr( $option_key ); ?>[temperature]"

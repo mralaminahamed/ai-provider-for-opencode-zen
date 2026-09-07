@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { exit; }
+<?php
 /**
  * Template: Default model select field.
  *
@@ -8,6 +8,10 @@
  * @var \WordPress\AiClient\Providers\Models\DTO\ModelMetadata[] $models         List of model metadata objects.
  * @var string                                                                $selected_model Currently saved model ID.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 <select name="<?php echo esc_attr( $option_key ); ?>[default_model]" id="opencode_zen_default_model">
 	<option value=""><?php echo esc_html__( 'Select a model', 'alamin-ai-provider-for-opencode-zen' ); ?></option>

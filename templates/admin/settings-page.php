@@ -1,21 +1,51 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { exit; }
+<?php
 /**
  * Template: Settings page wrapper.
  *
  * @package OpenCodeZen\OpenCodeZenAiProvider\Settings
  *
  * @var string $option_key     Settings option key used by settings_fields().
- * @var bool   $is_connected   Whether an OpenCode Zen API key is configured.
- * @var string $connectors_url URL of the WordPress Connectors settings screen.
+ * @var bool                                        $is_connected   Whether an OpenCode Zen API key is configured.
+ * @var string                                      $connectors_url URL of the WordPress Connectors settings screen.
+ * @var string                                      $test_action    The admin-post action behind the connection test.
+ * @var array{status: string, message: string}|null $test_result    The last connection test result, if any.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 <div class="wrap">
 	<h1><?php echo esc_html__( 'OpenCode Zen Settings', 'alamin-ai-provider-for-opencode-zen' ); ?></h1>
 
 	<?php if ( $is_connected ) : ?>
-		<div class="notice notice-success inline">
-			<p><?php echo esc_html__( 'OpenCode Zen is connected — an API key is configured. The defaults below apply to new text generation requests.', 'alamin-ai-provider-for-opencode-zen' ); ?></p>
+		<div class="notice notice-info inline">
+			<p>
+				<?php echo esc_html__( 'An API key is configured. The defaults below apply to new text generation requests.', 'alamin-ai-provider-for-opencode-zen' ); ?>
+			</p>
+			<p>
+				<?php echo esc_html__( 'A key being present is not the same as a key that works — OpenCode Zen has not been asked until you test it. The check uses a free model, so it costs nothing.', 'alamin-ai-provider-for-opencode-zen' ); ?>
+			</p>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<input type="hidden" name="action" value="<?php echo esc_attr( $test_action ); ?>">
+				<?php wp_nonce_field( $test_action ); ?>
+				<?php submit_button( __( 'Test connection', 'alamin-ai-provider-for-opencode-zen' ), 'secondary', 'submit', false ); ?>
+			</form>
 		</div>
+
+		<?php if ( null !== $test_result ) : ?>
+			<?php
+			$notice_class = 'notice-warning';
+			if ( 'valid' === $test_result['status'] ) {
+				$notice_class = 'notice-success';
+			} elseif ( 'invalid' === $test_result['status'] ) {
+				$notice_class = 'notice-error';
+			}
+			?>
+			<div class="notice <?php echo esc_attr( $notice_class ); ?> inline">
+				<p><?php echo esc_html( $test_result['message'] ); ?></p>
+			</div>
+		<?php endif; ?>
 	<?php else : ?>
 		<div class="notice notice-warning inline">
 			<p>
