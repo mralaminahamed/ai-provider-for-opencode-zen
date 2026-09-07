@@ -13,6 +13,7 @@
 - Re-synced the built-in fallback model catalogue with the live `/zen/v1/models` endpoint — 70 models, up from 61.
 - The release build no longer installs and packages a production `vendor/` directory, because nothing under it ships any more.
 
+- Declared as tested against WordPress 7.1.
 ### Fixed
 
 - The chosen default model now decides which model the AI Client reaches for. The setting has been stored since 1.0.0 and never read: picking one wrote a row to `wp_options` and changed no request that followed. The catalogue is now returned with that model first, which is what the AI Client reads — it keeps matching models in catalogue order and, when the caller names neither a model nor a preference, uses the first. With seventy models from eight vendors, that fallback was a coin toss the site owner had no say in. Nothing is filtered, so a caller who names another model still gets it.
