@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Image input on `deepseek-v4-flash-vision-exp`. All three official WordPress AI providers declare which input modalities a model accepts, and without the declaration the AI Client will not route an image prompt to Zen at all — so the plugin was declining work it can do. Declared per model and only where Zen documents it: Zen fronts several vendors whose models are multimodal upstream, but it is a coding gateway and documents image input for one entry in its catalogue.
+
+### Changed
+
+- The live catalogue and the built-in fallback now share one supported-option builder. Each wrote the list out in full, which is two places for the same promise to drift.
+
 ## [1.5.0] - 2026-08-09
 
 ### Added
