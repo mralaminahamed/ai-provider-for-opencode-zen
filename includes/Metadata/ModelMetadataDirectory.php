@@ -298,9 +298,9 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 		/*
 		 * Mirrors the catalogue returned by GET /zen/v1/models.
 		 *
-		 * Synced against the live endpoint on 2026-08-09, which is why
-		 * `qwen3.7-max` and `qwen3.7-plus` are gone — they were listed here and
-		 * OpenCode Zen does not serve them, so selecting either produced a model
+		 * Synced against the live endpoint on 2026-09-07. That sync added fourteen
+		 * models and dropped five the endpoint no longer serves — a stale entry
+		 * here is worse than a missing one, because selecting it produces a model
 		 * the API rejects.
 		 *
 		 * This list is only reached when the endpoint cannot be read at all. It
@@ -310,6 +310,7 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 		$model_list = array(
 			// Claude models.
 			array( 'claude-fable-5', 'Claude Fable 5' ),
+			array( 'claude-fable-5-1', 'Claude Fable 5.1' ),
 			array( 'claude-opus-5', 'Claude Opus 5' ),
 			array( 'claude-opus-4-8', 'Claude Opus 4.8' ),
 			array( 'claude-opus-4-7', 'Claude Opus 4.7' ),
@@ -320,13 +321,8 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 			array( 'claude-sonnet-4-5', 'Claude Sonnet 4.5' ),
 			array( 'claude-sonnet-4', 'Claude Sonnet 4' ),
 			array( 'claude-haiku-4-5', 'Claude Haiku 4.5' ),
-			// Gemini models.
-			array( 'gemini-3.6-flash', 'Gemini 3.6 Flash' ),
-			array( 'gemini-3.5-flash-lite', 'Gemini 3.5 Flash Lite' ),
-			array( 'gemini-3.5-flash', 'Gemini 3.5 Flash' ),
-			array( 'gemini-3.1-pro', 'Gemini 3.1 Pro' ),
-			array( 'gemini-3-flash', 'Gemini 3 Flash' ),
 			// GPT models.
+			array( 'gpt-6-astra', 'GPT 6 Astra' ),
 			array( 'gpt-5.6-sol', 'GPT 5.6 Sol' ),
 			array( 'gpt-5.6-terra', 'GPT 5.6 Terra' ),
 			array( 'gpt-5.6-luna', 'GPT 5.6 Luna' ),
@@ -347,33 +343,51 @@ class ModelMetadataDirectory implements ModelMetadataDirectoryInterface {
 			array( 'gpt-5', 'GPT 5' ),
 			array( 'gpt-5-codex', 'GPT 5 Codex' ),
 			array( 'gpt-5-nano', 'GPT 5 Nano' ),
-			// Other models.
+			// Gemini models.
+			array( 'gemini-3.6-flash', 'Gemini 3.6 Flash' ),
+			array( 'gemini-3.8-flash', 'Gemini 3.8 Flash' ),
+			array( 'gemini-3.7-flash', 'Gemini 3.7 Flash' ),
+			array( 'gemini-3.5-flash-lite', 'Gemini 3.5 Flash Lite' ),
+			array( 'gemini-3.5-flash', 'Gemini 3.5 Flash' ),
+			array( 'gemini-3.1-pro', 'Gemini 3.1 Pro' ),
+			array( 'gemini-3-flash', 'Gemini 3 Flash' ),
+			// Grok models.
 			array( 'grok-build-0.1', 'Grok Build 0.1' ),
+			array( 'grok-4.6', 'Grok 4.6' ),
 			array( 'grok-4.5', 'Grok 4.5' ),
+			// DeepSeek models.
 			array( 'deepseek-v4-pro', 'DeepSeek V4 Pro' ),
 			array( 'deepseek-v4-flash', 'DeepSeek V4 Flash' ),
+			array( 'deepseek-v4-flash-vision-exp', 'DeepSeek v4 Flash Vision Exp' ),
+			array( 'deepseek-v4-flash-free', 'DeepSeek V4 Flash Free' ),
+			// GLM models.
+			array( 'glm-5.3-flash', 'GLM 5.3 Flash' ),
+			array( 'glm-5.3', 'GLM 5.3' ),
 			array( 'glm-5.2', 'GLM 5.2' ),
 			array( 'glm-5.1', 'GLM 5.1' ),
 			array( 'glm-5', 'GLM 5' ),
-			array( 'minimax-m3', 'MiniMax M3' ),
-			array( 'minimax-m2.7', 'MiniMax M2.7' ),
-			array( 'minimax-m2.5', 'MiniMax M2.5' ),
+			// Kimi models.
 			array( 'kimi-k3', 'Kimi K3' ),
 			array( 'kimi-k2.7-code', 'Kimi K2.7 Code' ),
 			array( 'kimi-k2.6', 'Kimi K2.6' ),
 			array( 'kimi-k2.5', 'Kimi K2.5' ),
+			// Qwen models.
 			array( 'qwen3.6-plus', 'Qwen 3.6 Plus' ),
 			array( 'qwen3.5-plus', 'Qwen 3.5 Plus' ),
-			// Free models — offered for a limited time while feedback is collected.
+			// MiniMax models.
+			array( 'minimax-m3', 'MiniMax M3' ),
+			array( 'minimax-m2.7', 'MiniMax M2.7' ),
+			array( 'minimax-m2.5', 'MiniMax M2.5' ),
+			// Other vendors and free tiers.
+			array( 'muse-spark-1.3', 'Muse Spark 1.3' ),
+			array( 'muse-spark-1.2', 'Muse Spark 1.2' ),
 			array( 'big-pickle', 'Big Pickle' ),
-			array( 'deepseek-v4-flash-free', 'DeepSeek V4 Flash Free' ),
+			array( 'muse-spark-1.3-contributor-free', 'Muse Spark 1.3 Contributor Free' ),
+			array( 'muse-spark-1.2-contributor-free', 'Muse Spark 1.2 Contributor Free' ),
 			array( 'mimo-v2.5-free', 'MiMo v2.5 Free' ),
-			array( 'ling-3.0-flash-free', 'Ling 3.0 Flash Free' ),
-			array( 'ling-3.0-tiny-free', 'Ling 3.0 Tiny Free' ),
+			array( 'ling-3.0-flash-fin-free', 'Ling 3.0 Flash Fin Free' ),
 			array( 'nemotron-3-ultra-free', 'Nemotron 3 Ultra Free' ),
-			array( 'north-mini-code-free', 'North Mini Code Free' ),
-			array( 'laguna-s-2.1-free', 'Laguna S 2.1 Free' ),
-			array( 'longcat-2.0-free', 'LongCat 2.0 Free' ),
+			array( 'nemotron-3.5-lightning-free', 'Nemotron 3.5 Lightning Free' ),
 		);
 
 		$models = array();

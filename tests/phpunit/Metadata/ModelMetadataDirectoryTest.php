@@ -29,7 +29,7 @@ class ModelMetadataDirectoryTest extends AbstractModelMetadataDirectoryTest {
 	}
 
 	protected function getExpectedModelCount(): int {
-		return 61;
+		return 70;
 	}
 
 	/**
@@ -177,12 +177,14 @@ class ModelMetadataDirectoryTest extends AbstractModelMetadataDirectoryTest {
 			'kimi-k2.5',
 			'big-pickle',
 			'mimo-v2.5-free',
-			'ling-3.0-flash-free',
-			'ling-3.0-tiny-free',
-			'laguna-s-2.1-free',
-			'longcat-2.0-free',
 			'nemotron-3-ultra-free',
-			'north-mini-code-free',
+			// Added by the 2026-09-07 sync.
+			'gpt-6-astra',
+			'claude-fable-5-1',
+			'gemini-3.8-flash',
+			'glm-5.3',
+			'grok-4.6',
+			'muse-spark-1.3',
 		);
 
 		foreach ( $expected as $model_id ) {
