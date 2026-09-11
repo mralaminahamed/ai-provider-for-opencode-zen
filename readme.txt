@@ -3,7 +3,7 @@ Contributors:      mralaminahamed
 Tags:              artificial intelligence, connector, opencode, llm, text generation
 Requires at least: 7.0
 Tested up to:      7.0
-Stable tag:        1.5.0
+Stable tag:        1.5.1
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -211,6 +211,11 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 
 == Changelog ==
 
+= 1.5.1 - 2026-09-12 =
+
+**Changed**
+- Listing copy only: the plugin title, tags and short description now say "connector" and lead with the model count, which is what people search the directory for. No code changes — the plugin behaves exactly as 1.5.0 did.
+
 = 1.5.0 - 2026-08-09 =
 
 **Added**
@@ -302,6 +307,9 @@ Both renames are internal. No hook, option, setting or model id changes, and not
 * Support for `OPENCODE_ZEN_API_KEY` environment variable.
 
 == Upgrade Notice ==
+
+= 1.5.1 =
+Directory listing copy only. Nothing to do — the plugin is unchanged from 1.5.0.
 
 = 1.5.0 =
 Settings now actually apply to requests — temperature, max tokens, top_p and the penalties were stored and never read. The model list no longer needs an API key and is synced to the live catalogue of 61 models; two models that OpenCode Zen does not serve have been removed. Internal PHP namespace and class names changed; no database changes and no settings to redo.
