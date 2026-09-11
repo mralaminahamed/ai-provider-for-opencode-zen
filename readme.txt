@@ -3,7 +3,7 @@ Contributors:      mralaminahamed
 Tags:              artificial intelligence, connector, opencode, llm, text generation
 Requires at least: 7.0
 Tested up to: 7.1
-Stable tag:        1.5.0
+Stable tag:        1.6.0
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -211,6 +211,25 @@ No data is sent to the OpenCode Zen API until you enter an API key and a WordPre
 
 == Changelog ==
 
+= 1.6.0 - 2026-09-12 =
+
+**Added**
+- **A Test connection button** on the settings page. The page used to say "OpenCode Zen is connected" as soon as a key existed anywhere, without ever asking Zen — a revoked, mistyped or wrong-account key read as connected, and the first sign of trouble was a generation failing somewhere else. Zen's model list is public and answers even to a nonsense key, so the check sends a one-token request to one of Zen's own free-tier models. A network failure is reported as "could not be checked", not as a bad key. The verdict is cached for five minutes and dropped whenever the key changes.
+- **An uninstall handler.** Deleting the plugin now removes the `opencode_zen_settings` option and the `opencode_zen_models_cache` transient, which it used to leave behind for good. Your API key is deliberately left alone: it belongs to the WordPress Connectors screen and, in the shared case, to every AI provider on the site.
+- **Image input on `deepseek-v4-flash-vision-exp`.** Without the declaration the AI Client will not route an image prompt to Zen at all, so the plugin was declining work it can do. Declared only where Zen documents it.
+
+**Changed**
+- The plugin autoloads its own classes and ships no `vendor/` directory. There was never a runtime dependency to justify Composer here.
+- The settings page no longer claims the provider is connected on the strength of a key existing. It says a key is configured, notes that this is not the same as one that works, and offers to check.
+- Re-synced the built-in fallback model catalogue with the live endpoint — **70 models**, up from 61.
+- Declared as tested against WordPress 7.1.
+- Directory listing copy: the title, tags and short description now say "connector" and lead with the model count, which is what people search for.
+
+**Fixed**
+- **The chosen default model now decides which model is used.** The setting has been stored since 1.0.0 and never read: picking one wrote a row to the database and changed no request that followed. With seventy models from eight vendors, what you got instead was a coin toss you had no say in. Nothing is filtered, so a caller that names another model still gets it.
+- **Generation requests are now addressed to OpenCode Zen.** The plugin returned a relative path where the AI Client expects an absolute URL, so every request named no host and could not be sent.
+- A copy installed from git no longer activates and silently does nothing. It used to look for Composer's autoloader, find none, and return without registering a provider or saying why.
+
 = 1.5.0 - 2026-08-09 =
 
 **Added**
@@ -302,6 +321,9 @@ Both renames are internal. No hook, option, setting or model id changes, and not
 * Support for `OPENCODE_ZEN_API_KEY` environment variable.
 
 == Upgrade Notice ==
+
+= 1.6.0 =
+Adds a Test connection button, an uninstall handler and image input on Zen's vision model, and re-syncs the fallback catalogue to 70 models. Fixes two faults that stopped generation outright: requests were sent without a host, and the default model you picked was never used. No database changes and no settings to redo.
 
 = 1.5.0 =
 Settings now actually apply to requests — temperature, max tokens, top_p and the penalties were stored and never read. The model list no longer needs an API key and is synced to the live catalogue of 61 models; two models that OpenCode Zen does not serve have been removed. Internal PHP namespace and class names changed; no database changes and no settings to redo.
